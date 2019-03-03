@@ -10,9 +10,9 @@
 	<a>Nom de compte</a><input type="text" required name="nomcompte"><br>
 	<a>Mot de passe</a><input type="text" required name="mdp"><br>
 	<a>Confirmé le mot de passe</a><input required type="text" name="cmdp"><br>
-	<a>Salamèche</a><input value="1" type="radio" name="poke">
-	<a>Bulbizarre</a><input value="2" type="radio" name="poke">
-	<a>Carapuce</a><input value="3" type="radio" name="poke">
+	<a>Salamèche</a><input required value="1" type="radio" name="poke">
+	<a>Bulbizarre</a><input required value="2" type="radio" name="poke">
+	<a>Carapuce</a><input required value="3" type="radio" name="poke">
 	<input type="submit" name="valider"><br>
 	<a href="login.php">Login page</a>
 	</fieldset>

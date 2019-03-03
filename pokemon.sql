@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Mar 01, 2019 at 05:34 PM
+-- Generation Time: Mar 03, 2019 at 10:27 AM
 -- Server version: 10.3.12-MariaDB
 -- PHP Version: 7.2.14
 
@@ -40,15 +40,8 @@ CREATE TABLE IF NOT EXISTS `banque` (
 --
 
 INSERT INTO `banque` (`ID`, `NOM`) VALUES
-(73811, 'SalamÃ¨che'),
-(98226, 'SalamÃ¨che'),
-(16515, 'SalamÃ¨che'),
-(32784, 'SalamÃ¨che'),
-(48597, 'SalamÃ¨che'),
-(31019, 'SalamÃ¨che'),
-(1, 'SalamÃ¨che'),
-(3, 'SalamÃ¨che'),
-(2, 'SalamÃ¨che');
+(89397, 'Bulbizarre'),
+(34842, 'SalamÃ¨che');
 
 -- --------------------------------------------------------
 
@@ -60,25 +53,48 @@ DROP TABLE IF EXISTS `compte`;
 CREATE TABLE IF NOT EXISTS `compte` (
   `NOM` varchar(35) NOT NULL,
   `MDP` varchar(35) NOT NULL,
-  `IDPOKEMON` int(11) NOT NULL,
-  PRIMARY KEY (`NOM`),
-  KEY `IDPOKEMON` (`IDPOKEMON`)
+  PRIMARY KEY (`NOM`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `compte`
 --
 
-INSERT INTO `compte` (`NOM`, `MDP`, `IDPOKEMON`) VALUES
-('ghj', 'gh', 73811),
-('ketto', 'shizu', 98226),
-('test', 'test2', 16515),
-('uio', 'ui', 32784),
-('fgh', 'fg', 48597),
-('cvb', 'cv', 31019),
-('klm', 'kl', 1),
-('pm', 'p', 3),
-('htr', 'tr', 2);
+INSERT INTO `compte` (`NOM`, `MDP`) VALUES
+('ketto', 'shizu'),
+('shi', 'yui');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `equipe`
+--
+
+DROP TABLE IF EXISTS `equipe`;
+CREATE TABLE IF NOT EXISTS `equipe` (
+  `NOM` varchar(35) NOT NULL,
+  `SLOT1` int(11) DEFAULT NULL,
+  `SLOT2` int(11) DEFAULT NULL,
+  `SLOT3` int(11) DEFAULT NULL,
+  `SLOT4` int(11) DEFAULT NULL,
+  `SLOT5` int(11) DEFAULT NULL,
+  `SLOT6` int(11) DEFAULT NULL,
+  PRIMARY KEY (`NOM`),
+  KEY `SLOT1` (`SLOT1`),
+  KEY `SLOT2` (`SLOT2`),
+  KEY `SLOT3` (`SLOT3`),
+  KEY `SLOT4` (`SLOT4`),
+  KEY `SLOT5` (`SLOT5`),
+  KEY `SLOT6` (`SLOT6`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `equipe`
+--
+
+INSERT INTO `equipe` (`NOM`, `SLOT1`, `SLOT2`, `SLOT3`, `SLOT4`, `SLOT5`, `SLOT6`) VALUES
+('ketto', 34842, NULL, NULL, NULL, NULL, NULL),
+('shi', 89397, NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 

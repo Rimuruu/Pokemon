@@ -1,10 +1,17 @@
+<?php 
+session_start();
+if (isset($_SESSION['nomcompte'])) {
+	header("location: log.php");
+ } ?>
+
+
 <!DOCTYPE html>
 <html>
 <head>
 	<title>pokemon</title>
 </head>
 <body>
-<form>
+<form method="post" action="log.php">
 	<fieldset>
 	<legend>Login</legend>
 	<a>Votre compte a été créer</a><br>
