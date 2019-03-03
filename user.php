@@ -6,6 +6,11 @@ if(!@include_once('bdd.php')) {
   include 'bdd.php';
 }
 
+if(!@include_once('pokemon.php')) {
+  include 'pokemon.php';
+}
+
+
 function Ajout_compte($nomcompte,$mdp,$cmdp,$poke){
 	if ($mdp != $cmdp) {
 	include 'erreurmdp.php';
@@ -23,7 +28,7 @@ if (mysqli_num_rows($result)>0) {
 else{
 	switch ($poke) {
 	case 1:
-		$nompoke = "Salamèche";
+		$nompoke = utf8_decode("Salamèche");
 		break;
 	case 2:
 		$nompoke = "Bulbizarre";
@@ -59,6 +64,7 @@ else{
 	mysqli_execute($stmt);
 	mysqli_execute($stmt2);
 	mysqli_execute($stmt3);
+	Set_default_cap($idpoke);
 	echo mysqli_error($link);
 	mysqli_close($link);
 	include 'login2.php';
@@ -66,6 +72,8 @@ else{
 		}
 	}
 }
+
+
 
 function Show_team($nomcompte){
 	$link =create_link();
@@ -81,15 +89,43 @@ function Show_team($nomcompte){
 			echo "<li> Vide </li>";
 		}
 		else{
-		echo "<li> ".$res['NOM']." </li>";
+		echo "<li> ".utf8_encode($res['NOM'])." </li>";
 	}
 	}
 	echo "<ul>";
+}
 
-
-
+function Show_pokedollar($nomcompte){
+	$link =create_link();
+	$querytest = "SELECT Pokedollar FROM compte where NOM=?"; 
+	$stmt2 = mysqli_prepare($link,$querytest);
+	mysqli_stmt_bind_param($stmt2,"s",$nomcompte);
+	mysqli_execute($stmt2);
+	$result = mysqli_stmt_get_result($stmt2);
+	$res = mysqli_fetch_assoc($result);
+	echo "<h2>".$res['Pokedollar']."  Pokédollar</h2>";
 
 }
+
+
+function Show_nth_pokemon($nomcompte,$nth){
+	$link =create_link();
+	$querytest = "SELECT banque.NOM FROM banque JOIN equipe ON banque.ID = equipe.SLOT".$nth." JOIN compte ON compte.NOM = equipe.NOM where compte.NOM=?"; 
+	$stmt2 = mysqli_prepare($link,$querytest);
+	mysqli_stmt_bind_param($stmt2,"s",$nomcompte);
+	mysqli_execute($stmt2);
+	$result = mysqli_stmt_get_result($stmt2);
+	$res = mysqli_fetch_assoc($result);
+	if ($res['NOM']==NULL) {
+		echo "<li> Vide </li>";
+	}
+	else{
+	echo "<li> ".utf8_encode($res['NOM'])." </li>";
+
+	}
+}
+
+
 
 
 

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Mar 03, 2019 at 10:27 AM
+-- Generation Time: Mar 03, 2019 at 12:37 PM
 -- Server version: 10.3.12-MariaDB
 -- PHP Version: 7.2.14
 
@@ -32,6 +32,10 @@ DROP TABLE IF EXISTS `banque`;
 CREATE TABLE IF NOT EXISTS `banque` (
   `ID` int(11) NOT NULL,
   `NOM` varchar(35) DEFAULT NULL,
+  `CAP1` varchar(35) DEFAULT NULL,
+  `CAP2` varchar(35) DEFAULT NULL,
+  `CAP3` varchar(35) DEFAULT NULL,
+  `CAP4` varchar(35) DEFAULT NULL,
   PRIMARY KEY (`ID`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
@@ -39,9 +43,9 @@ CREATE TABLE IF NOT EXISTS `banque` (
 -- Dumping data for table `banque`
 --
 
-INSERT INTO `banque` (`ID`, `NOM`) VALUES
-(89397, 'Bulbizarre'),
-(34842, 'SalamÃ¨che');
+INSERT INTO `banque` (`ID`, `NOM`, `CAP1`, `CAP2`, `CAP3`, `CAP4`) VALUES
+(78859, 'Bulbizarre', 'Charge', 'Rugissement', NULL, NULL),
+(55437, 'Salamèche', 'Griffe', 'Rugissement', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -53,6 +57,7 @@ DROP TABLE IF EXISTS `compte`;
 CREATE TABLE IF NOT EXISTS `compte` (
   `NOM` varchar(35) NOT NULL,
   `MDP` varchar(35) NOT NULL,
+  `Pokedollar` int(11) DEFAULT 0,
   PRIMARY KEY (`NOM`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
@@ -60,9 +65,9 @@ CREATE TABLE IF NOT EXISTS `compte` (
 -- Dumping data for table `compte`
 --
 
-INSERT INTO `compte` (`NOM`, `MDP`) VALUES
-('ketto', 'shizu'),
-('shi', 'yui');
+INSERT INTO `compte` (`NOM`, `MDP`, `Pokedollar`) VALUES
+('shizu', 'lo', 0),
+('ketto', 'shizu', 0);
 
 -- --------------------------------------------------------
 
@@ -93,8 +98,8 @@ CREATE TABLE IF NOT EXISTS `equipe` (
 --
 
 INSERT INTO `equipe` (`NOM`, `SLOT1`, `SLOT2`, `SLOT3`, `SLOT4`, `SLOT5`, `SLOT6`) VALUES
-('ketto', 34842, NULL, NULL, NULL, NULL, NULL),
-('shi', 89397, NULL, NULL, NULL, NULL, NULL);
+('shizu', 78859, NULL, NULL, NULL, NULL, NULL),
+('ketto', 55437, NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -106,6 +111,10 @@ DROP TABLE IF EXISTS `pokedex`;
 CREATE TABLE IF NOT EXISTS `pokedex` (
   `NUMERO` int(11) NOT NULL,
   `NOM` varchar(35) NOT NULL,
+  `CAP1` varchar(35) DEFAULT NULL,
+  `CAP2` varchar(35) DEFAULT NULL,
+  `CAP3` varchar(35) DEFAULT NULL,
+  `CAP4` varchar(35) DEFAULT NULL,
   PRIMARY KEY (`NOM`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
@@ -113,10 +122,10 @@ CREATE TABLE IF NOT EXISTS `pokedex` (
 -- Dumping data for table `pokedex`
 --
 
-INSERT INTO `pokedex` (`NUMERO`, `NOM`) VALUES
-(1, 'Salamèche'),
-(2, 'Bulbizarre'),
-(3, 'Carapuce');
+INSERT INTO `pokedex` (`NUMERO`, `NOM`, `CAP1`, `CAP2`, `CAP3`, `CAP4`) VALUES
+(1, 'Salamèche', 'Griffe', 'Rugissement', NULL, NULL),
+(2, 'Bulbizarre', 'Charge', 'Rugissement', NULL, NULL),
+(3, 'Carapuce', 'Charge', 'Mimi-Queue', NULL, NULL);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
