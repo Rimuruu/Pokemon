@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Mar 03, 2019 at 12:37 PM
+-- Generation Time: Mar 04, 2019 at 02:32 PM
 -- Server version: 10.3.12-MariaDB
 -- PHP Version: 7.2.14
 
@@ -44,8 +44,20 @@ CREATE TABLE IF NOT EXISTS `banque` (
 --
 
 INSERT INTO `banque` (`ID`, `NOM`, `CAP1`, `CAP2`, `CAP3`, `CAP4`) VALUES
+(93294, NULL, NULL, NULL, NULL, NULL),
+(11769, NULL, NULL, NULL, NULL, NULL),
 (78859, 'Bulbizarre', 'Charge', 'Rugissement', NULL, NULL),
-(55437, 'Salamèche', 'Griffe', 'Rugissement', NULL, NULL);
+(55437, 'Salamèche', 'Griffe', 'Rugissement', NULL, NULL),
+(56973, NULL, NULL, NULL, NULL, NULL),
+(81854, NULL, NULL, NULL, NULL, NULL),
+(10781, 'Bulbizarre', 'Charge', 'Rugissement', NULL, NULL),
+(47294, 'Carapuce', 'Charge', 'Mimi-Queue', NULL, NULL),
+(84637, 'Carapuce', 'Charge', 'Mimi-Queue', NULL, NULL),
+(2735, 'Carapuce', 'Charge', 'Mimi-Queue', NULL, NULL),
+(37343, 'Bulbizarre', 'Charge', 'Rugissement', NULL, NULL),
+(87583, 'Carapuce', 'Charge', 'Mimi-Queue', NULL, NULL),
+(3694, 'Bulbizarre', 'Charge', 'Rugissement', NULL, NULL),
+(56828, 'Bulbizarre', 'Charge', 'Rugissement', NULL, NULL);
 
 -- --------------------------------------------------------
 

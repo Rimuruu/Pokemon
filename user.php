@@ -89,10 +89,11 @@ function Show_team($nomcompte){
 			echo "<li> Vide </li>";
 		}
 		else{
-		echo "<li> ".utf8_encode($res['NOM'])." </li>";
+		echo "<li id='pokesauvage'> ".utf8_encode($res['NOM'])." </li>";
 	}
 	}
 	echo "<ul>";
+	mysqli_close($link);
 }
 
 function Show_pokedollar($nomcompte){
@@ -104,6 +105,7 @@ function Show_pokedollar($nomcompte){
 	$result = mysqli_stmt_get_result($stmt2);
 	$res = mysqli_fetch_assoc($result);
 	echo "<h2>".$res['Pokedollar']."  Pokédollar</h2>";
+	mysqli_close($link);
 
 }
 
@@ -123,6 +125,7 @@ function Show_nth_pokemon($nomcompte,$nth){
 	echo "<li> ".utf8_encode($res['NOM'])." </li>";
 
 	}
+	mysqli_close($link);
 }
 
 

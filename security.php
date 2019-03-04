@@ -21,6 +21,7 @@
 		else{
 			include 'erreurcompte.php';
 		}
+		mysqli_close($link);
 			
 	}
 	else{

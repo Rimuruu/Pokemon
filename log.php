@@ -4,6 +4,7 @@ session_start();
 include 'security.php';
 include 'user.php';
 
+
  ?>
 
 
@@ -19,6 +20,7 @@ include 'user.php';
 	echo "<h1>".$nomcompte."</h1>";
 	Show_pokedollar($nomcompte);
 	Show_team($nomcompte);
+
 	
 	 ?>
 	<br>
