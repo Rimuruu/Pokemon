@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Mar 04, 2019 at 02:32 PM
+-- Generation Time: Mar 04, 2019 at 02:34 PM
 -- Server version: 10.3.12-MariaDB
 -- PHP Version: 7.2.14
 
@@ -39,26 +39,6 @@ CREATE TABLE IF NOT EXISTS `banque` (
   PRIMARY KEY (`ID`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `banque`
---
-
-INSERT INTO `banque` (`ID`, `NOM`, `CAP1`, `CAP2`, `CAP3`, `CAP4`) VALUES
-(93294, NULL, NULL, NULL, NULL, NULL),
-(11769, NULL, NULL, NULL, NULL, NULL),
-(78859, 'Bulbizarre', 'Charge', 'Rugissement', NULL, NULL),
-(55437, 'Salamèche', 'Griffe', 'Rugissement', NULL, NULL),
-(56973, NULL, NULL, NULL, NULL, NULL),
-(81854, NULL, NULL, NULL, NULL, NULL),
-(10781, 'Bulbizarre', 'Charge', 'Rugissement', NULL, NULL),
-(47294, 'Carapuce', 'Charge', 'Mimi-Queue', NULL, NULL),
-(84637, 'Carapuce', 'Charge', 'Mimi-Queue', NULL, NULL),
-(2735, 'Carapuce', 'Charge', 'Mimi-Queue', NULL, NULL),
-(37343, 'Bulbizarre', 'Charge', 'Rugissement', NULL, NULL),
-(87583, 'Carapuce', 'Charge', 'Mimi-Queue', NULL, NULL),
-(3694, 'Bulbizarre', 'Charge', 'Rugissement', NULL, NULL),
-(56828, 'Bulbizarre', 'Charge', 'Rugissement', NULL, NULL);
-
 -- --------------------------------------------------------
 
 --
@@ -72,14 +52,6 @@ CREATE TABLE IF NOT EXISTS `compte` (
   `Pokedollar` int(11) DEFAULT 0,
   PRIMARY KEY (`NOM`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `compte`
---
-
-INSERT INTO `compte` (`NOM`, `MDP`, `Pokedollar`) VALUES
-('shizu', 'lo', 0),
-('ketto', 'shizu', 0);
 
 -- --------------------------------------------------------
 
@@ -104,14 +76,6 @@ CREATE TABLE IF NOT EXISTS `equipe` (
   KEY `SLOT5` (`SLOT5`),
   KEY `SLOT6` (`SLOT6`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `equipe`
---
-
-INSERT INTO `equipe` (`NOM`, `SLOT1`, `SLOT2`, `SLOT3`, `SLOT4`, `SLOT5`, `SLOT6`) VALUES
-('shizu', 78859, NULL, NULL, NULL, NULL, NULL),
-('ketto', 55437, NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
