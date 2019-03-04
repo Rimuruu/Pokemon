@@ -73,7 +73,15 @@ else{
 	}
 }
 
+function Ajout_Pokemon($nomcompte,$idpoke,$SLOTNUMBER){
+	$link = create_link();
+	$query3= "UPDATE equipe SET SLOT".$SLOTNUMBER."=? where NOM=?";
+	$stmt3 = mysqli_prepare($link,$query3);
+	mysqli_stmt_bind_param($stmt3,"is",$idpoke,$nomcompte);
+	mysqli_execute($stmt3);
+	mysqli_close($link);
 
+}
 
 function Show_team($nomcompte){
 	$link =create_link();
@@ -128,6 +136,33 @@ function Show_nth_pokemon($nomcompte,$nth){
 	mysqli_close($link);
 }
 
+function Catch_Pokemon($nomcompte,$idpoke){
+	$link =create_link();
+	$querytest = "Select SLOT1,SLOT2,SLOT3,SLOT4,SLOT5,SLOT6 FROM equipe JOIN compte ON equipe.NOM = compte.NOM where compte.NOM=?";
+	$stmt2 = mysqli_prepare($link,$querytest);
+	mysqli_stmt_bind_param($stmt2,"s",$nomcompte);
+	mysqli_execute($stmt2);
+	$result = mysqli_stmt_get_result($stmt2);
+	$res = mysqli_fetch_assoc($result);
+	for ($i=1; $i <= 6; $i=$i+1) { 
+		$SLOT = $res['SLOT'.$i];
+		if ($SLOT == NULL) {
+			$SLOTNUMBER = $i;
+			break;
+		}
+	}
+	if ($SLOT == NULL) {
+		Ajout_Pokemon($nomcompte,$idpoke,$SLOTNUMBER);
+		
+	}
+	mysqli_close($link);
+
+
+
+
+
+
+}
 
 
 

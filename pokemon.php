@@ -80,6 +80,18 @@ function NomDepuisNumero($numero){
 	return $res['NOM'];
 }
 
+function NomDepuisId($numero){
+	$link = create_link();
+	$querytest = "SELECT NOM from banque where ID=?";
+	$stmt2 = mysqli_prepare($link,$querytest);
+	mysqli_stmt_bind_param($stmt2,"i",$numero);
+	mysqli_execute($stmt2);
+	$result = mysqli_stmt_get_result($stmt2);
+	$res = mysqli_fetch_assoc($result);
+	mysqli_close($link);
+	return $res['NOM'];
+}
+
 
 function Pokemon_alea(){
 	$link = create_link();
