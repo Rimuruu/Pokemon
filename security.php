@@ -19,7 +19,9 @@
 			$_SESSION['nomcompte'] = $nomcompte;
 		}
 		else{
-			include 'erreurcompte.php';
+			mysqli_close($link);
+			header("location: erreurcompte.php");
+			
 		}
 		mysqli_close($link);
 			

@@ -42,10 +42,12 @@ function Show_cap($nomcompte,$nth){
 	$result = mysqli_stmt_get_result($stmt2);
 	$res = mysqli_fetch_assoc($result);
 	echo "<ul>Capacité";
-	echo "<li>".$res['CAP1']."</li>";
-	echo "<li>".$res['CAP2']."</li>";
-	echo "<li>".$res['CAP3']."</li>";
-	echo "<li>".$res['CAP4']."</li>";
+	for ($i=1; $i <= 4; $i=$i+1) {
+		if ($res['CAP'.$i]!=NULL) {
+			echo "<li><input id='cap".$i."' type='button' value=".$res['CAP'.$i]."></li>";
+		}
+		
+	}
 	echo "</ul>";
 	mysqli_close($link);
 }
@@ -60,10 +62,12 @@ function Show_cap_by_id($idpoke){
 	$result = mysqli_stmt_get_result($stmt2);
 	$res = mysqli_fetch_assoc($result);
 	echo "<ul>Capacité";
-	echo "<li>".$res['CAP1']."</li>";
-	echo "<li>".$res['CAP2']."</li>";
-	echo "<li>".$res['CAP3']."</li>";
-	echo "<li>".$res['CAP4']."</li>";
+	for ($i=1; $i <= 4; $i=$i+1) {
+		if ($res['CAP'.$i]!=NULL) {
+			echo "<li><input id='cap".$i."' type='button' value=".$res['CAP'.$i]."></li>";
+		}
+		
+	}
 	echo "<ul>";
 	mysqli_close($link);
 }
@@ -140,7 +144,18 @@ function Show_pokemon_by_id($idpoke){
 	mysqli_close($link);
 }
 
+function Delete_Pokemon_byID($idpoke){
+	$link =create_link();
+	$query2= "DELETE FROM banque WHERE ID=?";
+	$stmt2 = mysqli_prepare($link,$query2);
+	mysqli_stmt_bind_param($stmt2,"i",$idpoke);
+	mysqli_execute($stmt2);
+	mysqli_close($link);
 
+
+
+
+}
 
 
 

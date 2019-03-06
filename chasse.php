@@ -25,4 +25,25 @@ include 'user.php';
  <a href="catch.php"><input type="button" name="Pokeball" value="Pokeball"></a>
  <a href="deconnexion.php"><input type="button" name="Déconnexion" value="deconnexion"></a>
  </body>
+ <script type="text/javascript">
+ 	var cap1 = document.getElementById('cap1');
+ 	var cap2 = document.getElementById('cap2');
+ 	var cap3 = document.getElementById('cap3');
+ 	var cap4 = document.getElementById('cap4');
+ 	cap1.onclick = function() {Attaque();};
+ 	function Attaque(){
+ 		window.location="attaque.php";
+ 	}
+ 	
+
+
+
+
+
+
+
+
+
+
+ </script>
  </html>
