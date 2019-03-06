@@ -6,6 +6,7 @@ if (!isset($_SESSION['idpokemonsauvage'])) {
 	header("location: login.php");
 }
 $idpokemonsauvage = $_SESSION['idpokemonsauvage'];
+$nompoke=NomDepuisID($idpokemonsauvage);
 Catch_Pokemon($nomcompte,$idpokemonsauvage);
 $_SESSION['idpokemonsauvage']=NULL;
  ?>
@@ -20,7 +21,7 @@ $_SESSION['idpokemonsauvage']=NULL;
 <p id="texte"></p>
 </body>
 <script type="text/javascript">
-var text = "... <?php echo utf8_encode(NomDepuisID($idpokemonsauvage)); ?> a été attrapé";
+var text = "... <?php echo utf8_encode($nompoke); ?> a été attrapé";
 setTimeout(function(){Texte_catch(0);},1000);
 function Texte_catch(a) {
 	p = document.getElementById("texte");

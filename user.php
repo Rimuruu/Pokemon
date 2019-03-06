@@ -155,6 +155,7 @@ function Catch_Pokemon($nomcompte,$idpoke){
 		Ajout_Pokemon($nomcompte,$idpoke,$SLOTNUMBER);
 		
 	}
+	else{Delete_Pokemon_byID($idpoke);}
 	mysqli_close($link);
 
 
