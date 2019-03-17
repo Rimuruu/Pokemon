@@ -9,6 +9,8 @@ $idpokemonsauvage = $_SESSION['idpokemonsauvage'];
 $nompoke=NomDepuisID($idpokemonsauvage);
 Catch_Pokemon($nomcompte,$idpokemonsauvage);
 $_SESSION['idpokemonsauvage']=NULL;
+unset($_COOKIE['idpokemonsauvage']);
+setcookie('idpokemonsauvage', '', time() - 3600);
  ?>
 
 

@@ -11,6 +11,8 @@ $idpokemonsauvage = $_SESSION['idpokemonsauvage'];
 $nompoke=NomDepuisID($idpokemonsauvage);
 Delete_Pokemon_byID($idpokemonsauvage);
 $_SESSION['idpokemonsauvage']=NULL;
+unset($_COOKIE['idpokemonsauvage']);
+setcookie('idpokemonsauvage', '', time() - 3600);
 
 
 

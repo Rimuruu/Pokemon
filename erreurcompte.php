@@ -16,7 +16,7 @@ if (isset($_SESSION['nomcompte'])) {
 	<legend>Login</legend>
 	<a>Le compte n'existe pas</a><br>
 	<a>Nom de compte</a><input type="text" name="nomcompte"><br>
-	<a>Mot de passe</a><input type="text" name="mdp"><br>
+	<a>Mot de passe</a><input type="password" name="mdp"><br>
 	<input type="submit" name="valider"><br>
 	<a href="create.php">Créer un compte</a>
 	</fieldset>

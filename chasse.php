@@ -2,6 +2,12 @@
 session_start();
 include 'security.php';
 include 'user.php';
+if (!isset($_POST['chasse'])) {
+	header("location: log.php");
+}
+if (isset($_COOKIE['idpokemonsauvage'])) {
+	$idpokesauvage=$_COOKIE['idpokemonsauvage'];
+}
 
  ?>
 
@@ -14,16 +20,19 @@ include 'user.php';
  <body>
 
  	<?php 
- 	Show_nth_pokemon($nomcompte,1);
- 	Show_cap($nomcompte,1);
- 	$idpokesauvage = Pokemon_alea();
+
+ 	$poke = Show_First_Pokemon_Available($nomcompte);
+ 	Show_cap($nomcompte,$poke);
+ 	if (!isset($idpokesauvage)) {
+ 		$idpokesauvage = Pokemon_alea();
+ 	}
  	Show_pokemon_by_id($idpokesauvage);
  	$_SESSION['idpokemonsauvage']=$idpokesauvage;
- 	//Show_cap_by_id($idpokesauvage);
+ 	setcookie("idpokemonsauvage",$idpokesauvage);
+ 	
 
  	 ?>
  <a href="catch.php"><input type="button" name="Pokeball" value="Pokeball"></a>
- <a href="deconnexion.php"><input type="button" name="Déconnexion" value="deconnexion"></a>
  </body>
  <script type="text/javascript">
  	var cap1 = document.getElementById('cap1');
@@ -31,6 +40,9 @@ include 'user.php';
  	var cap3 = document.getElementById('cap3');
  	var cap4 = document.getElementById('cap4');
  	cap1.onclick = function() {Attaque();};
+ 	cap2.onclick = function() {Attaque();};
+ 	cap3.onclick = function() {Attaque();};
+ 	cap4.onclick = function() {Attaque();};
  	function Attaque(){
  		window.location="attaque.php";
  	}

@@ -53,13 +53,13 @@ else{
 		$result = mysqli_stmt_get_result($stmt2);
 	}
 	$query= "INSERT INTO compte (NOM,MDP) VALUES (?,?)";
-	$query2= "INSERT INTO banque (NOM,ID) VALUES (?,?)";
+	$query2= "INSERT INTO banque (NOM,ID,NOMDRESSEUR) VALUES (?,?,?)";
 	$query3= "INSERT INTO equipe (NOM,SLOT1) VALUES (?,?)";
 	$stmt = mysqli_prepare($link,$query);
 	$stmt2 = mysqli_prepare($link,$query2);
 	$stmt3 = mysqli_prepare($link,$query3);
 	mysqli_stmt_bind_param($stmt,"ss",$nomcompte,$mdp);
-	mysqli_stmt_bind_param($stmt2,"si",$nompoke,$idpoke);
+	mysqli_stmt_bind_param($stmt2,"sis",$nompoke,$idpoke,$nomcompte);
 	mysqli_stmt_bind_param($stmt3,"si",$nomcompte,$idpoke);
 	mysqli_execute($stmt);
 	mysqli_execute($stmt2);
@@ -136,6 +136,69 @@ function Show_nth_pokemon($nomcompte,$nth){
 	mysqli_close($link);
 }
 
+function Show_First_Pokemon_Available($nomcompte){
+	$link =create_link();
+	for ($i=1; $i <= 6; $i=$i+1) { 
+	$querytest = "SELECT banque.NOM FROM banque JOIN equipe ON banque.ID = equipe.SLOT".$i." JOIN compte ON compte.NOM = equipe.NOM where compte.NOM=?"; 
+	$stmt2 = mysqli_prepare($link,$querytest);
+	mysqli_stmt_bind_param($stmt2,"s",$nomcompte);
+	mysqli_execute($stmt2);
+	$result = mysqli_stmt_get_result($stmt2);
+	$res = mysqli_fetch_assoc($result);
+	if ($res['NOM']!=NULL) {
+		echo "<li> ".utf8_encode($res['NOM'])." </li>";
+		break;
+		}
+	}
+	mysqli_close($link);
+	return $i;
+}
+
+function Get_nth_pokemon($nomcompte,$nth){
+	$link =create_link();
+	$querytest = "SELECT banque.NOM,banque.ID FROM banque JOIN equipe ON banque.ID = equipe.SLOT".$nth." JOIN compte ON compte.NOM = equipe.NOM where compte.NOM=?"; 
+	$stmt2 = mysqli_prepare($link,$querytest);
+	mysqli_stmt_bind_param($stmt2,"s",$nomcompte);
+	mysqli_execute($stmt2);
+	$result = mysqli_stmt_get_result($stmt2);
+	$res = mysqli_fetch_assoc($result);
+	if ($res['NOM']==NULL) {
+		$res['NOM']="Vide";
+		$res['ID']="NULL";
+
+	}
+	mysqli_close($link);
+	return $res;
+}
+
+function Get_pokemon_from_computer($nomcompte){
+	$slot1 = Get_nth_pokemon($nomcompte,1);
+	$slot2 = Get_nth_pokemon($nomcompte,2);
+	$slot3 = Get_nth_pokemon($nomcompte,3);
+	$slot4 = Get_nth_pokemon($nomcompte,4);
+	$slot5 = Get_nth_pokemon($nomcompte,5);
+	$slot6 = Get_nth_pokemon($nomcompte,6);
+	$link =create_link();
+	$querytest = "SELECT NOM,ID FROM banque where NOMDRESSEUR=? AND ID NOT IN (?,?,?,?,?,?)"; 
+	$stmt2 = mysqli_prepare($link,$querytest);
+	mysqli_stmt_bind_param($stmt2,"siiiiii",$nomcompte,$slot1['ID'],$slot2['ID'],$slot3['ID'],$slot4['ID'],$slot5['ID'],$slot6['ID']);
+	mysqli_execute($stmt2);
+	$result = mysqli_stmt_get_result($stmt2);
+	mysqli_close($link);
+	return $result;
+}
+
+function Ajout_ordinateur($nomcompte,$idpoke){
+	$link = create_link();
+	$query3= "UPDATE banque SET NOMDRESSEUR=? where ID=?";
+	$stmt3 = mysqli_prepare($link,$query3);
+	mysqli_stmt_bind_param($stmt3,"si",$nomcompte,$idpoke);
+	mysqli_execute($stmt3);
+	mysqli_close($link);
+
+
+}
+
 function Catch_Pokemon($nomcompte,$idpoke){
 	$link =create_link();
 	$querytest = "Select SLOT1,SLOT2,SLOT3,SLOT4,SLOT5,SLOT6 FROM equipe JOIN compte ON equipe.NOM = compte.NOM where compte.NOM=?";
@@ -153,9 +216,10 @@ function Catch_Pokemon($nomcompte,$idpoke){
 	}
 	if ($SLOT == NULL) {
 		Ajout_Pokemon($nomcompte,$idpoke,$SLOTNUMBER);
+		Ajout_ordinateur($nomcompte,$idpoke);
 		
 	}
-	else{Delete_Pokemon_byID($idpoke);}
+	else{Ajout_ordinateur($nomcompte,$idpoke);}
 	mysqli_close($link);
 
 

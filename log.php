@@ -24,7 +24,8 @@ include 'user.php';
 	
 	 ?>
 	<br>
-	<a href="chasse.php"><input type="button" name="chasse" value="Chasser un pokemon aléatoire"></a><br>
+	<form method="post" action="chasse.php"><input type="submit" name="chasse" value="Chasser un pokemon aléatoire"></form><br>
+	<a href="teammanage.php"><input type="button" name="teammanage" value="Modifier l'ordre de l'equipe"></a>
 	<a href="deconnexion.php"><input type="button" name="Déconnexion" value="deconnexion"></a>
 </body>
 </html>
