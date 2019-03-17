@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Mar 04, 2019 at 02:34 PM
+-- Generation Time: Mar 17, 2019 at 03:15 PM
 -- Server version: 10.3.12-MariaDB
 -- PHP Version: 7.2.14
 
@@ -36,8 +36,29 @@ CREATE TABLE IF NOT EXISTS `banque` (
   `CAP2` varchar(35) DEFAULT NULL,
   `CAP3` varchar(35) DEFAULT NULL,
   `CAP4` varchar(35) DEFAULT NULL,
-  PRIMARY KEY (`ID`)
+  `NOMDRESSEUR` varchar(35) DEFAULT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `NOMDRESSEUR` (`NOMDRESSEUR`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `banque`
+--
+
+INSERT INTO `banque` (`ID`, `NOM`, `CAP1`, `CAP2`, `CAP3`, `CAP4`, `NOMDRESSEUR`) VALUES
+(59508, 'Salamèche', 'Griffe', 'Rugissement', NULL, NULL, 'ketto'),
+(45457, 'Bulbizarre', 'Charge', 'Rugissement', NULL, NULL, 'ketto'),
+(41933, 'Carapuce', 'Charge', 'Mimi-Queue', NULL, NULL, 'ketto'),
+(41565, 'Salamèche', 'Griffe', 'Rugissement', NULL, NULL, 'ketto'),
+(83033, 'Carapuce', 'Charge', 'Mimi-Queue', NULL, NULL, 'ketto'),
+(34629, 'Salamèche', 'Griffe', 'Rugissement', NULL, NULL, 'ketto'),
+(32916, 'Salamèche', 'Griffe', 'Rugissement', NULL, NULL, 'ketto'),
+(63213, 'Carapuce', 'Charge', 'Mimi-Queue', NULL, NULL, 'ketto'),
+(74259, 'Salamèche', 'Griffe', 'Rugissement', NULL, NULL, 'ketto'),
+(35461, 'Bulbizarre', 'Charge', 'Rugissement', NULL, NULL, 'shizu'),
+(70805, 'Carapuce', 'Charge', 'Mimi-Queue', NULL, NULL, NULL),
+(38404, 'Salamèche', 'Griffe', 'Rugissement', NULL, NULL, NULL),
+(17344, 'Bulbizarre', 'Charge', 'Rugissement', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -52,6 +73,14 @@ CREATE TABLE IF NOT EXISTS `compte` (
   `Pokedollar` int(11) DEFAULT 0,
   PRIMARY KEY (`NOM`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `compte`
+--
+
+INSERT INTO `compte` (`NOM`, `MDP`, `Pokedollar`) VALUES
+('shizu', 'kett', 0),
+('ketto', 'shizu', 0);
 
 -- --------------------------------------------------------
 
@@ -76,6 +105,14 @@ CREATE TABLE IF NOT EXISTS `equipe` (
   KEY `SLOT5` (`SLOT5`),
   KEY `SLOT6` (`SLOT6`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `equipe`
+--
+
+INSERT INTO `equipe` (`NOM`, `SLOT1`, `SLOT2`, `SLOT3`, `SLOT4`, `SLOT5`, `SLOT6`) VALUES
+('shizu', 35461, 0, 0, 0, 0, 0),
+('ketto', 63213, 59508, 41933, 45457, 83033, 34629);
 
 -- --------------------------------------------------------
 
