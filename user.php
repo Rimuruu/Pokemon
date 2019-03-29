@@ -65,6 +65,7 @@ else{
 	mysqli_execute($stmt2);
 	mysqli_execute($stmt3);
 	Set_default_cap($idpoke);
+	Set_default_hp($idpoke);
 	echo mysqli_error($link);
 	mysqli_close($link);
 	include 'login2.php';
@@ -84,6 +85,49 @@ function Ajout_Pokemon($nomcompte,$idpoke,$SLOTNUMBER){
 }
 
 function Show_team($nomcompte){
+	$link =create_link();
+	echo "<ul>Equipe pokemon";
+	for ($i=1; $i <= 6 ; $i=$i+1) { 
+		$querytest = "SELECT banque.NOM FROM banque JOIN equipe ON banque.ID = equipe.SLOT".$i." JOIN compte ON compte.NOM = equipe.NOM where compte.NOM=?"; 
+		$stmt2 = mysqli_prepare($link,$querytest);
+		mysqli_stmt_bind_param($stmt2,"s",$nomcompte);
+		mysqli_execute($stmt2);
+		$result = mysqli_stmt_get_result($stmt2);
+		$res = mysqli_fetch_assoc($result);
+		if ($res['NOM']==NULL) {
+			echo "<li> Vide </li>";
+		}
+		else{
+		echo "<li id='pokesauvage'> ".utf8_encode($res['NOM'])." </li>";
+	}
+	}
+	echo "<ul>";
+	mysqli_close($link);
+}
+
+function Show_other_poke($nomcompte,$idpoke){
+	$link =create_link();
+	$arr = array();
+	$length = 0;
+	for ($i=1; $i <= 6 ; $i=$i+1) { 
+		$querytest = "SELECT banque.NOM,banque.ID FROM banque JOIN equipe ON banque.ID = equipe.SLOT".$i." JOIN compte ON compte.NOM = equipe.NOM where compte.NOM=? AND banque.ID <> ?"; 
+		$stmt2 = mysqli_prepare($link,$querytest);
+		mysqli_stmt_bind_param($stmt2,"si",$nomcompte,$idpoke);
+		mysqli_execute($stmt2);
+		$result = mysqli_stmt_get_result($stmt2);
+		$res = mysqli_fetch_assoc($result);
+		if ($res['NOM'] != NULL) {
+			$arr[$length]= $res;
+			$length = $length +1;
+		}
+		
+	}
+	mysqli_close($link);
+	return $arr;
+	
+}
+
+function Get($nomcompte){
 	$link =create_link();
 	echo "<ul>Equipe pokemon";
 	for ($i=1; $i <= 6 ; $i=$i+1) { 
@@ -139,19 +183,19 @@ function Show_nth_pokemon($nomcompte,$nth){
 function Show_First_Pokemon_Available($nomcompte){
 	$link =create_link();
 	for ($i=1; $i <= 6; $i=$i+1) { 
-	$querytest = "SELECT banque.NOM FROM banque JOIN equipe ON banque.ID = equipe.SLOT".$i." JOIN compte ON compte.NOM = equipe.NOM where compte.NOM=?"; 
+	$querytest = "SELECT banque.NOM,banque.ID FROM banque JOIN equipe ON banque.ID = equipe.SLOT".$i." JOIN compte ON compte.NOM = equipe.NOM where compte.NOM=? AND banque.HP <> 0"; 
 	$stmt2 = mysqli_prepare($link,$querytest);
 	mysqli_stmt_bind_param($stmt2,"s",$nomcompte);
 	mysqli_execute($stmt2);
 	$result = mysqli_stmt_get_result($stmt2);
 	$res = mysqli_fetch_assoc($result);
 	if ($res['NOM']!=NULL) {
-		echo "<li> ".utf8_encode($res['NOM'])." </li>";
+		echo "<h2 id='nompoke'> ".utf8_encode($res['NOM'])." </h2>";
 		break;
 		}
 	}
 	mysqli_close($link);
-	return $i;
+	return $res['ID'];
 }
 
 function Get_nth_pokemon($nomcompte,$nth){

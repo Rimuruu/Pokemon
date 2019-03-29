@@ -32,6 +32,36 @@ function Set_default_cap($idpoke){
 	}
 	mysqli_close($link);
 }
+
+function Set_default_hp($idpoke){
+	$link = create_link();
+		$querytest = "SELECT pokedex.HP FROM banque JOIN pokedex ON pokedex.NOM = banque.NOM where banque.ID =?"; 
+		$stmt2 = mysqli_prepare($link,$querytest);
+		mysqli_stmt_bind_param($stmt2,"i",$idpoke);
+		mysqli_execute($stmt2);
+		$result = mysqli_stmt_get_result($stmt2);
+		$res = mysqli_fetch_assoc($result);
+			$HP=$res['HP'];
+			$querytest = "UPDATE banque SET HP=? WHERE ID=?"; 
+			$stmt2 = mysqli_prepare($link,$querytest);
+			mysqli_stmt_bind_param($stmt2,"ii",$HP,$idpoke);
+			mysqli_execute($stmt2);
+			$result = mysqli_stmt_get_result($stmt2);
+	mysqli_close($link);
+}
+
+function getHpById($idpoke){
+	$link = create_link();
+		$querytest = "SELECT HP FROM banque where ID =?"; 
+		$stmt2 = mysqli_prepare($link,$querytest);
+		mysqli_stmt_bind_param($stmt2,"i",$idpoke);
+		mysqli_execute($stmt2);
+		$result = mysqli_stmt_get_result($stmt2);
+		$res = mysqli_fetch_assoc($result);
+		$HP=$res['HP'];
+		mysqli_close($link);
+		return $HP;
+}
 	
 function Show_cap($nomcompte,$nth){
 	$link =create_link();
@@ -41,7 +71,7 @@ function Show_cap($nomcompte,$nth){
 	mysqli_execute($stmt2);
 	$result = mysqli_stmt_get_result($stmt2);
 	$res = mysqli_fetch_assoc($result);
-	echo "<ul>Capacité";
+	echo "<ul> Capacité";
 	for ($i=1; $i <= 4; $i=$i+1) {
 		if ($res['CAP'.$i]!=NULL) {
 			echo "<li><input id='cap".$i."' type='button' value=".$res['CAP'.$i]."></li>";
@@ -53,6 +83,8 @@ function Show_cap($nomcompte,$nth){
 }
 
 
+
+
 function Show_cap_by_id($idpoke){
 	$link =create_link();
 	$querytest = "SELECT CAP1,CAP2,CAP3,CAP4 FROM banque where ID=?"; 
@@ -61,14 +93,7 @@ function Show_cap_by_id($idpoke){
 	mysqli_execute($stmt2);
 	$result = mysqli_stmt_get_result($stmt2);
 	$res = mysqli_fetch_assoc($result);
-	echo "<ul>Capacité";
-	for ($i=1; $i <= 4; $i=$i+1) {
-		if ($res['CAP'.$i]!=NULL) {
-			echo "<li><input id='cap".$i."' type='button' value=".$res['CAP'.$i]."></li>";
-		}
-		
-	}
-	echo "<ul>";
+	return $res;
 	mysqli_close($link);
 }
 
@@ -93,7 +118,7 @@ function NomDepuisId($numero){
 	$result = mysqli_stmt_get_result($stmt2);
 	$res = mysqli_fetch_assoc($result);
 	mysqli_close($link);
-	return $res['NOM'];
+	return utf8_encode($res['NOM']);
 }
 
 
@@ -121,6 +146,7 @@ function Pokemon_alea(){
 	mysqli_stmt_bind_param($stmt2,"si",$nompoke,$idpoke);
 	mysqli_execute($stmt2);
 	Set_default_cap($idpoke);
+	Set_default_hp($idpoke);
 	mysqli_close($link);
 	return $idpoke;
 	
@@ -138,7 +164,7 @@ function Show_pokemon_by_id($idpoke){
 		echo "<li> Vide </li>";
 	}
 	else{
-	echo "<li id='pokesauvage'> ".utf8_encode($res['NOM'])." </li>";
+	echo "<h2 id='pokesauvage'> ".utf8_encode($res['NOM'])." </h2>";
 
 	}
 	mysqli_close($link);

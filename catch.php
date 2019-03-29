@@ -23,7 +23,7 @@ setcookie('idpokemonsauvage', '', time() - 3600);
 <p id="texte"></p>
 </body>
 <script type="text/javascript">
-var text = "... <?php echo utf8_encode($nompoke); ?> a été attrapé";
+var text = "... <?php echo $nompoke; ?> a été attrapé";
 setTimeout(function(){Texte_catch(0);},1000);
 function Texte_catch(a) {
 	p = document.getElementById("texte");

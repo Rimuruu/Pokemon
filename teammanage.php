@@ -2,12 +2,28 @@
 session_start();
 include 'security.php';
 include 'user.php';
+$box = 5;
 $slot1 = Get_nth_pokemon($nomcompte,1);
 $slot2 = Get_nth_pokemon($nomcompte,2);
 $slot3 = Get_nth_pokemon($nomcompte,3);
 $slot4 = Get_nth_pokemon($nomcompte,4);
 $slot5 = Get_nth_pokemon($nomcompte,5);
 $slot6 = Get_nth_pokemon($nomcompte,6);
+if ($slot6['NOM'] == 'Vide') {
+	$box = 4;
+}
+if ($slot5['NOM'] == 'Vide') {
+	$box = 3;
+}
+if ($slot4['NOM'] == 'Vide') {
+	$box = 2;
+}
+if ($slot3['NOM'] == 'Vide') {
+	$box = 1;
+}
+if ($slot2['NOM'] == 'Vide') {
+	$box = 0;
+}
 $res = Get_pokemon_from_computer($nomcompte);
  ?>
 
@@ -18,7 +34,7 @@ $res = Get_pokemon_from_computer($nomcompte);
 <head>
 	<title></title>
 </head>
-<body onload="create_bu(equipe);">
+<body onload="create_bu(equipe,box);">
 
 	<?php
 
@@ -36,7 +52,7 @@ $res = Get_pokemon_from_computer($nomcompte);
 <script type="text/javascript">
 	var equipe = {"nom1":"<?php echo utf8_encode($slot1['NOM']) ?>","id1":"<?php echo $slot1['ID'] ?>","nom2":"<?php echo utf8_encode($slot2['NOM']) ?>","id2":"<?php echo $slot2['ID'] ?>","nom3":"<?php echo utf8_encode($slot3['NOM']) ?>","id3":"<?php echo $slot3['ID'] ?>","nom4":"<?php echo utf8_encode($slot4['NOM']) ?>","id4":"<?php echo $slot4['ID'] ?>","nom5":"<?php echo utf8_encode($slot5['NOM']) ?>","id5":"<?php echo $slot5['ID'] ?>","nom6":"<?php echo utf8_encode($slot6['NOM']) ?>","id6":"<?php echo $slot6['ID'] ?>"};
 	var select={x:0,select2:null};
-
+	var box = {y:<?php echo $box ?>};
 	function swap(id,select) {
 		let object2;
 		let object;
@@ -71,7 +87,7 @@ $res = Get_pokemon_from_computer($nomcompte);
 		
 	}
 
-	function create_bu(equipe){
+	function create_bu(equipe,box){
 		let nom;
 		let id;
 		let elem;
@@ -96,6 +112,19 @@ $res = Get_pokemon_from_computer($nomcompte);
 			elem.addEventListener('click',swap.bind(null,i,select));
 			document.getElementById("equipe").appendChild(li);
 			li.appendChild(elem);
+			if (box.y != 0) {
+				elem = document.createElement('input');
+				li = document.createElement('li');
+				elem.value = "Vide";
+				elem.id = id;
+				elem.classList.add("NULL");
+				elem.type = "button";
+				elem.addEventListener('click',swap.bind(null,id,select));
+				document.getElementById("ordinateur").appendChild(li);
+				li.appendChild(elem);
+				box.y = box.y-1;
+
+			}
 
 
 		}

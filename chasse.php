@@ -17,33 +17,305 @@ if (isset($_COOKIE['idpokemonsauvage'])) {
  <head>
  	<title></title>
  </head>
- <body>
+ <body onload="Set_cap(pokemonjoueur)">
 
  	<?php 
 
  	$poke = Show_First_Pokemon_Available($nomcompte);
- 	Show_cap($nomcompte,$poke);
+ 	echo "<h2 id='hpj'>".getHpById($poke)."</h2>";
+ 	$pokejoueur = Show_cap_by_id($poke);
+ 	$team = Show_other_poke($nomcompte,$poke);
+ 	$cappoke1=null;
+ 	$cappoke2=null;
+ 	$cappoke3=null;
+ 	$cappoke4=null;
+ 	$cappoke5=null;
+ 	if (isset($team[0]['NOM'])) {
+ 		$cappoke1 = Show_cap_by_id($team[0]['ID'] );
+ 	}
+ 	if (isset($team[1]['NOM'])) {
+ 		$cappoke2 = Show_cap_by_id($team[1]['ID'] );
+ 	}
+ 	if (isset($team[2]['NOM']) ) {
+ 		$cappoke3 = Show_cap_by_id($team[2]['ID'] );
+ 	}
+ 	if (isset($team[3]['NOM'])) {
+ 		$cappoke4 = Show_cap_by_id($team[3]['ID'] );
+ 	}
+ 	if (isset($team[4]['NOM'])) {
+ 		$cappoke5 = Show_cap_by_id($team[4]['ID'] );
+ 	}
+ 	
+
+ 	echo "<a href='catch.php'><input type='button' name='Pokeball' value='Pokeball'></a>";
  	if (!isset($idpokesauvage)) {
  		$idpokesauvage = Pokemon_alea();
  	}
+ 	$pokemonsauvage = Show_cap_by_id($idpokesauvage);
  	Show_pokemon_by_id($idpokesauvage);
+ 	echo "<h2 id='hps'>".getHpById($idpokesauvage)."</h2>";
  	$_SESSION['idpokemonsauvage']=$idpokesauvage;
  	setcookie("idpokemonsauvage",$idpokesauvage);
  	
 
  	 ?>
- <a href="catch.php"><input type="button" name="Pokeball" value="Pokeball"></a>
+ 
  </body>
  <script type="text/javascript">
- 	var cap1 = document.getElementById('cap1');
- 	var cap2 = document.getElementById('cap2');
- 	var cap3 = document.getElementById('cap3');
- 	var cap4 = document.getElementById('cap4');
- 	cap1.onclick = function() {Attaque();};
- 	cap2.onclick = function() {Attaque();};
- 	cap3.onclick = function() {Attaque();};
- 	cap4.onclick = function() {Attaque();};
- 	function Attaque(){
+
+ 	class Pokemon{
+ 		constructor(nom,hp,cap1,cap2,cap3,cap4){
+ 			this.nom = nom;
+ 			this.hp = hp;
+ 			this.cap = [cap1,cap2,cap3,cap4];
+ 		
+ 		}
+
+ 	}
+
+ 	class Equipe{
+ 		constructor(Poke1,Poke2,Poke3,Poke4,Poke5){
+ 			this.Poke = [Poke1,Poke2,Poke3,Poke4,Poke5];
+ 		}
+
+ 	}
+
+ 	var pokemonjoueur = new Pokemon("<?php echo NomDepuisId($poke) ?>",<?php echo getHpById($poke) ?>,"<?php echo $pokejoueur['CAP1'] ?>","<?php echo $pokejoueur['CAP2'] ?>","<?php echo $pokejoueur['CAP3'] ?>","<?php echo $pokejoueur['CAP4'] ?>");
+
+ 	var pokemonsauvage = new Pokemon("<?php echo NomDepuisId($idpokesauvage) ?>",<?php echo getHpById($idpokesauvage) ?>,"<?php echo $pokemonsauvage['CAP1'] ?>","<?php echo $pokemonsauvage['CAP2'] ?>","<?php echo $pokemonsauvage['CAP3'] ?>","<?php echo $pokemonsauvage['CAP4'] ?>");
+
+ 	var equipejoueur =  new Equipe(
+ 		new Pokemon(
+ 			"<?php if(isset($team[0]['NOM'])){
+ 				echo utf8_encode($team[0]['NOM']);}else{ echo 'NULL';}  ?>", 
+ 				"<?php if(isset($team[0]['NOM'])){
+ 					echo getHpById($team[0]['ID']);}else{echo 'NULL';}	?>",
+ 				"<?php if(isset($team[0]['NOM'])){
+ 				 echo $cappoke1['CAP1'];}else{ echo 'NULL';};	?>",
+ 				"<?php if(isset($team[0]['NOM'])){ echo $cappoke1['CAP2'];}else{echo 'NULL';}?>",
+ 				"<?php if(isset($team[0]['NOM'])){ echo $cappoke1['CAP3'];}else{echo 'NULL';}?>",
+ 				"<?php if(isset($team[0]['NOM'])){ echo $cappoke1['CAP4'];}else{echo 'NULL';}?>"),
+ 		new Pokemon(
+ 			"<?php if(isset($team[1]['NOM'])){
+ 				echo utf8_encode($team[1]['NOM']);}else{ echo 'NULL';}  ?>", 
+ 				"<?php if(isset($team[1]['NOM'])){
+ 					echo getHpById($team[1]['ID']);}else{echo 'NULL';}	?>",
+ 				"<?php if(isset($team[1]['NOM'])){
+ 				 echo $cappoke2['CAP1'];}else{ echo 'NULL';};	?>",
+ 				"<?php if(isset($team[1]['NOM'])){ echo $cappoke2['CAP2'];}else{echo 'NULL';}?>",
+ 				"<?php if(isset($team[1]['NOM'])){ echo $cappoke2['CAP3'];}else{echo 'NULL';}?>",
+ 				"<?php if(isset($team[1]['NOM'])){ echo $cappoke2['CAP4'];}else{echo 'NULL';}?>"),
+ 		new Pokemon(
+ 			"<?php if(isset($team[2]['NOM'])){
+ 				echo utf8_encode($team[2]['NOM']);}else{ echo 'NULL';}  ?>", 
+ 				"<?php if(isset($team[2]['NOM'])){
+ 					echo getHpById($team[2]['ID']);}else{echo 'NULL';}	?>",
+ 				"<?php if(isset($team[2]['NOM'])){
+ 				 echo $cappoke3['CAP1'];}else{ echo 'NULL';};	?>",
+ 				"<?php if(isset($team[2]['NOM'])){ echo $cappoke3['CAP2'];}else{echo 'NULL';}?>",
+ 				"<?php if(isset($team[2]['NOM'])){ echo $cappoke3['CAP3'];}else{echo 'NULL';}?>",
+ 				"<?php if(isset($team[2]['NOM'])){ echo $cappoke3['CAP4'];}else{echo 'NULL';}?>"),
+ 		new Pokemon(
+ 			"<?php if(isset($team[3]['NOM'])){
+ 				echo utf8_encode($team[3]['NOM']);}else{ echo 'NULL';}  ?>", 
+ 				"<?php if(isset($team[3]['NOM'])){
+ 					echo getHpById($team[3]['ID']);}else{echo 'NULL';}	?>",
+ 				"<?php if(isset($team[3]['NOM'])){
+ 				 echo $cappoke4['CAP1'];}else{ echo 'NULL';};	?>",
+ 				"<?php if(isset($team[3]['NOM'])){ echo $cappoke4['CAP2'];}else{echo 'NULL';}?>",
+ 				"<?php if(isset($team[3]['NOM'])){ echo $cappoke4['CAP3'];}else{echo 'NULL';}?>",
+ 				"<?php if(isset($team[3]['NOM'])){ echo $cappoke4['CAP4'];}else{echo 'NULL';}?>"),
+ 		new Pokemon(
+ 			"<?php if(isset($team[4]['NOM'])){
+ 				echo utf8_encode($team[4]['NOM']);}else{ echo 'NULL';}  ?>", 
+ 				"<?php if(isset($team[4]['NOM'])){
+ 					echo getHpById($team[4]['ID']);}else{echo 'NULL';}	?>",
+ 				"<?php if(isset($team[4]['NOM'])){
+ 				 echo $cappoke5['CAP1'];}else{ echo 'NULL';};	?>",
+ 				"<?php if(isset($team[4]['NOM'])){ echo $cappoke5['CAP2'];}else{echo 'NULL';}?>",
+ 				"<?php if(isset($team[4]['NOM'])){ echo $cappoke5['CAP3'];}else{echo 'NULL';}?>",
+ 				"<?php if(isset($team[4]['NOM'])){ echo $cappoke5['CAP4'];}else{echo 'NULL';}?>"),
+ 		
+
+
+ 		);
+
+
+ 	var hps = document.getElementById("hps");
+ 	var hpj = document.getElementById("hpj");
+ 	var tour = {x:0};
+ 	var checker = window.setInterval(function() {checkhp(pokemonsauvage);},500);
+ 	var checker2 = window.setInterval(checktour,4000);
+
+ 	function Set_cap(pokemonjoueur){
+ 		let bouton;
+ 		let li;
+ 		let elem = document.createElement('ul');
+ 		elem.id = "cap";
+ 		document.body.appendChild(elem);
+ 		for (var i = 0; i < 4; i=i+1) {
+ 			li = document.createElement('li');
+ 			bouton= document.createElement('input');
+ 			bouton.id = "cap"+i;
+ 			bouton.type = "button";
+ 			bouton.value = pokemonjoueur.cap[i];
+ 			if(bouton.value != ""){
+ 				bouton.addEventListener('click',AttaqueJ.bind(null,hps,10,pokemonsauvage,pokemonjoueur.cap[i]));
+ 			}
+ 			elem.appendChild(li);
+ 			li.appendChild(bouton);
+ 		}
+ 		set_TextBar();
+ 		set_Equipe();
+
+ 	}
+
+ 	function set_TextBar(){
+ 		let elem = document.createElement('p');
+ 		elem.id = "textbox";
+ 		document.body.appendChild(elem);		
+ 	}
+
+ 	function set_Equipe(){
+ 		let bouton;
+ 		let li;
+ 		let elem = document.createElement('ul');
+ 		elem.id = "equipe";
+ 		document.body.appendChild(elem);
+ 		for (var i = 0; i < 4; i=i+1) {
+ 			if (equipejoueur.Poke[i].nom != 'NULL') {
+ 			li = document.createElement('li');
+ 			bouton= document.createElement('input');
+ 			bouton.id = "poke"+i;
+ 			bouton.type = "button";
+ 			bouton.value = equipejoueur.Poke[i].nom;
+ 			bouton.classList.add("equipejoueur");
+ 			bouton.addEventListener('click',Swap.bind(null,i));
+ 			elem.appendChild(li);
+ 			li.appendChild(bouton);
+ 			}
+ 		}
+ 		
+ 	}
+
+ 	function checkhp(pokemonjoueur){
+ 		if (pokemonjoueur.hp == 0) {KO();}
+ 		
+ 	}
+
+ 	function checktour(){
+ 		if (tour.x==1) {AttaqueA(hpj,10,pokemonjoueur,pokemonsauvage.cap[0])}
+ 	}
+
+ 	function Animation(text,char){
+ 		let p = document.getElementById("textbox");
+ 		p.innerHTML = p.innerHTML + text.charAt(char);
+ 		if (char<text.length) {setTimeout(function(){Animation(text,char+1);},50);}
+
+ 	}
+
+ 	function WriteText(text){
+ 		Animation(text,0);
+
+ 	}
+
+ 	function ClearText(){
+ 		let p = document.getElementById("textbox");
+ 		p.innerHTML ="";
+ 	}
+
+ 	function Reduction(object,a,cible){
+ 		if (object.textContent - 1 != -1) {
+ 		object.textContent = object.textContent -1;
+ 		cible.hp = cible.hp-1;
+ 		if (a != 1) {setTimeout(function(){Reduction(object,a-1,cible);},50)}
+ 		}
+ 	}
+
+ 	function DisableAll(){
+ 		let cap = [document.getElementById('cap0'),document.getElementById('cap1'),document.getElementById('cap2'),document.getElementById('cap3')];
+ 		let equipej = document.getElementsByClassName("equipejoueur");
+ 		for (var i = 0; i < 4; i=i+1) {
+ 			cap[i].disabled = true;
+ 		}
+ 		for (var i = 0; i < equipej.length; i=i+1) {
+ 			equipej[i].disabled = true;
+ 		}
+
+ 	}
+ 	function AbleAll(){
+ 		let cap = [document.getElementById('cap0'),document.getElementById('cap1'),document.getElementById('cap2'),document.getElementById('cap3')];
+ 		let equipej = document.getElementsByClassName("equipejoueur");
+ 		for (var i = 0; i < 4; i=i+1) {
+ 			cap[i].disabled = false;
+ 		}
+ 		for (var i = 0; i < equipej.length; i=i+1) {
+ 			equipej[i].disabled = false;
+ 		}
+
+
+ 	}
+ 	function AttaqueJ(object,damage,cible,attack){
+ 		
+ 		if (tour.x != 1) {
+ 		DisableAll();
+ 		ClearText();
+ 		WriteText(pokemonjoueur.nom+" utilise "+attack);
+ 		setTimeout(function(){Reduction(object,damage,cible)},2000);
+ 		setTimeout(function(){tour.x =1;
+ 			AbleAll();
+ 		},3000);
+ 		
+ 	}
+
+ 	}
+
+ 	function SwapPoke(a){
+ 		let Poke = pokemonjoueur;
+ 		pokemonjoueur = equipejoueur.Poke[a];
+ 		equipejoueur.Poke[a] = Poke;
+ 	}
+ 	function SwapText(a){
+ 		let cap = [document.getElementById('cap0'),document.getElementById('cap1'),document.getElementById('cap2'),document.getElementById('cap3')];
+	 		let input = document.getElementById('poke'+a);
+	 		let name = document.getElementById('nompoke');
+	 		name.innerHTML = pokemonjoueur.nom;
+	 		input.value = equipejoueur.Poke[a].nom;
+	 		hpj.innerHTML = pokemonjoueur.hp;
+	 		cap[0].value = pokemonjoueur.cap[0];
+	 		cap[1].value = pokemonjoueur.cap[1];
+	 		cap[2].value = pokemonjoueur.cap[2];
+	 		cap[3].value = pokemonjoueur.cap[3];
+ 	}
+
+ 	function Swap(a){
+ 		if (tour.x != 1) {
+ 			DisableAll();
+ 			ClearText();
+ 			WriteText("Changement de Pokemon");
+	 		setTimeout(function(){SwapPoke(a);},1000);
+	 		setTimeout(function(){SwapText(a)},1000);
+	 		setTimeout(function(){tour.x =1;
+ 			AbleAll();
+ 		},3000);
+	 		
+ 		}
+ 		
+ 		
+ 	}
+
+ 	function AttaqueA(object,damage,cible,attack){
+ 		ClearText();
+ 		WriteText(pokemonsauvage.nom+" sauvage utilise "+attack);
+ 		setTimeout(function(){Reduction(object,damage,cible)},2000);
+ 		setTimeout(function(){tour.x =0;
+ 			
+ 		},3000);
+ 	
+ 	
+ 	}
+
+ 	function KO(){
  		window.location="attaque.php";
  	}
  	
