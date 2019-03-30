@@ -1,0 +1,80 @@
+*{
+	margin: 0px;
+	padding: 0px;
+	list-style: none;
+
+}
+
+#equipe{
+	background-color: red;
+	position: fixed;
+	border-style: solid;
+	height: 195px;
+	width: 100px; 
+	top: 200px;
+	left: 705px;
+}
+
+#equipe li{
+	margin-top:10px;
+	margin-left: 10px;
+
+}
+
+#fenetre{
+	background-color: red;
+	position: fixed;
+	border-style: solid;
+	display: block;
+	height: 195px;
+	width: 400px; 
+	top: 200px;
+	left: 300px;
+}
+
+#pokej{
+	position: absolute;
+	top: 70%;
+	left: 70%; 
+
+}
+
+#pokes{
+	position: absolute;
+	top: 2%;
+	left: 2%; 
+}
+
+#textbox{
+	background-color: white;
+	border: thick double black;
+	padding: 25px;
+	position: fixed;
+	height: 100px;
+	width: 345px;
+	top: 400px;
+	left: 300px;
+}
+
+#cap *{
+	padding: 0;
+	border: none;
+	background: none;
+}
+
+#cap{
+	position: fixed;
+	border-style: solid;
+	top: 400px;
+	left: 705px;
+	height: 154px;
+	width: 100px; 
+}
+
+#cap li{
+	margin-top:10px;
+	margin-left: 10px;
+}
+
+
+
