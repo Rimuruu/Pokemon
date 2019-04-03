@@ -53,6 +53,7 @@ $res = Get_pokemon_from_computer($nomcompte);
 	var equipe = {"nom1":"<?php echo utf8_encode($slot1['NOM']) ?>","id1":"<?php echo $slot1['ID'] ?>","nom2":"<?php echo utf8_encode($slot2['NOM']) ?>","id2":"<?php echo $slot2['ID'] ?>","nom3":"<?php echo utf8_encode($slot3['NOM']) ?>","id3":"<?php echo $slot3['ID'] ?>","nom4":"<?php echo utf8_encode($slot4['NOM']) ?>","id4":"<?php echo $slot4['ID'] ?>","nom5":"<?php echo utf8_encode($slot5['NOM']) ?>","id5":"<?php echo $slot5['ID'] ?>","nom6":"<?php echo utf8_encode($slot6['NOM']) ?>","id6":"<?php echo $slot6['ID'] ?>"};
 	var select={x:0,select2:null};
 	var box = {y:<?php echo $box ?>};
+
 	function swap(id,select) {
 		let object2;
 		let object;
@@ -136,9 +137,7 @@ $res = Get_pokemon_from_computer($nomcompte);
 		document.body.appendChild(elem);
 		computer = document.getElementById("ordinateur");
 		elem = computer.getElementsByTagName("input");
-		for (var i = 0; i < elem.length; i=i+1) {
-			elem[i].addEventListener('click',swap.bind(null,elem[i].id,select));
-		}
+	
 
 	}
 
