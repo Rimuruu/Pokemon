@@ -25,6 +25,9 @@ setcookie('pokemonjoueur[ID]', '', time() - 3600);
 unset($_COOKIE['pokemonjoueur[HP]']);
 setcookie('pokemonjoueur[HP]', '', time() - 3600);
 
+unset($_COOKIE['tour']);
+setcookie('tour', '', time() - 3600);
+
 
 for ($i=0; $i < 5  ; $i=$i+1) { 
 	unset($_COOKIE['team['.$i.'][HP]']);
