@@ -22,7 +22,7 @@
 }
 
 #fenetre{
-	background-color: red;
+	background-image: url("../../img/back.gif");
 	position: fixed;
 	border-style: solid;
 	display: block;
@@ -34,17 +34,17 @@
 
 #pokej{
 	position: absolute;
-	top: 70%;
-	left: 65%; 
-	
-
+	top:10%;
+	left: 58%; 
 }
 
 #pokes{
 	position: absolute;
-	top: 2%;
-	left: 2%; 
+	top: 10%;
+	left: 5%; 
 }
+
+
 
 #textbox{
 	background-color: white;
@@ -77,5 +77,77 @@
 	margin-left: 10px;
 }
 
+#pokeimg{
+	position: absolute;
+	left: 20%;
+	top: 150%;
+	animation-name: fade;
+	animation-fill-mode: both;
+  	animation-iteration-count: infinite;
+ 	 animation-duration: 0.5s;
+ 	animation-play-state: paused;
+ 	opacity: 1;
+  	/*animation-direction: alternate-reverse;  */
+}
 
+#pokeimgs{
+	position: absolute;
+	left: 20%;
+	top: 150%;
+	animation-name: fade;
+	animation-fill-mode: both;
+  	animation-iteration-count: infinite;
+ 	 animation-duration: 0.5s;
+ 	animation-play-state: paused;
+ 	opacity: 1;
+  	/*animation-direction: alternate-reverse;  */
+}
+
+@keyframes fade{
+    100% {
+      opacity: 0.40;
+}
+    0%,50%{
+      opacity: 1;
+  }
+}
+
+#myVideo {
+  min-width: 406px; 
+  min-height: 200px;
+}
+
+#healthj{
+	position: absolute;
+
+	box-sizing: border-box;
+
+	
+	
+
+
+}
+#healths{
+	position: absolute;
+}
+
+
+progress {
+  -webkit-appearance: none;
+  border-radius: 10px;
+}
+
+
+progress::-webkit-progress-bar {
+   background-color: white;
+   border-radius: 2px;
+
+}
+
+progress::-webkit-progress-value {
+
+	background-color: green;
+    border-radius: 2px; 
+    background-size: 35px 20px, 100% 100%, 100% 100%;
+}
 

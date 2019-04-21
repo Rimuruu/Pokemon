@@ -21,6 +21,7 @@ if (isset($_COOKIE['idpokemonsauvage'])) {
  <body onload="Set_cap(pokemonjoueur)">
  	
  	<div id='fenetre'>
+ 	
  	<?php 
  	if (!isset($_COOKIE['pokemonjoueur'])) {
  	
@@ -29,17 +30,22 @@ if (isset($_COOKIE['idpokemonsauvage'])) {
  	$poke = Show_First_Pokemon_Available($nomcompte);
  	$hppoke = getHpById($poke);
  	echo "<h2 id='hpj'>".getHpById($poke)."</h2>";
+ 	echo "<progress id='healthj' value='".getHpById($poke)."' max='".getHpById($poke)."'></progress>";
+ 	echo "<img id='pokeimg'src='img/".NomDepuisId($poke)."droite.png'>";
  	echo "</div>";
  	$pokejoueur = Show_cap_by_id($poke);
  	$team = Show_other_poke($nomcompte,$poke);
  	}
  	else{
+
  		$hppoke = $_COOKIE['pokemonjoueur']['HP'];
  		$poke = $_COOKIE['pokemonjoueur']['ID'];
  		$pokejoueur = Show_cap_by_id($poke);
  		echo "<div id='pokej'><h2 id='nompoke'>".NomDepuisId($poke)."</h2>";
 
  		echo "<h2 id='hpj'>".$_COOKIE['pokemonjoueur']['HP']."</h2>";
+ 		echo "<progress id='healthj' value='".getHpById($poke)."' max='".getHpById($poke)."'></progress>";
+ 		echo "<img id='pokeimg'src='img/".NomDepuisId($poke)."droite.png'>";
  		echo "</div>";
  		$team = array();
  		for ($i=0; $i < 5; $i++) { 
@@ -108,6 +114,8 @@ if (isset($_COOKIE['idpokemonsauvage'])) {
  		$hpsauvage = getHpById($idpokesauvage);
  	}
  	echo "<h2 id='hps'>".$hpsauvage."</h2>";
+ 	echo "<progress id='healths' value='".getHpById($idpokesauvage)."' max='".getHpById($idpokesauvage)."'></progress>";
+ 	echo "<img id='pokeimgs'src='img/".NomDepuisId($idpokesauvage)."gauche.png'>";
  	echo "</div>";
  	$_SESSION['idpokemonsauvage']=$idpokesauvage;
  	setcookie("idpokemonsauvage",$idpokesauvage);
@@ -210,6 +218,10 @@ if (isset($_COOKIE['idpokemonsauvage'])) {
 
  	var hps = document.getElementById("hps");
  	var hpj = document.getElementById("hpj");
+ 	var healthbar = document.querySelector('#healthj');
+	 healthbar.value = pokemonjoueur.hp;
+	var healthbars = document.querySelector('#healths');
+	 healthbars.value = pokemonsauvage.hp;
  	var tour = {x:
  		<?php
  		if (isset($_COOKIE['tour'])) {
@@ -222,7 +234,7 @@ if (isset($_COOKIE['idpokemonsauvage'])) {
  		?>
 
  	};
- 	var checker2 = window.setInterval(checktour,4000);
+ 	
 
 
  	function Catch(){
@@ -289,11 +301,12 @@ if (isset($_COOKIE['idpokemonsauvage'])) {
  	}
 
  	function checkhp(pokemonsauvage){
- 		if (pokemonsauvage.hp == 0) {KO();}
+ 		if (pokemonsauvage.hp == 0) {tour.x=2;KO();}
  		
  	}
 
  	function checkhpj(pokemonjoueur){
+	 
  		if (pokemonjoueur.hp == 0) {
  			for (var i = 0; i < 5; i=i+1) {
  				if (equipejoueur.Poke[i].hp != 0 && equipejoueur.Poke[i].nom != 'NULL') {
@@ -350,13 +363,43 @@ if (isset($_COOKIE['idpokemonsauvage'])) {
  		if (object.textContent - 1 != -1) {
  		object.textContent = object.textContent -1;
  		cible.hp = cible.hp-1;
- 		if (a != 1) {setTimeout(function(){Reduction(object,a-1,cible);},50)}
+ 		if (cible.idpoke == pokemonjoueur.idpoke) {healthbar.value = healthbar.value-1;}
+ 		else if (cible.idpoke == pokemonsauvage.idpoke) {healthbars.value = healthbars.value-1;}
+ 		
+ 		if (a != 1) {
+
+ 			setTimeout(function(){Reduction(object,a-1,cible);},50)}
  		}
  		else{
+
  			savegame();
  			checkhpj(pokemonjoueur);
  			checkhp(pokemonsauvage);
  		}
+ 	}
+
+ 	function AnimationAttackS(){
+ 		let img = document.getElementById('pokeimg');
+ 		
+		img.style.webkitAnimationPlayState="running";
+		setTimeout(function(){let img = document.getElementById('pokeimg');img.style.webkitAnimationPlayState="paused";img.opacity =1},2000);
+ 		
+ 		
+
+
+
+ 	}
+
+ 	function AnimationAttackJ(){
+ 		let img = document.getElementById('pokeimgs');
+ 		
+		img.style.webkitAnimationPlayState="running";
+		setTimeout(function(){let img = document.getElementById('pokeimgs');img.style.webkitAnimationPlayState="paused";img.opacity =1},2000);
+ 		
+ 		
+
+
+
  	}
 
  	function DisableAll(){
@@ -399,16 +442,17 @@ if (isset($_COOKIE['idpokemonsauvage'])) {
  	}
  	function AttaqueJ(object,damage,cible,attack){
  		
- 		if (tour.x != 1) {
+ 		if (tour.x == 0) {
  		DisableAll();
  		ClearText();
  		WriteText(pokemonjoueur.nom+" utilise "+attack);
  		setTimeout(function(){
+ 			AnimationAttackJ();
  			Reduction(object,damage,cible);
  			checkhp(pokemonjoueur);
  		},2000);
  		setTimeout(function(){tour.x =1;savegame();
- 			AbleAll();
+ 			AbleAll();if (pokemonsauvage.hp != 0) {checktour()}
  		},3000);
  		
  	}
@@ -424,6 +468,10 @@ if (isset($_COOKIE['idpokemonsauvage'])) {
  		let cap = [document.getElementById('cap0'),document.getElementById('cap1'),document.getElementById('cap2'),document.getElementById('cap3')];
 	 		let input = document.getElementById('poke'+a);
 	 		let name = document.getElementById('nompoke');
+	 		let img = document.getElementById('pokeimg');
+	 		
+	 		img.src = "img/"+pokemonjoueur.nom+"droite.png";
+
 	 		name.innerHTML = pokemonjoueur.nom;
 	 		input.value = equipejoueur.Poke[a].nom;
 	 		hpj.innerHTML = pokemonjoueur.hp;
@@ -435,7 +483,7 @@ if (isset($_COOKIE['idpokemonsauvage'])) {
  	}
 
  	function Swap(a){
- 		if (tour.x != 1) {
+ 		if (tour.x == 0) {
  			DisableAll();
  			ClearText();
  			if (equipejoueur.Poke[a].hp != 0) {
@@ -477,7 +525,8 @@ if (isset($_COOKIE['idpokemonsauvage'])) {
  	function AttaqueA(object,damage,cible,attack){
  		ClearText();
  		WriteText(pokemonsauvage.nom+" sauvage utilise "+attack);
- 		setTimeout(function(){Reduction(object,damage,cible);},2000);
+ 		setTimeout(function(){Reduction(object,damage,cible);
+ 			AnimationAttackS();},2000);
  		setTimeout(function(){tour.x =0;savegame();
 
  			
@@ -487,7 +536,15 @@ if (isset($_COOKIE['idpokemonsauvage'])) {
  	}
 
  	function KO(){
- 		window.location="attaque.php";
+ 		clearTimeout(checktour);
+ 		ClearText();
+ 		WriteText(pokemonsauvage.nom+" a été battu...");
+
+ 		setTimeout(function(){window.location="attaque.php";
+
+ 			
+ 		},5000);
+ 		
  	}
  	
 
