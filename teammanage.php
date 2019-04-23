@@ -136,7 +136,6 @@ $res = Get_pokemon_from_computer($nomcompte);
 		elem.addEventListener('click',save);
 		document.body.appendChild(elem);
 		computer = document.getElementById("ordinateur");
-<<<<<<< HEAD
 		if (computer.hasChildNodes()) {
 			let children = computer.childNodes;
 
@@ -148,10 +147,6 @@ $res = Get_pokemon_from_computer($nomcompte);
   			}
 
 		}
-=======
-		elem = computer.getElementsByTagName("input");
-	
->>>>>>> 76de1502030cb5bc3b50d9b3124d798fa7db45ce
 
 	
 
