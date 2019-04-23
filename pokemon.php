@@ -35,14 +35,14 @@ function Set_default_cap($idpoke){
 
 function Set_default_hp($idpoke){
 	$link = create_link();
-		$querytest = "SELECT pokedex.HP FROM banque JOIN pokedex ON pokedex.NOM = banque.NOM where banque.ID =?"; 
+		$querytest = "SELECT pokédex.PV FROM banque JOIN pokédex ON pokédex.NOMP = banque.NOMP where banque.ID =?"; 
 		$stmt2 = mysqli_prepare($link,$querytest);
 		mysqli_stmt_bind_param($stmt2,"i",$idpoke);
 		mysqli_execute($stmt2);
 		$result = mysqli_stmt_get_result($stmt2);
 		$res = mysqli_fetch_assoc($result);
 			$HP=$res['HP'];
-			$querytest = "UPDATE banque SET HP=? WHERE ID=?"; 
+			$querytest = "UPDATE banque SET PVact=? WHERE ID=?"; 
 			$stmt2 = mysqli_prepare($link,$querytest);
 			mysqli_stmt_bind_param($stmt2,"ii",$HP,$idpoke);
 			mysqli_execute($stmt2);
@@ -52,13 +52,13 @@ function Set_default_hp($idpoke){
 
 function getHpById($idpoke){
 	$link = create_link();
-		$querytest = "SELECT HP FROM banque where ID =?"; 
+		$querytest = "SELECT PVact FROM banque where ID =?"; 
 		$stmt2 = mysqli_prepare($link,$querytest);
 		mysqli_stmt_bind_param($stmt2,"i",$idpoke);
 		mysqli_execute($stmt2);
 		$result = mysqli_stmt_get_result($stmt2);
 		$res = mysqli_fetch_assoc($result);
-		$HP=$res['HP'];
+		$HP=$res['PVact'];
 		mysqli_close($link);
 		return $HP;
 }
@@ -93,32 +93,42 @@ function Show_cap_by_id($idpoke){
 	mysqli_execute($stmt2);
 	$result = mysqli_stmt_get_result($stmt2);
 	$res = mysqli_fetch_assoc($result);
+	for ($i=1; $i < 5; $i++) { 
+		if ($res['CAP'.$i] != NULL) {
+			$querytest = "SELECT * FROM attaque where IDAtt=?"; 
+			$stmt2 = mysqli_prepare($link,$querytest);
+			mysqli_stmt_bind_param($stmt2,"i",$res['CAP'.$i]);
+			mysqli_execute($stmt2);
+			$result = mysqli_stmt_get_result($stmt2);
+			$res['CAP'.$i] = mysqli_fetch_assoc($result);
+		}
+	}
 	return $res;
 	mysqli_close($link);
 }
 
 function NomDepuisNumero($numero){
 	$link = create_link();
-	$querytest = "SELECT NOM from pokedex where NUMERO=?";
+	$querytest = "SELECT NOMP from pokedex where NumP=?";
 	$stmt2 = mysqli_prepare($link,$querytest);
 	mysqli_stmt_bind_param($stmt2,"i",$numero);
 	mysqli_execute($stmt2);
 	$result = mysqli_stmt_get_result($stmt2);
 	$res = mysqli_fetch_assoc($result);
 	mysqli_close($link);
-	return $res['NOM'];
+	return $res['NOMP'];
 }
 
 function NomDepuisId($numero){
 	$link = create_link();
-	$querytest = "SELECT NOM from banque where ID=?";
+	$querytest = "SELECT NOMP from banque where ID=?";
 	$stmt2 = mysqli_prepare($link,$querytest);
 	mysqli_stmt_bind_param($stmt2,"i",$numero);
 	mysqli_execute($stmt2);
 	$result = mysqli_stmt_get_result($stmt2);
 	$res = mysqli_fetch_assoc($result);
 	mysqli_close($link);
-	return utf8_encode($res['NOM']);
+	return utf8_encode($res['NOMP']);
 }
 
 
@@ -139,32 +149,115 @@ function Pokemon_alea(){
 		mysqli_execute($stmt2);
 		$result = mysqli_stmt_get_result($stmt2);
 	}
-	$idpoke2 = rand(1, 3);
+	$idpoke2 = 1;
 	$nompoke = NomDepuisNumero($idpoke2);
-	$query2= "INSERT INTO banque (NOM,ID) VALUES (?,?)";
-	$stmt2 = mysqli_prepare($link,$query2);
-	mysqli_stmt_bind_param($stmt2,"si",$nompoke,$idpoke);
-	mysqli_execute($stmt2);
-	Set_default_cap($idpoke);
-	Set_default_hp($idpoke);
+	Ajouter_pokemon_sauv($nompoke,$idpoke);
 	mysqli_close($link);
 	return $idpoke;
 	
 }
 
+
+function Ajouter_pokemon_sauv($nompoke,$idpoke){
+	$link = create_link();
+
+
+	$querytest2 = "SELECT * from pokedex where NOMP=?";
+	$stmt3 = mysqli_prepare($link,$querytest2);
+	mysqli_stmt_bind_param($stmt3,"s",$nompoke);
+	echo mysqli_error($link);
+	mysqli_execute($stmt3);
+	$result = mysqli_stmt_get_result($stmt3);
+	$res = mysqli_fetch_assoc($result);
+
+	$querytest2 = "SELECT * from attaque where TypeA=? AND (ClasseA = 'Physique' OR ClasseA = 'Speciale')";
+	$stmt3 = mysqli_prepare($link,$querytest2);
+
+	mysqli_stmt_bind_param($stmt3,"s",$res['TypeU']);
+	echo mysqli_error($link);
+	mysqli_execute($stmt3);
+	$result = mysqli_stmt_get_result($stmt3);
+	$nb_attaque= mysqli_num_rows($result);
+	$rand_att = rand(1,$nb_attaque);
+	 mysqli_data_seek($result, $rand_att);
+	$resatt = mysqli_fetch_assoc($result);
+	
+	 $resa = $resatt['IDAtt'];
+
+	 $querytest2 = "SELECT * from attaque where TypeA=? AND (ClasseA = 'Autre' OR ClasseA = 'Speciale')";
+	$stmt3 = mysqli_prepare($link,$querytest2);
+	mysqli_stmt_bind_param($stmt3,"s",$res['TypeU']);
+	echo mysqli_error($link);
+	mysqli_execute($stmt3);
+	$result = mysqli_stmt_get_result($stmt3);
+	$nb_attaque= mysqli_num_rows($result);
+	$rand_att = rand(1,$nb_attaque);
+	mysqli_data_seek($result, $rand_att);
+	$resatt = mysqli_fetch_assoc($result);
+	$resb = $resatt['IDAtt'];
+	while($resb == $resa) {
+		$querytest2 = "SELECT * from attaque where TypeA=? AND (ClasseA = 'Autre' OR ClasseA = 'Speciale')";
+		$stmt3 = mysqli_prepare($link,$querytest2);
+		mysqli_stmt_bind_param($stmt3,"s",$res['TypeU']);
+		echo mysqli_error($link);
+		mysqli_execute($stmt3);
+		$result = mysqli_stmt_get_result($stmt3);
+		$nb_attaque= mysqli_num_rows($result);
+		$rand_att = rand(1,$nb_attaque);
+		mysqli_data_seek($result, $rand_att);
+		$resatt = mysqli_fetch_assoc($result);
+		$resb = $resatt['IDAtt'];
+	}
+	 
+
+	
+	
+
+	
+	$xp = 0;
+	$niv = 1;
+	$IVPV = (100*($res['PV']-1-10))/1-1-2*$res['PV'];
+	$IVATTAQUE = ($res['Attaque']/1-1)*100/1-1-2*$res['Attaque'];
+	$IVDefense = ($res['Defense']/1-1)*100/1-1-2*$res['Defense'];
+	$IVAttSpe = ($res['AttSpe']/1-1)*100/1-1-2*$res['AttSpe'];
+	$IVDefSpe = ($res['DefSPe']/1-1)*100/1-1-2*$res['DefSPe'];
+	$IVVitesse = ($res['Vitesse']/1-1)*100/1-1-2*$res['Vitesse'];
+	$var = 1;
+	$varn = NULL;
+	if ($res['TypeD'] == NULL) {
+		$res['TypeD'] = 'NULL';
+		$query2= "INSERT INTO banque (ID,NUMP,NOMP,TYPEU,COURBE,XP,XPVAINCU,NIV,IVPV,IVATTAQUE,IVDEFENSE,IVATTSPE,IVDEFSPE,IVVITESSE,PVMAX,VITESSE,ATTAQUE,DEFENSE,ATTSPE,DEFSPE,CAP1,CAP2,PVACT) VALUES(".$idpoke.",".$var.",'".$nompoke."','".$res['TypeU']."','".$res['Courbe']."',".$var.",".$res['XPVaincu'].",".$niv.",".$IVPV.",".$IVATTAQUE.",".$IVDefense.",".$IVAttSpe.",".$IVDefSpe.",".$IVVitesse.",".$res['PV'].",".$res['Vitesse'].",".$res['Attaque'].",".$res['Defense'].",".$res['AttSpe'].",".$res['DefSPe'].",".$resa.",".$resb.",".$res['PV'].")";
+		
+
+	}
+	else{
+		$query2= "INSERT INTO banque (ID,NUMP,NOMP,TYPEU,TYPED,COURBE,XP,XPVAINCU,NIV,IVPV,IVATTAQUE,IVDEFENSE,IVATTSPE,IVDEFSPE,IVVITESSE,PVMAX,VITESSE,ATTAQUE,DEFENSE,ATTSPE,DEFSPE,CAP1,CAP2,PVACT) VALUES(".$idpoke.",".$var.",'".$nompoke."','".$res['TypeU']."','".$res['TypeD']."','".$res['Courbe']."',".$var.",".$res['XPVaincu'].",".$niv.",".$IVPV.",".$IVATTAQUE.",".$IVDefense.",".$IVAttSpe.",".$IVDefSpe.",".$IVVitesse.",".$res['PV'].",".$res['Vitesse'].",".$res['Attaque'].",".$res['Defense'].",".$res['AttSpe'].",".$res['DefSPe'].",".$resa.",".$resb.",".$res['PV'].")";
+		
+	}
+
+	
+
+	mysqli_query($link,$query2);
+	mysqli_error($link); 
+
+
+
+	mysqli_close($link);
+}
+
 function Show_pokemon_by_id($idpoke){
 	$link =create_link();
-	$querytest = "SELECT NOM FROM banque where ID=?"; 
+	$querytest = "SELECT NOMP FROM banque where ID=?"; 
 	$stmt2 = mysqli_prepare($link,$querytest);
 	mysqli_stmt_bind_param($stmt2,"i",$idpoke);
 	mysqli_execute($stmt2);
 	$result = mysqli_stmt_get_result($stmt2);
 	$res = mysqli_fetch_assoc($result);
-	if ($res['NOM']==NULL) {
+	if ($res['NOMP']==NULL) {
 		echo "<li> Vide </li>";
 	}
 	else{
-	echo "<h2 id='pokesauvage'> ".utf8_encode($res['NOM'])." </h2>";
+	echo "<h2 id='pokesauvage'> ".utf8_encode($res['NOMP'])." </h2>";
 
 	}
 	mysqli_close($link);
@@ -181,6 +274,23 @@ function Delete_Pokemon_byID($idpoke){
 
 
 
+}
+
+function Get_pokemon($id){
+	$link =create_link();
+	$querytest = "SELECT * FROM banque where ID=?"; 
+	$stmt2 = mysqli_prepare($link,$querytest);
+	mysqli_stmt_bind_param($stmt2,"i",$id);
+	mysqli_execute($stmt2);
+	$result = mysqli_stmt_get_result($stmt2);
+	$res = mysqli_fetch_assoc($result);
+	if ($res['NomP']==NULL) {
+		$res['NomP']="Vide";
+		$res['ID']="NULL";
+
+	}
+	mysqli_close($link);
+	return $res;
 }
 
 
