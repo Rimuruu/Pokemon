@@ -139,11 +139,7 @@ progress {
 
 
 progress::-webkit-progress-bar {
-<<<<<<< HEAD
    background-color: transparent;
-=======
-   background-color: white;
->>>>>>> 76de1502030cb5bc3b50d9b3124d798fa7db45ce
    border-radius: 2px;
 
 }
