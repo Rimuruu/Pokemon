@@ -262,7 +262,7 @@ CREATE TABLE IF NOT EXISTS `listeinventaire` (
   `Objet` varchar(25) NOT NULL,
   `TypeO` enum('Pokeball','Soin','Statut','Rappel','PP') NOT NULL,
   `Prix` double NOT NULL,
-  `TauxCaptureBall` int(11) DEFAULT NULL,
+  `TauxCaptureBall` double DEFAULT NULL,
   `PVSoin` int(11) DEFAULT NULL,
   `StatSoin` enum('Bru','Para','Som','Poi','Gel') DEFAULT NULL,
   `PPrajoute` int(11) DEFAULT NULL,
@@ -277,7 +277,7 @@ CREATE TABLE IF NOT EXISTS `listeinventaire` (
 
 INSERT INTO `listeinventaire` (`Objet`, `TypeO`, `Prix`, `TauxCaptureBall`, `PVSoin`, `StatSoin`, `PPrajoute`, `PPcible`, `Rappel`) VALUES
 ('PokeBall', 'Pokeball', 200, 1, NULL, NULL, NULL, NULL, NULL),
-('SuperBall', 'Pokeball', 600, 2, NULL, NULL, NULL, NULL, NULL),
+('SuperBall', 'Pokeball', 600, 1.5, NULL, NULL, NULL, NULL, NULL),
 ('HyperBall', 'Pokeball', 1200, 2, NULL, NULL, NULL, NULL, NULL),
 ('Potion', 'Soin', 300, NULL, 20, NULL, NULL, NULL, NULL),
 ('SuperPotion', 'Soin', 700, NULL, 50, NULL, NULL, NULL, NULL),
