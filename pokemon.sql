@@ -489,7 +489,7 @@ DROP TABLE IF EXISTS `sac`;
 CREATE TABLE IF NOT EXISTS `sac` (
   `IDSac` int(11) NOT NULL,
   `Dresseur` varchar(35) NOT NULL,
-  `nbPokeball` int(11) NOT NULL DEFAULT 5,
+  `nbPokeBall` int(11) NOT NULL DEFAULT 5,
   `nbSuperBall` int(11) NOT NULL,
   `nbHyperBall` int(11) NOT NULL,
   `nbPotion` int(11) NOT NULL DEFAULT 10,
