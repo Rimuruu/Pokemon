@@ -115,7 +115,6 @@ else{
 	mysqli_error($link); 
 	mysqli_execute($stmt3);
 
-
 	mysqli_close($link);
 	include 'login2.php';
 
