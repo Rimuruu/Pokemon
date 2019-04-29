@@ -25,7 +25,10 @@ include 'user.php';
 	 ?>
 	<br>
 	<form method="post" action="chasse.php"><input type="submit" name="chasse" value="Chasser un pokemon aléatoire"></form><br>
+	<a href="listedresseurs.php"><input type="button" name="listej" value="Combat online"></a>
 	<a href="teammanage.php"><input type="button" name="teammanage" value="Modifier l'ordre de l'equipe"></a>
+	<a href="inventaire.php"><input type="button" name="sac" value="Sac"></a>
+	<a href="boutique.php"><input type="button" name="Boutique" value="Boutique"></a>
 	<a href="deconnexion.php"><input type="button" name="Déconnexion" value="deconnexion"></a>
 </body>
 </html>

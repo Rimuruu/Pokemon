@@ -80,7 +80,7 @@
 #pokeimg{
 	position: absolute;
 	left: 20%;
-	top: 150%;
+	top: 250%;
 	animation-name: fade;
 	animation-fill-mode: both;
   	animation-iteration-count: infinite;
@@ -93,7 +93,7 @@
 #pokeimgs{
 	position: absolute;
 	left: 20%;
-	top: 150%;
+	top: 250%;
 	animation-name: fade;
 	animation-fill-mode: both;
   	animation-iteration-count: infinite;
@@ -151,3 +151,6 @@ progress::-webkit-progress-value {
     background-size: 35px 20px, 100% 100%, 100% 100%;
 }
 
+h2{
+	font-size: 15px;
+}

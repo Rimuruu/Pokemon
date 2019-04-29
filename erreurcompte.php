@@ -8,6 +8,7 @@ if (isset($_SESSION['nomcompte'])) {
 <!DOCTYPE html>
 <html>
 <head>
+	<link rel="stylesheet" type="text/css" href="login.css">
 	<title>pokemon</title>
 </head>
 <body>
@@ -15,11 +16,12 @@ if (isset($_SESSION['nomcompte'])) {
 	<fieldset>
 	<legend>Login</legend>
 	<a>Le compte n'existe pas</a><br>
-	<a>Nom de compte</a><input type="text" name="nomcompte"><br>
-	<a>Mot de passe</a><input type="password" name="mdp"><br>
-	<input type="submit" name="valider"><br>
-	<a href="create.php">Créer un compte</a>
+	<a>Nom de compte</a><input type="text" name="nomcompte" class="input"><br>
+	<a>Mot de passe</a><input type="password" name="mdp" class="input"><br>
+	<input type="submit" name="valider" id="valider"><br>
 	</fieldset>
+	<img src="Images/Pokemon" id="logo"/>
+	<a href="create.php" id="create">Créer un compte</a>
 </form>
 </body>
 </html>

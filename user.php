@@ -87,7 +87,7 @@ else{
 	
 	$query= "INSERT INTO compte(NOM,MDP) VALUES (?,?)";
 	$xp = 0;
-	$niv = 1;
+	$niv = 5;
 	$IVPV = (100*($res['PV']-1-10))/1-1-2*$res['PV'];
 	$IVATTAQUE = ($res['Attaque']/1-1)*100/1-1-2*$res['Attaque'];
 	$IVDefense = ($res['Defense']/1-1)*100/1-1-2*$res['Defense'];
@@ -105,16 +105,23 @@ else{
 		$query2= "INSERT INTO banque (ID,NUMP,NOMP,TYPEU,TYPED,COURBE,XP,XPVAINCU,NIV,IVPV,IVATTAQUE,IVDEFENSE,IVATTSPE,IVDEFSPE,IVVITESSE,PVMAX,VITESSE,ATTAQUE,DEFENSE,ATTSPE,DEFSPE,CAP1,CAP2,DRESSEUR,PVACT) VALUES(".$idpoke.",".$var.",'".$nompoke."','".$res['TypeU']."','".$res['TypeD']."','".$res['Courbe']."',".$var.",".$res['XPVaincu'].",".$niv.",".$IVPV.",".$IVATTAQUE.",".$IVDefense.",".$IVAttSpe.",".$IVDefSpe.",".$IVVitesse.",".$res['PV'].",".$res['Vitesse'].",".$res['Attaque'].",".$res['Defense'].",".$res['AttSpe'].",".$res['DefSPe'].",".$resa.",".$resb.",'".$nomcompte."',".$res['PV'].")";
 	}
 	$query3= "INSERT INTO equipe(IDEq,DRESSEUR,SLOT1) VALUES (?,?,?)";
+<<<<<<< HEAD
+	$query4= "INSERT INTO sac(IDSac,Dresseur,nbPokeball,nbSuperBall,nbHyperBall,nbPotion,nbSuperPotion,nbHyperPotion,nbPotionMax,nbAntidote,nbAntiPara,nbAntiBrule,nbAntiGel,nbReveil,nbRappel,nbRappelMax,nbElexir,nbMaxElexir,nbHuile,nbHuileMax) VALUES (".$ideq.",'".$nomcompte."',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)";
+=======
+	$query4= "INSERT INTO sac(IDSac,Dresseur,nbPokeball,nbSuperBall,nbHyperBall,nbPotion,nbSuperPotion,nbHyperPotion,nbPotionMax,nbAntidote,nbAntiPara,nbAntiBrule,nbAntiGel,nbReveil,nbRappel,nbRappelMax,nbElexir,nbMaxElexir,nbHuile,nbHuileMax) VALUES (".$ideq.",'".$nomcompte."',5,0,0,10,0,0,0,0,0,0,0,0,0,0,0,0,0,0)";
+>>>>>>> ab3272732e28b1bdfd175ff09c5ccbc26b21eda7
+
 	$stmt = mysqli_prepare($link,$query);
 	$stmt3 = mysqli_prepare($link,$query3);
+	
 	mysqli_stmt_bind_param($stmt,"ss",$nomcompte,$mdp);
 
 	mysqli_stmt_bind_param($stmt3,"isi",$ideq,$nomcompte,$idpoke);
 	mysqli_execute($stmt);
 	mysqli_query($link,$query2);
+	mysqli_query($link,$query4);
 	mysqli_error($link); 
 	mysqli_execute($stmt3);
-
 
 	mysqli_close($link);
 	include 'login2.php';
@@ -219,7 +226,7 @@ function Show_First_Pokemon_Available($nomcompte){
 	$result = mysqli_stmt_get_result($stmt2);
 	$res = mysqli_fetch_assoc($result);
 	if ($res['NomP']!=NULL) {
-		echo "<h2 id='nompoke'> ".utf8_encode($res['NomP'])." </h2>";
+		echo "<h2 id='nompoke'> ".utf8_encode($res['NomP'])." Niv ".$res['Niv']." </h2>";
 		break;
 		}
 	}

@@ -32,6 +32,65 @@ function Set_default_cap($idpoke){
 	}
 	mysqli_close($link);
 }
+function CheckLevelUp($idpoke){
+	$poke = Get_pokemon($idpoke);
+	$link = create_link();
+	if ($poke['Courbe'] == "Moyen-") {
+		$xpbesoin = pow($poke['Niv'],3);
+	}
+	else if ($poke['Courbe'] == "Moyen+") {
+		$xpbesoin = 1.2*pow($poke['Niv'],3)-(15*pow($poke['Niv'],2))+100*$poke['Niv']-140;
+	}
+	else if ($poke['Courbe'] == "Rapide") {
+		$xpbesoin = pow($poke['Niv'],3)*0.8;
+	}
+	else{
+		$xpbesoin = pow($poke['Niv'],3)*1.25;
+
+	}
+	if (round($xpbesoin) <= $poke['XP']) {
+		$query = "UPDATE banque SET Niv = Niv + 1 WHERE ID =".$idpoke;
+		mysqli_query($link,$query);
+		$query = "UPDATE banque SET XP = XP - ".round($xpbesoin)." WHERE ID =".$idpoke;
+		mysqli_query($link,$query);
+	}
+	$poke = Get_pokemon($idpoke);
+	if ($poke['Courbe'] == "Moyen-") {
+		$xpbesoin = pow($poke['Niv'],3);
+	}
+	else if ($poke['Courbe'] == "Moyen+") {
+		$xpbesoin = 1.2*pow($poke['Niv'],3)-(15*pow($poke['Niv'],2))+100*$poke['Niv']-140;
+	}
+	else if ($poke['Courbe'] == "Rapide") {
+		$xpbesoin = pow($poke['Niv'],3)*0.8;
+	}
+	else{
+		$xpbesoin = pow($poke['Niv'],3)*1.25;
+
+	}
+	mysqli_close($link);
+	if (round($xpbesoin) <= $poke['XP']) {
+		return true;
+	}
+	else{
+		return false;
+	}
+	
+}
+function addXP($idpoke){
+	$poke = Get_pokemon($idpoke);
+	$link = create_link();
+	if ($poke['Niv'] != 100) {
+		$query = "UPDATE banque SET XP = XP + ".$poke['XPVaincu']." WHERE ID =".$idpoke;
+		echo $query;
+		mysqli_query($link,$query);
+	}
+	while (CheckLevelUp($idpoke)) {
+		CheckLevelUp($idpoke);
+	}
+	mysqli_close($link);
+
+}
 
 function Set_default_hp($idpoke){
 	$link = create_link();
@@ -247,17 +306,17 @@ function Ajouter_pokemon_sauv($nompoke,$idpoke){
 
 function Show_pokemon_by_id($idpoke){
 	$link =create_link();
-	$querytest = "SELECT NOMP FROM banque where ID=?"; 
+	$querytest = "SELECT * FROM banque where ID=?"; 
 	$stmt2 = mysqli_prepare($link,$querytest);
 	mysqli_stmt_bind_param($stmt2,"i",$idpoke);
 	mysqli_execute($stmt2);
 	$result = mysqli_stmt_get_result($stmt2);
 	$res = mysqli_fetch_assoc($result);
-	if ($res['NOMP']==NULL) {
+	if ($res['NomP']==NULL) {
 		echo "<li> Vide </li>";
 	}
 	else{
-	echo "<h2 id='pokesauvage'> ".utf8_encode($res['NOMP'])." </h2>";
+	echo "<h2 id='pokesauvage'> ".utf8_encode($res['NomP'])." Niv ".$res['Niv']." </h2>";
 
 	}
 	mysqli_close($link);
