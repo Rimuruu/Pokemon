@@ -32,6 +32,44 @@ function Set_default_cap($idpoke){
 	}
 	mysqli_close($link);
 }
+
+function Get_pokedex($numP){
+	$link =create_link();
+	$querytest = "SELECT * FROM pokedex where NumP=?"; 
+
+	$stmt2 = mysqli_prepare($link,$querytest);
+	mysqli_stmt_bind_param($stmt2,"i",$numP);
+	mysqli_execute($stmt2);
+	$result = mysqli_stmt_get_result($stmt2);
+	$res = mysqli_fetch_assoc($result);
+	mysqli_close($link);
+
+	return $res;
+
+}
+
+function CheckEvolution($idpoke){
+	$poke = Get_pokemon($idpoke);
+	$stat = Get_pokedex($poke['NumP']);
+	if ($poke['Niv'] >= $stat['NiveauEvolution']) {
+		$link =create_link();
+		$stat = Get_pokedex($stat['Evolution']);
+		if ($stat['TypeD'] == NULL) {
+			$stat['TypeD'] ="NULL";
+			$query = "UPDATE banque SET NumP=".$stat['NumP'].", NomP='".$stat['NomP']."', Courbe='".$stat['Courbe']."',TypeU='".$stat['TypeU']."'   WHERE ID=".$idpoke;
+		}
+		else{
+		$query = "UPDATE banque SET NumP=".$stat['NumP'].", NomP='".$stat['NomP']."', Courbe='".$stat['Courbe']."',TypeU='".$stat['TypeU']."', TypeD='".$stat['TypeD']."'   WHERE ID=".$idpoke;}
+		echo $query;
+		mysqli_query($link,$query);
+		mysqli_close($link);
+		return true;
+	}
+	return false;
+
+
+}
+
 function CheckLevelUp($idpoke){
 	$poke = Get_pokemon($idpoke);
 	$link = create_link();
@@ -82,7 +120,7 @@ function addXP($idpoke){
 	$link = create_link();
 	if ($poke['Niv'] != 100) {
 		$query = "UPDATE banque SET XP = XP + ".$poke['XPVaincu']." WHERE ID =".$idpoke;
-		echo $query;
+		//echo $query;
 		mysqli_query($link,$query);
 	}
 	while (CheckLevelUp($idpoke)) {
@@ -208,8 +246,16 @@ function Pokemon_alea(){
 		mysqli_execute($stmt2);
 		$result = mysqli_stmt_get_result($stmt2);
 	}
-	$idpoke2 = 1;
+	$query = "SELECT NumP FROM pokedex WHERE NumP NOT IN (SELECT Evolution FROM pokedex WHERE Evolution IS NOT NULL)";
+	$res = mysqli_query($link,$query);
+
+	$nb_poke= mysqli_num_rows($res);
+	$rand_poke = rand(1,$nb_poke);
+	mysqli_data_seek($res, $rand_poke);
+	$resatt = mysqli_fetch_assoc($res);
+	$idpoke2 = $resatt['NumP'];
 	$nompoke = NomDepuisNumero($idpoke2);
+	//echo $nompoke;
 	Ajouter_pokemon_sauv($nompoke,$idpoke);
 	mysqli_close($link);
 	return $idpoke;
@@ -228,11 +274,21 @@ function Ajouter_pokemon_sauv($nompoke,$idpoke){
 	mysqli_execute($stmt3);
 	$result = mysqli_stmt_get_result($stmt3);
 	$res = mysqli_fetch_assoc($result);
+	if ($res['TypeD'] == NULL) {
+		$querytest2 = "SELECT * from attaque where TypeA=? AND (ClasseA = 'Physique' OR ClasseA = 'Speciale')";
+		//echo $querytest2;
+		$stmt3 = mysqli_prepare($link,$querytest2);
+		mysqli_stmt_bind_param($stmt3,"s",$res['TypeU']);
 
-	$querytest2 = "SELECT * from attaque where TypeA=? AND (ClasseA = 'Physique' OR ClasseA = 'Speciale')";
-	$stmt3 = mysqli_prepare($link,$querytest2);
+	}
+	else{
+		$querytest2 = "SELECT * from attaque where (TypeA=? OR TypeA=?) AND (ClasseA = 'Physique' OR ClasseA = 'Speciale' )";
+		//echo $querytest2;
+		$stmt3 = mysqli_prepare($link,$querytest2);
+		mysqli_stmt_bind_param($stmt3,"ss",$res['TypeU'],$res['TypeD']);
+	}
+	
 
-	mysqli_stmt_bind_param($stmt3,"s",$res['TypeU']);
 	echo mysqli_error($link);
 	mysqli_execute($stmt3);
 	$result = mysqli_stmt_get_result($stmt3);
@@ -242,10 +298,17 @@ function Ajouter_pokemon_sauv($nompoke,$idpoke){
 	$resatt = mysqli_fetch_assoc($result);
 	
 	 $resa = $resatt['IDAtt'];
-
-	 $querytest2 = "SELECT * from attaque where TypeA=? AND (ClasseA = 'Autre' OR ClasseA = 'Speciale')";
-	$stmt3 = mysqli_prepare($link,$querytest2);
-	mysqli_stmt_bind_param($stmt3,"s",$res['TypeU']);
+	 if ($res['TypeD'] == NULL) {
+		$querytest2 = "SELECT * from attaque where TypeA=? AND (ClasseA = 'Autre' OR ClasseA = 'Speciale' OR ClasseA = 'Physique' )";
+		$stmt3 = mysqli_prepare($link,$querytest2);
+		mysqli_stmt_bind_param($stmt3,"s",$res['TypeU']);
+	}
+	else{
+		$querytest2 = "SELECT * from attaque where (TypeA=? OR TypeA=?) AND (ClasseA = 'Autre' OR ClasseA = 'Speciale' OR ClasseA = 'Physique' )";
+		$stmt3 = mysqli_prepare($link,$querytest2);
+		mysqli_stmt_bind_param($stmt3,"ss",$res['TypeU'],$res['TypeD']);
+	}
+	
 	echo mysqli_error($link);
 	mysqli_execute($stmt3);
 	$result = mysqli_stmt_get_result($stmt3);
@@ -255,9 +318,16 @@ function Ajouter_pokemon_sauv($nompoke,$idpoke){
 	$resatt = mysqli_fetch_assoc($result);
 	$resb = $resatt['IDAtt'];
 	while($resb == $resa) {
-		$querytest2 = "SELECT * from attaque where TypeA=? AND (ClasseA = 'Autre' OR ClasseA = 'Speciale')";
+		 if ($res['TypeD'] == NULL) {
+		$querytest2 = "SELECT * from attaque where TypeA=? AND (ClasseA = 'Autre' OR ClasseA = 'Speciale' OR ClasseA = 'Physique' )";
 		$stmt3 = mysqli_prepare($link,$querytest2);
 		mysqli_stmt_bind_param($stmt3,"s",$res['TypeU']);
+		}
+		else{
+		$querytest2 = "SELECT * from attaque where (TypeA=? OR TypeA=?) AND (ClasseA = 'Autre' OR ClasseA = 'Speciale' OR ClasseA = 'Physique' )";
+		$stmt3 = mysqli_prepare($link,$querytest2);
+		mysqli_stmt_bind_param($stmt3,"ss",$res['TypeU'],$res['TypeD']);
+		}
 		echo mysqli_error($link);
 		mysqli_execute($stmt3);
 		$result = mysqli_stmt_get_result($stmt3);
@@ -269,7 +339,7 @@ function Ajouter_pokemon_sauv($nompoke,$idpoke){
 	}
 	 
 
-	
+	//echo "resa: ".$resa." resb : ".$resb;
 	
 
 	

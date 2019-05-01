@@ -87,6 +87,7 @@
  	 animation-duration: 0.5s;
  	animation-play-state: paused;
  	opacity: 1;
+ 	
   	/*animation-direction: alternate-reverse;  */
 }
 
@@ -99,6 +100,10 @@
   	animation-iteration-count: infinite;
  	 animation-duration: 0.5s;
  	animation-play-state: paused;
+ 	-moz-transform: scaleX(-1);
+        -o-transform: scaleX(-1);
+        -webkit-transform: scaleX(-1);
+        transform: scaleX(-1);
  	opacity: 1;
   	/*animation-direction: alternate-reverse;  */
 }

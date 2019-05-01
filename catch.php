@@ -9,6 +9,19 @@ $idpokemonsauvage = $_SESSION['idpokemonsauvage'];
 $nompoke=NomDepuisID($idpokemonsauvage);
 Catch_Pokemon($nomcompte,$idpokemonsauvage);
 $_SESSION['idpokemonsauvage']=NULL;
+if ($_COOKIE['pokemonjoueur']['GAINXP'] == 1) {
+	addXP($_COOKIE['pokemonjoueur']['ID']);
+	CheckEvolution($_COOKIE['pokemonjoueur']['ID']);
+}
+for ($i=0; $i < 5; $i++) { 
+ 			if ($_COOKIE['team'][$i]['ID'] != 'NULL') {
+ 				if ($_COOKIE['team'][$i]['GAINXP'] += 1) {
+ 					addXP($_COOKIE['team'][$i]['ID']);
+ 					CheckEvolution($_COOKIE['team'][$i]['ID']);
+ 				}
+ 			}
+ 			
+ }
 unset($_COOKIE['idpokemonsauvage']);
 setcookie('idpokemonsauvage', '', time() - 3600);
 unset($_COOKIE['pokemonsauvage[HP]']);

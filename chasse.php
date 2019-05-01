@@ -31,7 +31,7 @@ if (isset($_COOKIE['idpokemonsauvage'])) {
  	$hppoke = $poke['PVact'];
  	echo "<h2 id='hpj'>".$poke['PVact']."</h2>";
  	echo "<progress id='healthj' value='".$poke['PVact']."' max='".$poke['PVmax']."'></progress>";
- 	echo "<img id='pokeimg'src='img/".NomDepuisId($poke['ID'])."droite.png'>";
+ 	echo "<img id='pokeimg'src='img/".NomDepuisId($poke['ID']).".png'>";
  	echo "</div>";
  	$pokejoueur = Show_cap_by_id($poke['ID']);
  	$team = Show_other_poke($nomcompte,$poke['ID']);
@@ -49,7 +49,7 @@ if (isset($_COOKIE['idpokemonsauvage'])) {
 
  		echo "<h2 id='hpj'>".$_COOKIE['pokemonjoueur']['HP']."</h2>";
  		echo "<progress id='healthj' value='".$hppoke."' max='".$poke['PVmax']."'></progress>";
- 		echo "<img id='pokeimg'src='img/".NomDepuisId($poke['ID'])."droite.png'>";
+ 		echo "<img id='pokeimg'src='img/".NomDepuisId($poke['ID']).".png'>";
  		echo "</div>";
  		$team = array();
  		for ($i=0; $i < 5; $i++) { 
@@ -120,7 +120,7 @@ if (isset($_COOKIE['idpokemonsauvage'])) {
  	}
  	echo "<h2 id='hps'>".$hpsauvage."</h2>";
  	echo "<progress id='healths' value='".$hpsauvage."' max='".$pokesauv['PVmax']."'></progress>";
- 	echo "<img id='pokeimgs'src='img/".NomDepuisId($idpokesauvage)."gauche.png'>";
+ 	echo "<img id='pokeimgs'src='img/".NomDepuisId($idpokesauvage).".png'>";
  	echo "</div>";
  	$_SESSION['idpokemonsauvage']=$idpokesauvage;
  	setcookie("idpokemonsauvage",$idpokesauvage);
@@ -1193,7 +1193,7 @@ if (isset($_COOKIE['idpokemonsauvage'])) {
 	 		let name = document.getElementById('nompoke');
 	 		let img = document.getElementById('pokeimg');
 	 		
-	 		img.src = "img/"+pokemonjoueur.nom+"droite.png";
+	 		img.src = "img/"+pokemonjoueur.nom+".png";
 
 	 		name.innerHTML = pokemonjoueur.nom+" Niv "+pokemonjoueur.niv;
 	 		input.value = equipejoueur.Poke[a].nom;

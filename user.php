@@ -31,16 +31,19 @@ else{
 		$nompoke = utf8_decode("Salamèche");
 		$resa = 56;
 		$resb = 43; 
+		$var = 4;
 		break;
 	case 2:
 		$nompoke = "Bulbizarre";
 		$resa = 53;
 		$resb = 43;
+		$var = 1;
 		break;
 	case 3:
 		$nompoke = "Carapuce";
 		$resa = 56;
 		$resb = 42;
+		$var = 7;
 		break;
 	}
 	$querytest = "SELECT * from banque where ID=?";
@@ -88,21 +91,46 @@ else{
 	$query= "INSERT INTO compte(NOM,MDP) VALUES (?,?)";
 	$xp = 0;
 	$niv = 5;
-	$IVPV = (100*($res['PV']-1-10))/1-1-2*$res['PV'];
-	$IVATTAQUE = ($res['Attaque']/1-1)*100/1-1-2*$res['Attaque'];
-	$IVDefense = ($res['Defense']/1-1)*100/1-1-2*$res['Defense'];
-	$IVAttSpe = ($res['AttSpe']/1-1)*100/1-1-2*$res['AttSpe'];
-	$IVDefSpe = ($res['DefSPe']/1-1)*100/1-1-2*$res['DefSPe'];
-	$IVVitesse = ($res['Vitesse']/1-1)*100/1-1-2*$res['Vitesse'];
-	$var = 2;
+	$iv = 31;
+	$IVPV = 0;
+	$IVATTAQUE = 0;
+	$IVDefense = 0;
+	$IVAttSpe = 0;
+	$IVDefSpe = 0;
+	$IVVitesse = 0;
+	$stat = 0;
+	while ($iv != 0) {
+		$stat = rand(1,6);
+		if ($stat == 1){
+			$IVPV = $IVPV + 1;
+		}
+		else if ($stat == 2){
+			$IVATTAQUE = $IVATTAQUE+1;
+		}
+		else if ($stat == 3){
+			$IVDefense = $IVDefense+ 1;
+		}
+		else if ($stat == 4){
+			$IVAttSpe = $IVAttSpe+ 1;
+		}
+		else if ($stat == 5){
+			$IVDefSpe = $IVDefSpe + 1;
+		}
+		else if ($stat == 6){
+			$IVVitesse = $IVVitesse + 1;
+		}
+		$iv = $iv-1;
+	}
+	
+
 	$varn = NULL;
 	if ($res['TypeD'] == NULL) {
 		$res['TypeD'] = 'NULL';
-		$query2= "INSERT INTO banque (ID,NUMP,NOMP,TYPEU,COURBE,XP,XPVAINCU,NIV,IVPV,IVATTAQUE,IVDEFENSE,IVATTSPE,IVDEFSPE,IVVITESSE,PVMAX,VITESSE,ATTAQUE,DEFENSE,ATTSPE,DEFSPE,CAP1,CAP2,DRESSEUR,PVACT) VALUES(".$idpoke.",".$var.",'".$nompoke."','".$res['TypeU']."','".$res['Courbe']."',".$var.",".$res['XPVaincu'].",".$niv.",".$IVPV.",".$IVATTAQUE.",".$IVDefense.",".$IVAttSpe.",".$IVDefSpe.",".$IVVitesse.",".$res['PV'].",".$res['Vitesse'].",".$res['Attaque'].",".$res['Defense'].",".$res['AttSpe'].",".$res['DefSPe'].",".$resa.",".$resb.",'".$nomcompte."',".$res['PV'].")";
+		$query2= "INSERT INTO banque (ID,NUMP,NOMP,TYPEU,COURBE,XP,XPVAINCU,NIV,IVPV,IVATTAQUE,IVDEFENSE,IVATTSPE,IVDEFSPE,IVVITESSE,PVMAX,VITESSE,ATTAQUE,DEFENSE,ATTSPE,DEFSPE,CAP1,CAP2,DRESSEUR,PVACT) VALUES(".$idpoke.",".$var.",'".$nompoke."','".$res['TypeU']."','".$res['Courbe']."',0,".$res['XPVaincu'].",".$niv.",".$IVPV.",".$IVATTAQUE.",".$IVDefense.",".$IVAttSpe.",".$IVDefSpe.",".$IVVitesse.",".$res['PV'].",".$res['Vitesse'].",".$res['Attaque'].",".$res['Defense'].",".$res['AttSpe'].",".$res['DefSPe'].",".$resa.",".$resb.",'".$nomcompte."',".$res['PV'].")";
 
 	}
 	else{
-		$query2= "INSERT INTO banque (ID,NUMP,NOMP,TYPEU,TYPED,COURBE,XP,XPVAINCU,NIV,IVPV,IVATTAQUE,IVDEFENSE,IVATTSPE,IVDEFSPE,IVVITESSE,PVMAX,VITESSE,ATTAQUE,DEFENSE,ATTSPE,DEFSPE,CAP1,CAP2,DRESSEUR,PVACT) VALUES(".$idpoke.",".$var.",'".$nompoke."','".$res['TypeU']."','".$res['TypeD']."','".$res['Courbe']."',".$var.",".$res['XPVaincu'].",".$niv.",".$IVPV.",".$IVATTAQUE.",".$IVDefense.",".$IVAttSpe.",".$IVDefSpe.",".$IVVitesse.",".$res['PV'].",".$res['Vitesse'].",".$res['Attaque'].",".$res['Defense'].",".$res['AttSpe'].",".$res['DefSPe'].",".$resa.",".$resb.",'".$nomcompte."',".$res['PV'].")";
+		$query2= "INSERT INTO banque (ID,NUMP,NOMP,TYPEU,TYPED,COURBE,XP,XPVAINCU,NIV,IVPV,IVATTAQUE,IVDEFENSE,IVATTSPE,IVDEFSPE,IVVITESSE,PVMAX,VITESSE,ATTAQUE,DEFENSE,ATTSPE,DEFSPE,CAP1,CAP2,DRESSEUR,PVACT) VALUES(".$idpoke.",".$var.",'".$nompoke."','".$res['TypeU']."','".$res['TypeD']."','".$res['Courbe']."',0,".$res['XPVaincu'].",".$niv.",".$IVPV.",".$IVATTAQUE.",".$IVDefense.",".$IVAttSpe.",".$IVDefSpe.",".$IVVitesse.",".$res['PV'].",".$res['Vitesse'].",".$res['Attaque'].",".$res['Defense'].",".$res['AttSpe'].",".$res['DefSPe'].",".$resa.",".$resb.",'".$nomcompte."',".$res['PV'].")";
 	}
 	$query3= "INSERT INTO equipe(IDEq,DRESSEUR,SLOT1) VALUES (?,?,?)";
 	$query4= "INSERT INTO sac(IDSac,Dresseur,nbPokeball,nbSuperBall,nbHyperBall,nbPotion,nbSuperPotion,nbHyperPotion,nbPotionMax,nbAntidote,nbAntiPara,nbAntiBrule,nbAntiGel,nbReveil,nbRappel,nbRappelMax,nbElexir,nbMaxElexir,nbHuile,nbHuileMax) VALUES (".$ideq.",'".$nomcompte."',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)";
