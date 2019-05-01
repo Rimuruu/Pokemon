@@ -51,19 +51,25 @@ function Get_pokedex($numP){
 function CheckEvolution($idpoke){
 	$poke = Get_pokemon($idpoke);
 	$stat = Get_pokedex($poke['NumP']);
-	if ($poke['Niv'] >= $stat['NiveauEvolution']) {
-		$link =create_link();
-		$stat = Get_pokedex($stat['Evolution']);
-		if ($stat['TypeD'] == NULL) {
-			$stat['TypeD'] ="NULL";
-			$query = "UPDATE banque SET NumP=".$stat['NumP'].", NomP='".$stat['NomP']."', Courbe='".$stat['Courbe']."',TypeU='".$stat['TypeU']."'   WHERE ID=".$idpoke;
+	if ($stat['NiveauEvolution'] != NULL) {
+		
+	
+		if ($poke['Niv'] >= $stat['NiveauEvolution']) {
+			$link =create_link();
+			$stat = Get_pokedex($stat['Evolution']);
+			if ($stat['TypeD'] == NULL) {
+				$stat['TypeD'] ="NULL";
+				$query = "UPDATE banque SET NumP=".$stat['NumP'].", NomP='".$stat['NomP']."', Courbe='".$stat['Courbe']."',TypeU='".$stat['TypeU']."'   WHERE ID=".$idpoke;
+			}
+			else{
+				$link =create_link();
+				$stat = Get_pokedex($stat['Evolution']);
+			$query = "UPDATE banque SET NumP=".$stat['NumP'].", NomP='".$stat['NomP']."', Courbe='".$stat['Courbe']."',TypeU='".$stat['TypeU']."', TypeD='".$stat['TypeD']."'   WHERE ID=".$idpoke;}
+			echo $query;
+			mysqli_query($link,$query);
+			mysqli_close($link);
+			return true;
 		}
-		else{
-		$query = "UPDATE banque SET NumP=".$stat['NumP'].", NomP='".$stat['NomP']."', Courbe='".$stat['Courbe']."',TypeU='".$stat['TypeU']."', TypeD='".$stat['TypeD']."'   WHERE ID=".$idpoke;}
-		echo $query;
-		mysqli_query($link,$query);
-		mysqli_close($link);
-		return true;
 	}
 	return false;
 
@@ -90,6 +96,17 @@ function CheckLevelUp($idpoke){
 		$query = "UPDATE banque SET Niv = Niv + 1 WHERE ID =".$idpoke;
 		mysqli_query($link,$query);
 		$query = "UPDATE banque SET XP = XP - ".round($xpbesoin)." WHERE ID =".$idpoke;
+		mysqli_query($link,$query);
+		$stat =  Get_pokedex($poke['NumP']);
+		$niv = $poke['Niv']+1;
+		$poke['PVmax'] = ((2*$stat['PV']+$poke['IVPV']+5)*$niv)/100+5+$niv+10;
+		$poke['Attaque'] = ((2*$stat['Attaque']+$poke['IVAttaque']+5)*$niv)/100+5;
+		$poke['Defense'] = ((2*$stat['Defense']+$poke['IVDefense']+5)*$niv)/100+5;
+		$poke['Vitesse'] = ((2*$stat['Vitesse']+$poke['IVVitesse']+5)*$niv)/100+5;
+		$poke['AttSpe'] = ((2*$stat['AttSpe']+$poke['IVAttSpe']+5)*$niv)/100+5;
+		$poke['DefSPe'] = ((2*$stat['DefSPe']+$poke['IVDefSpe']+5)*$niv)/100+5;
+		$query = "UPDATE banque SET  PVmax=".$poke['PVmax'].",Attaque=".$poke['Attaque'].",Defense=".$poke['Defense'].",Vitesse=".$poke['Vitesse'].",AttSpe=".$poke['AttSpe'].",DefSPe=".$poke['DefSPe']." WHERE ID =".$idpoke;
+		echo $query;
 		mysqli_query($link,$query);
 	}
 	$poke = Get_pokemon($idpoke);
@@ -198,6 +215,7 @@ function Show_cap_by_id($idpoke){
 			mysqli_execute($stmt2);
 			$result = mysqli_stmt_get_result($stmt2);
 			$res['CAP'.$i] = mysqli_fetch_assoc($result);
+			$res['CAP'.$i]['NomA'] = utf8_encode($res['CAP'.$i]['NomA']);
 		}
 	}
 	return $res;
@@ -229,7 +247,7 @@ function NomDepuisId($numero){
 }
 
 
-function Pokemon_alea(){
+function Pokemon_alea($lvl){
 	$link = create_link();
 	$querytest = "SELECT * from banque where ID=?";
 	$stmt2 = mysqli_prepare($link,$querytest);
@@ -256,14 +274,14 @@ function Pokemon_alea(){
 	$idpoke2 = $resatt['NumP'];
 	$nompoke = NomDepuisNumero($idpoke2);
 	//echo $nompoke;
-	Ajouter_pokemon_sauv($nompoke,$idpoke);
+	Ajouter_pokemon_sauv($nompoke,$idpoke,$lvl);
 	mysqli_close($link);
 	return $idpoke;
 	
 }
 
 
-function Ajouter_pokemon_sauv($nompoke,$idpoke){
+function Ajouter_pokemon_sauv($nompoke,$idpoke,$lvl){
 	$link = create_link();
 
 
@@ -274,6 +292,7 @@ function Ajouter_pokemon_sauv($nompoke,$idpoke){
 	mysqli_execute($stmt3);
 	$result = mysqli_stmt_get_result($stmt3);
 	$res = mysqli_fetch_assoc($result);
+	$numP = $res['NumP'];
 	if ($res['TypeD'] == NULL) {
 		$querytest2 = "SELECT * from attaque where TypeA=? AND (ClasseA = 'Physique' OR ClasseA = 'Speciale')";
 		//echo $querytest2;
@@ -344,23 +363,53 @@ function Ajouter_pokemon_sauv($nompoke,$idpoke){
 
 	
 	$xp = 0;
-	$niv = 1;
-	$IVPV = (100*($res['PV']-1-10))/1-1-2*$res['PV'];
-	$IVATTAQUE = ($res['Attaque']/1-1)*100/1-1-2*$res['Attaque'];
-	$IVDefense = ($res['Defense']/1-1)*100/1-1-2*$res['Defense'];
-	$IVAttSpe = ($res['AttSpe']/1-1)*100/1-1-2*$res['AttSpe'];
-	$IVDefSpe = ($res['DefSPe']/1-1)*100/1-1-2*$res['DefSPe'];
-	$IVVitesse = ($res['Vitesse']/1-1)*100/1-1-2*$res['Vitesse'];
+	$niv = $lvl;
+	$iv = 31;
+	$IVPV = 0;
+	$IVATTAQUE = 0;
+	$IVDefense = 0;
+	$IVAttSpe = 0;
+	$IVDefSpe = 0;
+	$IVVitesse = 0;
+	$stat = 0;
+	while ($iv != 0) {
+		$stat = rand(1,6);
+		if ($stat == 1){
+			$IVPV = $IVPV + 1;
+		}
+		else if ($stat == 2){
+			$IVATTAQUE = $IVATTAQUE+1;
+		}
+		else if ($stat == 3){
+			$IVDefense = $IVDefense+ 1;
+		}
+		else if ($stat == 4){
+			$IVAttSpe = $IVAttSpe+ 1;
+		}
+		else if ($stat == 5){
+			$IVDefSpe = $IVDefSpe + 1;
+		}
+		else if ($stat == 6){
+			$IVVitesse = $IVVitesse + 1;
+		}
+		$iv = $iv-1;
+	}
 	$var = 1;
+	$res['PV'] = ((2*$res['PV']+$IVPV+5)*$niv)/100+5+$niv+10;
+	$res['Attaque'] = ((2*$res['Attaque']+$IVATTAQUE+5)*$niv)/100+5;
+	$res['Defense'] = ((2*$res['Defense']+$IVDefense+5)*$niv)/100+5;
+	$res['Vitesse'] = ((2*$res['Vitesse']+$IVVitesse+5)*$niv)/100+5;
+	$res['AttSpe'] = ((2*$res['AttSpe']+$IVAttSpe+5)*$niv)/100+5;
+	$res['DefSPe'] = ((2*$res['DefSPe']+$IVDefSpe+5)*$niv)/100+5;
 	$varn = NULL;
 	if ($res['TypeD'] == NULL) {
 		$res['TypeD'] = 'NULL';
-		$query2= "INSERT INTO banque (ID,NUMP,NOMP,TYPEU,COURBE,XP,XPVAINCU,NIV,IVPV,IVATTAQUE,IVDEFENSE,IVATTSPE,IVDEFSPE,IVVITESSE,PVMAX,VITESSE,ATTAQUE,DEFENSE,ATTSPE,DEFSPE,CAP1,CAP2,PVACT) VALUES(".$idpoke.",".$var.",'".$nompoke."','".$res['TypeU']."','".$res['Courbe']."',".$var.",".$res['XPVaincu'].",".$niv.",".$IVPV.",".$IVATTAQUE.",".$IVDefense.",".$IVAttSpe.",".$IVDefSpe.",".$IVVitesse.",".$res['PV'].",".$res['Vitesse'].",".$res['Attaque'].",".$res['Defense'].",".$res['AttSpe'].",".$res['DefSPe'].",".$resa.",".$resb.",".$res['PV'].")";
+		$query2= "INSERT INTO banque (ID,NUMP,NOMP,TYPEU,COURBE,XP,XPVAINCU,NIV,IVPV,IVATTAQUE,IVDEFENSE,IVATTSPE,IVDEFSPE,IVVITESSE,PVMAX,VITESSE,ATTAQUE,DEFENSE,ATTSPE,DEFSPE,CAP1,CAP2,PVACT) VALUES(".$idpoke.",".$numP.",'".$nompoke."','".$res['TypeU']."','".$res['Courbe']."',".$var.",".$res['XPVaincu'].",".$niv.",".$IVPV.",".$IVATTAQUE.",".$IVDefense.",".$IVAttSpe.",".$IVDefSpe.",".$IVVitesse.",".$res['PV'].",".$res['Vitesse'].",".$res['Attaque'].",".$res['Defense'].",".$res['AttSpe'].",".$res['DefSPe'].",".$resa.",".$resb.",".$res['PV'].")";
 		
 
 	}
 	else{
-		$query2= "INSERT INTO banque (ID,NUMP,NOMP,TYPEU,TYPED,COURBE,XP,XPVAINCU,NIV,IVPV,IVATTAQUE,IVDEFENSE,IVATTSPE,IVDEFSPE,IVVITESSE,PVMAX,VITESSE,ATTAQUE,DEFENSE,ATTSPE,DEFSPE,CAP1,CAP2,PVACT) VALUES(".$idpoke.",".$var.",'".$nompoke."','".$res['TypeU']."','".$res['TypeD']."','".$res['Courbe']."',".$var.",".$res['XPVaincu'].",".$niv.",".$IVPV.",".$IVATTAQUE.",".$IVDefense.",".$IVAttSpe.",".$IVDefSpe.",".$IVVitesse.",".$res['PV'].",".$res['Vitesse'].",".$res['Attaque'].",".$res['Defense'].",".$res['AttSpe'].",".$res['DefSPe'].",".$resa.",".$resb.",".$res['PV'].")";
+		$query2= "INSERT INTO banque (ID,NUMP,NOMP,TYPEU,TYPED,COURBE,XP,XPVAINCU,NIV,IVPV,IVATTAQUE,IVDEFENSE,IVATTSPE,IVDEFSPE,IVVITESSE,PVMAX,VITESSE,ATTAQUE,DEFENSE,ATTSPE,DEFSPE,CAP1,CAP2,PVACT) VALUES(".$idpoke.",".$numP.",'".$nompoke."','".$res['TypeU']."','".$res['TypeD']."','".$res['Courbe']."',".$var.",".$res['XPVaincu'].",".$niv.",".$IVPV.",".$IVATTAQUE.",".$IVDefense.",".$IVAttSpe.",".$IVDefSpe.",".$IVVitesse.",".$res['PV'].",".$res['Vitesse'].",".$res['Attaque'].",".$res['Defense'].",".$res['AttSpe'].",".$res['DefSPe'].",".$resa.",".$resb.",".$res['PV'].")";
 		
 	}
 

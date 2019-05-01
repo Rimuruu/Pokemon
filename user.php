@@ -121,6 +121,12 @@ else{
 		}
 		$iv = $iv-1;
 	}
+	$res['PV'] = ((2*$res['PV']+$IVPV+5)*$niv)/100+5+$niv+10;
+	$res['Attaque'] = ((2*$res['Attaque']+$IVATTAQUE+5)*$niv)/100+5;
+	$res['Defense'] = ((2*$res['Defense']+$IVDefense+5)*$niv)/100+5;
+	$res['Vitesse'] = ((2*$res['Vitesse']+$IVVitesse+5)*$niv)/100+5;
+	$res['AttSpe'] = ((2*$res['AttSpe']+$IVAttSpe+5)*$niv)/100+5;
+	$res['DefSPe'] = ((2*$res['DefSPe']+$IVDefSpe+5)*$niv)/100+5;
 	
 
 	$varn = NULL;

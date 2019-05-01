@@ -81,12 +81,14 @@
 	position: absolute;
 	left: 20%;
 	top: 250%;
-	animation-name: fade;
-	animation-fill-mode: both;
-  	animation-iteration-count: infinite;
- 	 animation-duration: 0.5s;
- 	animation-play-state: paused;
- 	opacity: 1;
+
+ 	
+ 	-moz-animation: blink normal 0.5s infinite ease-in-out; /* Firefox */
+    -webkit-animation: blink normal 0.5s infinite ease-in-out; /* Webkit */
+    -ms-animation: blink normal 0.5s infinite ease-in-out; /* IE */
+    animation: blink normal 0.5s infinite ease-in-out; 
+    animation-play-state: paused;
+ 	/*opacity: 1;*/
  	
   	/*animation-direction: alternate-reverse;  */
 }
@@ -95,7 +97,12 @@
 	position: absolute;
 	left: 20%;
 	top: 250%;
-	animation-name: fade;
+	-moz-animation: blink normal 0.5s infinite ease-in-out; /* Firefox */
+    -webkit-animation: blink normal 0.5s infinite ease-in-out; /* Webkit */
+    -ms-animation: blink normal 0.5s infinite ease-in-out; /* IE */
+    animation: blink normal 0.5s infinite ease-in-out; 
+    animation-play-state: paused;
+	/*animation-name: fade;
 	animation-fill-mode: both;
   	animation-iteration-count: infinite;
  	 animation-duration: 0.5s;
@@ -103,18 +110,31 @@
  	-moz-transform: scaleX(-1);
         -o-transform: scaleX(-1);
         -webkit-transform: scaleX(-1);
-        transform: scaleX(-1);
- 	opacity: 1;
+        transform: scaleX(-1);*/
+ 	/*opacity: 1;*/
   	/*animation-direction: alternate-reverse;  */
 }
 
-@keyframes fade{
+/*@keyframes fade{
     100% {
       opacity: 0.40;
 }
     0%,50%{
       opacity: 1;
   }
+}*/
+
+
+@-webkit-keyframes blink {
+    0% {
+        opacity:1;
+    }
+    50% {
+        opacity:0;
+    }
+    100% {
+        opacity:1;
+    }
 }
 
 #myVideo {
@@ -158,4 +178,14 @@ progress::-webkit-progress-value {
 
 h2{
 	font-size: 15px;
+}
+
+.show {
+  opacity: 1;
+  transition: opacity 500ms;
+}
+
+.hide {
+  opacity: 0.40;
+  transition: opacity 500ms;
 }

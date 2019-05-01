@@ -55,7 +55,7 @@ for ($i=0; $i < 5  ; $i=$i+1) {
 	setcookie('team['.$i.'][GAINXP]', '', time() - 3600);
 }
 
-header("location: log.php");
+//header("location: log.php");
 
 
  ?>
