@@ -22,6 +22,7 @@ include 'security.php';
 		$argent = mysqli_fetch_assoc($money);
 
 		while ($value=mysqli_fetch_assoc($sql)) {
+			if($value['TypeO']!='PP'){
 			echo "<fieldset><form method=\"post\" action=\"achat.php\">"; 
 			echo $value['Objet'].'<br>Type d\'objet :'.$value['TypeO'].'<br>';
 
@@ -60,6 +61,7 @@ include 'security.php';
 			echo "Quantité <input type=\"number\" name=\"quantite\" min=\"0\" max=\"".$max."\"><br>";
 			echo "<input type=\"submit\" value=\"Acheter\" name=\"".$value['Objet']."\">";
 			echo "</form></fieldset><br/>";
+		}
 		}
 
 		?>
