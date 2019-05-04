@@ -3,7 +3,7 @@
 session_start();
 include 'user.php';
 include 'security.php';
-
+include 'match.php';
 $link =create_link();
 $sql = mysqli_query($link,'SELECT Objet FROM listeinventaire');
 

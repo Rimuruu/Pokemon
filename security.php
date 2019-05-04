@@ -3,6 +3,7 @@
 	if(!@include_once('bdd.php')) {
   		include 'bdd.php';
 	}
+
 	if (isset($_SESSION['nomcompte'])) {
 		$nomcompte = $_SESSION['nomcompte'];
 	}

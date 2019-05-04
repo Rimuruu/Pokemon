@@ -3,6 +3,7 @@
 session_start();
 include 'security.php';
 include 'user.php';
+include 'match.php';
 if (!isset($_SESSION['idpokemonsauvage'])) {
 	header("location: login.php");
 }
@@ -11,12 +12,17 @@ $idpokemonsauvage = $_SESSION['idpokemonsauvage'];
 $nompoke=NomDepuisID($idpokemonsauvage);
 Delete_Pokemon_byID($idpokemonsauvage);
 $_SESSION['idpokemonsauvage']=NULL;
+if (isset($_COOKIE['pokemonjoueur']['ID'])) {
+	setPVact($_COOKIE['pokemonjoueur']['ID'],$_COOKIE['pokemonjoueur']['HP']);
+}
 if ($_COOKIE['pokemonjoueur']['GAINXP'] == 1) {
+
 	addXP($_COOKIE['pokemonjoueur']['ID']);
 	CheckEvolution($_COOKIE['pokemonjoueur']['ID']);
 }
 for ($i=0; $i < 5; $i++) { 
  			if ($_COOKIE['team'][$i]['ID'] != 'NULL') {
+ 				setPVact($_COOKIE['team'][$i]['ID'] ,$_COOKIE['team'][$i]['HP']);
  				if ($_COOKIE['team'][$i]['GAINXP'] == 1) {
  					addXP($_COOKIE['team'][$i]['ID']);
  					CheckEvolution($_COOKIE['team'][$i]['ID']);

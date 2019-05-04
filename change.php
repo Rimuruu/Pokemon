@@ -2,6 +2,7 @@
 session_start();
 include 'security.php';
 include 'user.php';
+include 'match.php';
 if (!isset($_COOKIE['slot1'])) {
 	header("location: login.php");
 }

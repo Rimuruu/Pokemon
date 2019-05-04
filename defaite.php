@@ -11,6 +11,18 @@ $idpokemonsauvage = $_SESSION['idpokemonsauvage'];
 $nompoke=NomDepuisID($idpokemonsauvage);
 Delete_Pokemon_byID($idpokemonsauvage);
 $_SESSION['idpokemonsauvage']=NULL;
+if (isset($_COOKIE['pokemonjoueur']['ID'])) {
+	$poke = Get_pokemon($_COOKIE['pokemonjoueur']['ID']);
+	setPVact($_COOKIE['pokemonjoueur']['ID'],$poke['PVmax']);
+}
+for ($i=0; $i < 5; $i++) { 
+ 			if ($_COOKIE['team'][$i]['ID'] != 'NULL') {
+ 				$poke = Get_pokemon($_COOKIE['team'][$i]['ID']);
+ 				setPVact($_COOKIE['team'][$i]['ID'] ,$poke['PVmax']);
+ 			
+ 			}
+ 			
+ }
 unset($_COOKIE['idpokemonsauvage']);
 setcookie('idpokemonsauvage', '', time() - 3600);
 

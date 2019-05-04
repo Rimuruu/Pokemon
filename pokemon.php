@@ -76,6 +76,14 @@ function CheckEvolution($idpoke){
 
 }
 
+
+function setPVact($idpoke,$hp){
+	$link = create_link();
+	$query = "UPDATE banque SET PVact=".$hp." WHERE ID =".$idpoke;
+	mysqli_query($link,$query);
+	mysqli_close($link);
+}
+
 function CheckLevelUp($idpoke){
 	$poke = Get_pokemon($idpoke);
 	$link = create_link();
@@ -105,8 +113,9 @@ function CheckLevelUp($idpoke){
 		$poke['Vitesse'] = ((2*$stat['Vitesse']+$poke['IVVitesse']+5)*$niv)/100+5;
 		$poke['AttSpe'] = ((2*$stat['AttSpe']+$poke['IVAttSpe']+5)*$niv)/100+5;
 		$poke['DefSPe'] = ((2*$stat['DefSPe']+$poke['IVDefSpe']+5)*$niv)/100+5;
-		$query = "UPDATE banque SET  PVmax=".$poke['PVmax'].",Attaque=".$poke['Attaque'].",Defense=".$poke['Defense'].",Vitesse=".$poke['Vitesse'].",AttSpe=".$poke['AttSpe'].",DefSPe=".$poke['DefSPe']." WHERE ID =".$idpoke;
-		echo $query;
+		$poke['PVact']  = $poke['PVmax'];
+		$query = "UPDATE banque SET  PVact=".$poke['PVact'].",PVmax=".$poke['PVmax'].",Attaque=".$poke['Attaque'].",Defense=".$poke['Defense'].",Vitesse=".$poke['Vitesse'].",AttSpe=".$poke['AttSpe'].",DefSPe=".$poke['DefSPe']." WHERE ID =".$idpoke;
+
 		mysqli_query($link,$query);
 	}
 	$poke = Get_pokemon($idpoke);

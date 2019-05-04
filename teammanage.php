@@ -2,6 +2,7 @@
 session_start();
 include 'security.php';
 include 'user.php';
+include 'match.php';
 $box = 5;
 $slot1 = Get_nth_pokemon($nomcompte,1);
 $slot2 = Get_nth_pokemon($nomcompte,2);

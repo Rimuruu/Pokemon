@@ -2,9 +2,7 @@
 session_start();
 include 'security.php';
 include 'user.php';
-if (!isset($_POST['chasse'])) {
-	header("location: log.php");
-}
+
 if (isset($_COOKIE['idpokemonsauvage'])) {
 	$idpokesauvage=$_COOKIE['idpokemonsauvage'];
 }

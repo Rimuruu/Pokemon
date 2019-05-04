@@ -1,3 +1,10 @@
+<?php
+
+session_start();
+if (isset($_SESSION['nomcompte'])) {
+	header("location: log.php");
+ } ?>
+ 
 <!DOCTYPE html>
 <html>
 <head>
