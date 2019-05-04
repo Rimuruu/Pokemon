@@ -171,6 +171,17 @@ function Ajout_Pokemon($nomcompte,$idpoke,$SLOTNUMBER){
 
 }
 
+function getItem($nomcompte){
+	$link = create_link();
+	$query = "Select * FROM sac WHERE Dresseur='".$nomcompte."'";
+	//echo $query;
+	$result = mysqli_query($link,$query);
+	$res = mysqli_fetch_assoc($result);
+	mysqli_close($link);
+	return $res;
+
+}
+
 function Show_team($nomcompte){
 	$link =create_link();
 	echo "<ul>Equipe pokemon";
@@ -262,6 +273,28 @@ function Show_First_Pokemon_Available($nomcompte){
 		break;
 		}
 	}
+	if ($res['NomP']==NULL) {
+		$res = Show_First_Pokemon($nomcompte);
+	}
+	mysqli_close($link);
+	return $res;
+}
+
+function Show_First_Pokemon($nomcompte){
+	$link =create_link();
+	for ($i=1; $i <= 6; $i=$i+1) { 
+	$querytest = "SELECT * FROM banque JOIN equipe ON banque.ID = equipe.SLOT".$i." JOIN compte ON compte.NOM = equipe.DRESSEUR where compte.NOM=?"; 
+	$stmt2 = mysqli_prepare($link,$querytest);
+	mysqli_stmt_bind_param($stmt2,"s",$nomcompte);
+	mysqli_execute($stmt2);
+	$result = mysqli_stmt_get_result($stmt2);
+	$res = mysqli_fetch_assoc($result);
+	if ($res['NomP']!=NULL) {
+		echo "<h2 id='nompoke'> ".utf8_encode($res['NomP'])." Niv ".$res['Niv']." </h2>";
+		break;
+		}
+	}
+	
 	mysqli_close($link);
 	return $res;
 }

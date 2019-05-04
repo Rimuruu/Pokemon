@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Apr 22, 2019 at 01:28 PM
+-- Generation Time: May 04, 2019 at 11:30 AM
 -- Server version: 10.3.12-MariaDB
 -- PHP Version: 7.2.14
 
@@ -207,6 +207,16 @@ CREATE TABLE IF NOT EXISTS `banque` (
   KEY `NumP` (`NumP`,`NomP`,`TypeU`,`TypeD`,`Courbe`,`XPVaincu`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `banque`
+--
+
+INSERT INTO `banque` (`ID`, `NumP`, `NomP`, `TypeU`, `TypeD`, `Courbe`, `XP`, `XPVaincu`, `Niv`, `IVPV`, `IVAttaque`, `IVDefense`, `IVAttSpe`, `IVDefSpe`, `IVVitesse`, `PVmax`, `Vitesse`, `Attaque`, `Defense`, `AttSpe`, `DefSPe`, `CAP1`, `CAP2`, `CAP3`, `CAP4`, `Dresseur`, `PVact`, `Statut`) VALUES
+(57884, 29, 'Nidoran f', 'Poison', NULL, 'Moyen-', 60, 59, 5, 4, 6, 5, 5, 5, 6, 25, 9, 10, 10, 9, 9, 90, 88, NULL, NULL, 'test', 1, NULL),
+(8734, 152, 'Mew', 'Psy', NULL, 'Moyen-', 102, 64, 5, 9, 4, 5, 2, 5, 6, 31, 16, 15, 16, 15, 16, 98, 96, NULL, NULL, 'test', 16, NULL),
+(16978, 4, 'Salamèche', 'Feu', NULL, 'Moyen-', 114, 65, 7, 8, 3, 5, 3, 4, 8, 28, 15, 13, 12, 14, 13, 56, 43, NULL, NULL, 'test', 28, NULL),
+(29722, 4, 'Salamèche', 'Feu', NULL, 'Moyen-', 0, 65, 5, 6, 4, 7, 6, 3, 5, 24, 12, 11, 10, 12, 10, 56, 43, NULL, NULL, 'kett', 24, NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -218,9 +228,16 @@ CREATE TABLE IF NOT EXISTS `compte` (
   `Nom` varchar(35) NOT NULL,
   `MDP` varchar(35) NOT NULL,
   `Pokedollar` int(11) DEFAULT 1000,
-  `DateCo` date,
+  `DateCo` date NOT NULL,
   PRIMARY KEY (`Nom`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `compte`
+--
+
+INSERT INTO `compte` (`Nom`, `MDP`, `Pokedollar`, `DateCo`) VALUES
+('test', 'te', 1000, '2019-05-04');
 
 -- --------------------------------------------------------
 
@@ -246,11 +263,8 @@ CREATE TABLE IF NOT EXISTS `equipe` (
 --
 
 INSERT INTO `equipe` (`IDEq`, `Dresseur`, `SLOT1`, `SLOT2`, `SLOT3`, `SLOT4`, `SLOT5`, `SLOT6`) VALUES
-(98484, 'ketto', 90488, 71876, 0, 0, 0, 0),
-(54489, 'ke', 22889, NULL, NULL, NULL, NULL, NULL),
-(40919, 'kett', 88033, 59891, 12332, NULL, NULL, NULL),
-(99396, 'ketto', 21007, 71876, NULL, NULL, NULL, NULL),
-(24309, 'ketto', 21144, 71876, NULL, NULL, NULL, NULL);
+(55777, 'test', 16978, 8734, 57884, NULL, NULL, NULL),
+(9036, 'kett', 29722, NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -263,7 +277,7 @@ CREATE TABLE IF NOT EXISTS `listeinventaire` (
   `Objet` varchar(25) NOT NULL,
   `TypeO` enum('Pokeball','Soin','Statut','Rappel','PP') NOT NULL,
   `Prix` double NOT NULL,
-  `TauxCaptureBall` double DEFAULT NULL,
+  `TauxCaptureBall` int(11) DEFAULT NULL,
   `PVSoin` int(11) DEFAULT NULL,
   `StatSoin` enum('Bru','Para','Som','Poi','Gel') DEFAULT NULL,
   `PPrajoute` int(11) DEFAULT NULL,
@@ -277,8 +291,8 @@ CREATE TABLE IF NOT EXISTS `listeinventaire` (
 --
 
 INSERT INTO `listeinventaire` (`Objet`, `TypeO`, `Prix`, `TauxCaptureBall`, `PVSoin`, `StatSoin`, `PPrajoute`, `PPcible`, `Rappel`) VALUES
-('PokeBall', 'Pokeball', 200, 1, NULL, NULL, NULL, NULL, NULL),
-('SuperBall', 'Pokeball', 600, 1.5, NULL, NULL, NULL, NULL, NULL),
+('Pokeball', 'Pokeball', 200, 1, NULL, NULL, NULL, NULL, NULL),
+('SuperBall', 'Pokeball', 600, 2, NULL, NULL, NULL, NULL, NULL),
 ('HyperBall', 'Pokeball', 1200, 2, NULL, NULL, NULL, NULL, NULL),
 ('Potion', 'Soin', 300, NULL, 20, NULL, NULL, NULL, NULL),
 ('SuperPotion', 'Soin', 700, NULL, 50, NULL, NULL, NULL, NULL),
@@ -286,7 +300,7 @@ INSERT INTO `listeinventaire` (`Objet`, `TypeO`, `Prix`, `TauxCaptureBall`, `PVS
 ('PotionMax', 'Soin', 2500, NULL, 999, NULL, NULL, NULL, NULL),
 ('Antidote', 'Statut', 100, NULL, NULL, 'Poi', NULL, NULL, NULL),
 ('AntiPara', 'Statut', 200, NULL, NULL, 'Para', NULL, NULL, NULL),
-('AntiBrule', 'Statut', 250, NULL, NULL, 'Bru', NULL, NULL, NULL),
+('Anti-Brûle', 'Statut', 250, NULL, NULL, 'Bru', NULL, NULL, NULL),
 ('AntiGel', 'Statut', 250, NULL, NULL, 'Gel', NULL, NULL, NULL),
 ('Reveil', 'Statut', 200, NULL, NULL, 'Som', NULL, NULL, NULL),
 ('Rappel', 'Rappel', 1500, NULL, NULL, NULL, NULL, NULL, 'Partiel'),
@@ -490,7 +504,7 @@ DROP TABLE IF EXISTS `sac`;
 CREATE TABLE IF NOT EXISTS `sac` (
   `IDSac` int(11) NOT NULL,
   `Dresseur` varchar(35) NOT NULL,
-  `nbPokeBall` int(11) NOT NULL DEFAULT 5,
+  `nbPokeball` int(11) NOT NULL DEFAULT 5,
   `nbSuperBall` int(11) NOT NULL,
   `nbHyperBall` int(11) NOT NULL,
   `nbPotion` int(11) NOT NULL DEFAULT 10,
@@ -510,6 +524,14 @@ CREATE TABLE IF NOT EXISTS `sac` (
   `nbHuileMax` int(11) NOT NULL,
   PRIMARY KEY (`IDSac`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `sac`
+--
+
+INSERT INTO `sac` (`IDSac`, `Dresseur`, `nbPokeball`, `nbSuperBall`, `nbHyperBall`, `nbPotion`, `nbSuperPotion`, `nbHyperPotion`, `nbPotionMax`, `nbAntidote`, `nbAntiPara`, `nbAntiBrule`, `nbAntiGel`, `nbReveil`, `nbRappel`, `nbRappelMax`, `nbElexir`, `nbMaxElexir`, `nbHuile`, `nbHuileMax`) VALUES
+(55777, 'test', 5, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(9036, 'kett', 5, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 
 -- --------------------------------------------------------
 
