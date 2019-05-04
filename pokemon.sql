@@ -218,6 +218,7 @@ CREATE TABLE IF NOT EXISTS `compte` (
   `Nom` varchar(35) NOT NULL,
   `MDP` varchar(35) NOT NULL,
   `Pokedollar` int(11) DEFAULT 1000,
+  `DateCo` date,
   PRIMARY KEY (`Nom`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 

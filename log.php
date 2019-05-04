@@ -4,6 +4,37 @@ session_start();
 include 'security.php';
 include 'user.php';
 
+$link =create_link();
+$date = date("Y-m-d");
+
+$dated = 'SELECT DateCo FROM compte WHERE Nom="'.$nomcompte.'"';
+$datec = mysqli_query($link,$dated);
+$dateco=mysqli_fetch_assoc($datec);
+
+$date1 = strtotime($date);
+$date2 = strtotime($dateco['DateCo']);
+
+$res = ($date1 - $date2)/86400;
+
+if($res > 0){
+	for($i=0;$i<$res;$i=$i+1){
+		$req = 'UPDATE compte SET Pokedollar = Pokedollar + 50 WHERE Nom="'.$nomcompte.'"';
+		$cou = mysqli_query($link,$req);
+
+		$sac = 'UPDATE sac SET nbPokeball = nbPokeball+5 WHERE Dresseur="'.$nomcompte.'"';
+		$couc = mysqli_query($link,$sac);
+
+		$poke = "UPDATE Banque B,Equipe E SET PVact=PVmax WHERE B.Dresseur='".$nomcompte."' AND E.Dresseur='".$nomcompte."' 
+		AND (ID=SLOT1 OR ID=SLOT2 OR ID=SLOT3 OR ID=SLOT4 OR ID=SLOT5 OR ID=SLOT6)";
+		$couco = mysqli_query($link,$poke);
+		$pokemo = "UPDATE Banque B,Equipe E SET Statut=NULL WHERE B.Dresseur='".$nomcompte."' AND E.Dresseur='".$nomcompte."' 
+		AND (ID=SLOT1 OR ID=SLOT2 OR ID=SLOT3 OR ID=SLOT4 OR ID=SLOT5 OR ID=SLOT6)";
+		$coucoo=mysqli_query($link,$pokemo);
+	}
+}
+	$datecoo = 'UPDATE compte SET DateCo = "'.$date.'" WHERE Nom="'.$nomcompte.'"';
+	$coucou = mysqli_query($link,$datecoo);
+
 
  ?>
 
