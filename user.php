@@ -175,7 +175,7 @@ function Show_team($nomcompte){
 	$link =create_link();
 	echo "<ul>Equipe pokemon";
 	for ($i=1; $i <= 6 ; $i=$i+1) { 
-		$querytest = "SELECT banque.NOMP FROM banque JOIN equipe ON banque.ID = equipe.SLOT".$i." JOIN compte ON compte.NOM = equipe.Dresseur where compte.NOM=?"; 
+		$querytest = "SELECT banque.NOMP, banque.Niv, banque.PVact, banque.PVmax FROM banque JOIN equipe ON banque.ID = equipe.SLOT".$i." JOIN compte ON compte.NOM = equipe.Dresseur where compte.NOM=?"; 
 		$stmt2 = mysqli_prepare($link,$querytest);
 		mysqli_stmt_bind_param($stmt2,"s",$nomcompte);
 		mysqli_execute($stmt2);
@@ -185,7 +185,7 @@ function Show_team($nomcompte){
 			echo "<li id='slot".$i."''> Vide </li>";
 		}
 		else{
-		echo "<li id='slot".$i."''>".utf8_encode($res['NOMP'])." </li>";
+		echo "<li id='slot".$i."''>".utf8_encode($res['NOMP'])." Niv ".$res['Niv']."   PV: ".$res['PVact']."/".$res['PVmax']."</li>";
 	}
 	}
 	echo "<ul>";
