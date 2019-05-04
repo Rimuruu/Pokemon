@@ -200,3 +200,24 @@ h2{
   opacity: 0.40;
   transition: opacity 500ms;
 }
+
+#sac{
+	position: fixed;
+	border-style: solid;
+	top: 200px;
+	left: 810px;
+	height: 354px;
+	width: 100px; 
+
+}
+
+#sac *{
+	padding: 0;
+	border: none;
+	background: none;
+}
+
+#sac li{
+	margin-top:10px;
+	margin-left: 10px;
+}

@@ -27,6 +27,14 @@ for ($i=0; $i < 5; $i++) {
  			}
  			
  }
+ $item = getItem($nomcompte);
+ if (isset($_COOKIE['nb_pokeball'])) {
+ 	$item['nbPokeball'] = $_COOKIE['nb_pokeball'];
+ }
+ if (isset($_COOKIE['nb_potion'])) {
+ 	$item['nbPotion'] = $_COOKIE['nb_potion'];
+ }
+changeItem($nomcompte,$item);
 unset($_COOKIE['idpokemonsauvage']);
 setcookie('idpokemonsauvage', '', time() - 3600);
 unset($_COOKIE['pokemonsauvage[HP]']);

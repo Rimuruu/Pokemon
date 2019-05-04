@@ -316,7 +316,14 @@ function Get_nth_pokemon($nomcompte,$nth){
 	return $res;
 }
 
+function changeItem($nomcompte,$res){
+	$link =create_link();
+	$query = "UPDATE sac SET nbPokeball=".$res['nbPokeball'].",nbSuperBall=".$res['nbSuperBall'].",nbHyperBall=".$res['nbHyperBall'].",nbPotion=".$res['nbPotion'].",nbSuperPotion=".$res['nbSuperPotion'].",nbHyperPotion=".$res['nbHyperPotion'].",nbPotionMax=".$res['nbPotionMax'].",nbAntidote=".$res['nbAntidote'].",nbAntiPara=".$res['nbAntiPara'].",nbAntiBrule=".$res['nbAntiBrule'].",nbAntiGel=".$res['nbAntiGel'].",nbReveil=".$res['nbReveil'].",nbRappel=".$res['nbRappel'].",nbRappelMax=".$res['nbRappelMax'].",nbElexir=".$res['nbElexir'].",nbMaxElexir=".$res['nbMaxElexir'].",nbHuile=".$res['nbHuile'].",nbHuileMax=".$res['nbHuileMax']." WHERE Dresseur='".$nomcompte."'";
+	mysqli_query($link,$query);
+	mysqli_close($link);
 
+
+}
 
 function Get_pokemon_from_computer($nomcompte){
 	$slot1 = Get_nth_pokemon($nomcompte,1);
