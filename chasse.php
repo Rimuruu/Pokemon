@@ -64,6 +64,7 @@ if (isset($_COOKIE['idpokemonsauvage'])) {
  				
  		
  		}
+ 		//echo $team[1]['NomP'];
  	$nb_poke = 1;
  	$sommelvl = $poke['Niv'];
  	$cappoke1=null;
@@ -125,6 +126,7 @@ if (isset($_COOKIE['idpokemonsauvage'])) {
  	echo "<div id='pokes'>";
  	$pokemonsauvage = Show_cap_by_id($idpokesauvage);
  	$pokesauv = Get_pokemon($idpokesauvage);
+ 	$pokesauvt = Get_pokedex($pokesauv['NumP']);
  	Show_pokemon_by_id($idpokesauvage);
  	if (isset($_COOKIE['pokemonsauvage'])) {
  		$hpsauvage = $_COOKIE['pokemonsauvage']['HP'];
@@ -135,6 +137,7 @@ if (isset($_COOKIE['idpokemonsauvage'])) {
  	echo "<h2 id='hps'>".$hpsauvage."</h2>";
  	echo "<progress id='healths' value='".$hpsauvage."' max='".$pokesauv['PVmax']."'></progress>";
  	echo "<img class='show' id='pokeimgs'src='img/".NomDepuisId($idpokesauvage).".png'>";
+ 	echo "<img  id='pokeb'src='img/poke.png'>";
  	echo "</div>";
  	$_SESSION['idpokemonsauvage']=$idpokesauvage;
  	setcookie("idpokemonsauvage",$idpokesauvage);
@@ -838,6 +841,8 @@ if (isset($_COOKIE['idpokemonsauvage'])) {
  	};
  	var checkpartie = setInterval(Partie,1000);
 
+ 	var tauxcapture = <?php echo $pokesauvt['TauxCapture'];?>;
+
  	function start(){
  		Set_cap(pokemonjoueur);
  		
@@ -845,9 +850,9 @@ if (isset($_COOKIE['idpokemonsauvage'])) {
 
 
 
- 	function Catch(){
+ 	/*function Catch(){
  		window.location="catch.php";
- 	}
+ 	}*/
  	function setAttaquej(attack){
  		jeu.choixj = 1;
  		jeu.attackj = attack;
@@ -855,6 +860,11 @@ if (isset($_COOKIE['idpokemonsauvage'])) {
  	function setAttaqueA(attack){
  		jeu.choixa = 1;
  		jeu.attacka = attack;
+ 	}
+
+ 	function setPokeball(){
+ 		jeu.choixj = 3;
+ 		
  	}
 
  	function Set_cap(pokemonjoueur){
@@ -880,7 +890,7 @@ if (isset($_COOKIE['idpokemonsauvage'])) {
  		bouton.id = "pokeball";
  		bouton.type = "button";
  		bouton.value ="Pokeball";
- 		bouton.addEventListener('click',Catch)
+ 		bouton.addEventListener('click',setPokeball)
  		elem.appendChild(li);
  		li.appendChild(bouton);
  		set_TextBar();
@@ -1133,10 +1143,37 @@ if (isset($_COOKIE['idpokemonsauvage'])) {
 
 
  	}
+
+ 	function getRandomInt(max) {
+  		return Math.floor(Math.random() * Math.floor(max));
+}
+
+ 	function CalculCapture(){
+ 		let a=(1-(2/3)*(pokemonsauvage.hp/pokemonsauvage.pvmax))*tauxcapture*1*1;
+ 		let b = 0;
+ 		let rand = 0;
+ 		console.log(a);
+ 		if (a>=255) {return true;}
+ 		else{
+ 			b = 65535*Math.sqrt(Math.sqrt(a/255));
+ 			for (var i = 0; i < 3; i=i+1) {
+ 				rand = getRandomInt(65535);
+ 				console.log(rand+' et '+b);
+ 				if (rand > b ) {
+ 					return false;
+ 				}
+ 			}
+ 			return true;
+ 			
+ 		}
+
+ 	}
+
  	function Partie(){
  		console.log('partie');
  		var degatj=0;
  		var degata=0;
+ 		var pb;
  		if(!jeu.jeufin){
  			degata=0;
  			degatj=0;
@@ -1202,10 +1239,85 @@ if (isset($_COOKIE['idpokemonsauvage'])) {
  					},2000);
 
  			}
+ 			if (jeu.choixa == 1 && jeu.choixj == 3) {
+ 				DisableAll();
+ 				jeu.choixj = 0;
+ 				jeu.choixa = 0;
+ 				if (jeu.attacka.classea == "Physique" || jeu.attacka.classea == "Speciale") {
+ 					degata = CalculDegat(jeu.attacka,pokemonsauvage,pokemonsauvage);
+ 				
+ 				}
+ 				pb = CalculCapture();
+ 				AnimationCatch();
+ 				if (pb == true) {
+ 					Catch();
+ 				}
+ 				else{
+ 					ClearText();
+ 					
+ 					setTimeout(function(){Texte_catch(0,"... "+pokemonsauvage.nom+' c\'est libéré');
+ 						setTimeout(function(){let poke = document.getElementById('pokeimgs');
+					poke.src = "img/"+pokemonsauvage.nom+".png"},5000)
+ 				},3000);
+ 					setTimeout(function(){AttaqueA(hpj,degata,pokemonjoueur,jeu.attacka.noma)
+ 						setTimeout(function(){resetJeu();ClearText();checkhpj(pokemonjoueur);checkhp(pokemonsauvage);},4000);
+ 						;},9000);
+ 				}
+
+ 			}
  			savegame();
 
  		}
  	}
+
+ 	function Catch(){
+ 		ClearText();
+ 		
+ 		setTimeout(function(){Texte_catch(0,"... "+pokemonsauvage.nom+' a été attrapé');},3000);
+ 		setTimeout(function(){window.location="catch.php";},10000);
+ 	}
+
+ 	function Texte_catch(a,text) {
+	p = document.getElementById("textbox");
+	p.innerHTML=p.innerHTML+text.charAt(a);
+	if (a<text.length) {
+	if (a>2) {setTimeout(function(){Texte_catch(a+1,text);},50)}
+	else{setTimeout(function(){Texte_catch(a+1,text);},1000);}
+	}
+	}
+	
+	function AnimationCatch(){
+		let img = document.getElementById('pokeb');
+		img.style.left = "360%";
+
+		img.style.opacity = 1;
+	 	setTimeout(function(){AC(img,360,250);},50);
+
+	}
+
+	function AC(img,time,time2){
+		img.style.left = time+"%";
+		if (time >= 180) {
+			img.style.top = time2+"%";
+			time2 =time2-5;
+		}
+		else if (time < 180) {
+			img.style.top = time2+"%";
+			time2 =time2+5;
+		}
+		if (time) {}
+		if (time > 20) {
+			setTimeout(function(){AC(img,time-5,time2);},25);
+		}
+		else{
+			let poke = document.getElementById('pokeimgs');
+			poke.src = "img/poke.png";
+			img.style.opacity = 0;
+
+		}
+	}
+
+
 
  	function SwapPoke(a){
  		let Poke = pokemonjoueur;

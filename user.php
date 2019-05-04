@@ -198,6 +198,7 @@ function Show_other_poke($nomcompte,$idpoke){
 	$length = 0;
 	for ($i=1; $i <= 6 ; $i=$i+1) { 
 		$querytest = "SELECT * FROM banque JOIN equipe ON banque.ID = equipe.SLOT".$i." JOIN compte ON compte.NOM = equipe.DRESSEUR where compte.NOM=? AND banque.ID <> ?"; 
+		//echo $querytest;
 		$stmt2 = mysqli_prepare($link,$querytest);
 		mysqli_stmt_bind_param($stmt2,"si",$nomcompte,$idpoke);
 		mysqli_execute($stmt2);

@@ -15,7 +15,7 @@ if ($_COOKIE['pokemonjoueur']['GAINXP'] == 1) {
 }
 for ($i=0; $i < 5; $i++) { 
  			if ($_COOKIE['team'][$i]['ID'] != 'NULL') {
- 				if ($_COOKIE['team'][$i]['GAINXP'] += 1) {
+ 				if ($_COOKIE['team'][$i]['GAINXP'] == 1) {
  					addXP($_COOKIE['team'][$i]['ID']);
  					CheckEvolution($_COOKIE['team'][$i]['ID']);
  				}
@@ -50,40 +50,9 @@ for ($i=0; $i < 5  ; $i=$i+1) {
 	unset($_COOKIE['team['.$i.'][GAINXP]']);
 	setcookie('team['.$i.'][GAINXP]', '', time() - 3600);
 }
-
+header("location: log.php");
  ?>
 
 
- <!DOCTYPE html>
-<html>
-<head>
-	<title></title>
-</head>
-<body>
-<p id="texte"></p>
-</body>
-<script type="text/javascript">
-var text = "... <?php echo $nompoke; ?> a été attrapé";
-setTimeout(function(){Texte_catch(0);},1000);
-function Texte_catch(a) {
-	p = document.getElementById("texte");
-	p.innerHTML=p.innerHTML+text.charAt(a);
-	if (a<text.length) {
-	if (a>2) {setTimeout(function(){Texte_catch(a+1);},50)}
-	else{setTimeout(function(){Texte_catch(a+1);},1000);}
-	}
-	else if (a == text.length){setTimeout(function(){window.location="log.php";},3000);}
-	
 
 
-}
-
-
-
-
-
-
-
-
-</script>
-</html>
