@@ -16,6 +16,7 @@ function Ajout_compte($nomcompte,$mdp,$cmdp,$poke){
 	include 'erreurmdp.php';
 }
 else{
+$mdp = encryptmdp($mdp);
 $link = create_link();
 $querytest = "SELECT * from compte where NOM=? OR MDP=?"; 
 $stmt2 = mysqli_prepare($link,$querytest);
@@ -143,6 +144,7 @@ else{
 
 	$stmt = mysqli_prepare($link,$query);
 	$stmt3 = mysqli_prepare($link,$query3);
+
 	
 	mysqli_stmt_bind_param($stmt,"ss",$nomcompte,$mdp);
 
@@ -380,26 +382,16 @@ function Catch_Pokemon($nomcompte,$idpoke){
 
 
 
-
 }
 
-
-
-function encrypt($pure_string) {
+function encryptmdp($pure_string) {
 	$encryption_key = "SMASHMEILLEURJEUDUMONDEONDEVRAITDONNERASAKURAIUNPRIXNOBELPOURSONOEUVRE";
-    $iv_size = mcrypt_get_iv_size(MCRYPT_BLOWFISH, MCRYPT_MODE_ECB);
-    $iv = mcrypt_create_iv($iv_size, MCRYPT_RAND);
-    $encrypted_string = mcrypt_encrypt(MCRYPT_BLOWFISH, $encryption_key, utf8_encode($pure_string), MCRYPT_MODE_ECB, $iv);
+    $encrypted_string = crypt($pure_string,$encryption_key);
     return $encrypted_string;
 }
 
-function decrypt($encrypted_string) {
-	$encryption_key = "SMASHMEILLEURJEUDUMONDEONDEVRAITDONNERASAKURAIUNPRIXNOBELPOURSONOEUVRE";
-    $iv_size = mcrypt_get_iv_size(MCRYPT_BLOWFISH, MCRYPT_MODE_ECB);
-    $iv = mcrypt_create_iv($iv_size, MCRYPT_RAND);
-    $decrypted_string = mcrypt_decrypt(MCRYPT_BLOWFISH, $encryption_key, $encrypted_string, MCRYPT_MODE_ECB, $iv);
-    return $decrypted_string;
-}
+
+
 
 
 
