@@ -86,9 +86,9 @@ else{
 	$result = mysqli_stmt_get_result($stmt3);
 	$res = mysqli_fetch_assoc($result);
 	
-
+	$date = date("Y-m-d");
 	
-	$query= "INSERT INTO compte(NOM,MDP) VALUES (?,?)";
+	$query= "INSERT INTO compte(NOM,MDP,DateCo) VALUES (?,?,'".$date."')";
 	$xp = 0;
 	$niv = 5;
 	$iv = 31;
@@ -139,7 +139,7 @@ else{
 		$query2= "INSERT INTO banque (ID,NUMP,NOMP,TYPEU,TYPED,COURBE,XP,XPVAINCU,NIV,IVPV,IVATTAQUE,IVDEFENSE,IVATTSPE,IVDEFSPE,IVVITESSE,PVMAX,VITESSE,ATTAQUE,DEFENSE,ATTSPE,DEFSPE,CAP1,CAP2,DRESSEUR,PVACT) VALUES(".$idpoke.",".$var.",'".$nompoke."','".$res['TypeU']."','".$res['TypeD']."','".$res['Courbe']."',0,".$res['XPVaincu'].",".$niv.",".$IVPV.",".$IVATTAQUE.",".$IVDefense.",".$IVAttSpe.",".$IVDefSpe.",".$IVVitesse.",".$res['PV'].",".$res['Vitesse'].",".$res['Attaque'].",".$res['Defense'].",".$res['AttSpe'].",".$res['DefSPe'].",".$resa.",".$resb.",'".$nomcompte."',".$res['PV'].")";
 	}
 	$query3= "INSERT INTO equipe(IDEq,DRESSEUR,SLOT1) VALUES (?,?,?)";
-	$query4= "INSERT INTO sac(IDSac,Dresseur,nbPokeball,nbSuperBall,nbHyperBall,nbPotion,nbSuperPotion,nbHyperPotion,nbPotionMax,nbAntidote,nbAntiPara,nbAntiBrule,nbAntiGel,nbReveil,nbRappel,nbRappelMax,nbElexir,nbMaxElexir,nbHuile,nbHuileMax) VALUES (".$ideq.",'".$nomcompte."',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)";
+	$query4= "INSERT INTO sac(IDSac,Dresseur,nbPokeball,nbSuperBall,nbHyperBall,nbPotion,nbSuperPotion,nbHyperPotion,nbPotionMax,nbAntidote,nbAntiPara,nbAntiBrule,nbAntiGel,nbReveil,nbRappel,nbRappelMax,nbElexir,nbMaxElexir,nbHuile,nbHuileMax) VALUES (".$ideq.",'".$nomcompte."',5,0,0,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0)";
 
 	$stmt = mysqli_prepare($link,$query);
 	$stmt3 = mysqli_prepare($link,$query3);
