@@ -77,6 +77,13 @@
 	margin-left: 10px;
 }
 
+#pokeb{
+	position: absolute;
+	left: 20%;
+	top: 220%;
+	opacity: 0;
+}
+
 #pokeimg{
 	position: absolute;
 	left: 20%;
@@ -102,6 +109,10 @@
     -ms-animation: blink normal 0.5s infinite ease-in-out; /* IE */
     animation: blink normal 0.5s infinite ease-in-out; 
     animation-play-state: paused;
+    -moz-transform: scaleX(-1);
+        -o-transform: scaleX(-1);
+        -webkit-transform: scaleX(-1);
+        transform: scaleX(-1);
 	/*animation-name: fade;
 	animation-fill-mode: both;
   	animation-iteration-count: infinite;

@@ -65,7 +65,7 @@ function CheckEvolution($idpoke){
 				$link =create_link();
 				$stat = Get_pokedex($stat['Evolution']);
 			$query = "UPDATE banque SET NumP=".$stat['NumP'].", NomP='".$stat['NomP']."', Courbe='".$stat['Courbe']."',TypeU='".$stat['TypeU']."', TypeD='".$stat['TypeD']."'   WHERE ID=".$idpoke;}
-			echo $query;
+			//echo $query;
 			mysqli_query($link,$query);
 			mysqli_close($link);
 			return true;
