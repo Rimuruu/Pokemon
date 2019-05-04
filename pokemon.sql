@@ -287,7 +287,7 @@ INSERT INTO `listeinventaire` (`Objet`, `TypeO`, `Prix`, `TauxCaptureBall`, `PVS
 ('Antidote', 'Statut', 100, NULL, NULL, 'Poi', NULL, NULL, NULL),
 ('AntiPara', 'Statut', 200, NULL, NULL, 'Para', NULL, NULL, NULL),
 ('AntiBrule', 'Statut', 250, NULL, NULL, 'Bru', NULL, NULL, NULL),
-('Antigel', 'Statut', 250, NULL, NULL, 'Gel', NULL, NULL, NULL),
+('AntiGel', 'Statut', 250, NULL, NULL, 'Gel', NULL, NULL, NULL),
 ('Reveil', 'Statut', 200, NULL, NULL, 'Som', NULL, NULL, NULL),
 ('Rappel', 'Rappel', 1500, NULL, NULL, NULL, NULL, NULL, 'Partiel'),
 ('RappelMax', 'Rappel', 10000, NULL, NULL, NULL, NULL, NULL, 'Total'),
