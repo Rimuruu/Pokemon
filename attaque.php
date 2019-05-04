@@ -58,6 +58,10 @@ setcookie('pokemonjoueur[GAINXP]', '', time() - 3600);
 
 unset($_COOKIE['tour']);
 setcookie('tour', '', time() - 3600);
+unset($_COOKIE['nb_pokeball']);
+setcookie('nb_pokeball', '', time() - 3600);
+unset($_COOKIE['nb_potion']);
+setcookie('nb_potion', '', time() - 3600);
 
 
 
