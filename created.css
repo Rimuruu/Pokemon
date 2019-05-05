@@ -1,0 +1,118 @@
+*{
+font-family : comic sans ms;
+}
+
+fieldset {
+
+	background-color:#0000FF;
+  	height: 55%;
+  	width: 30%;
+  	padding:16px;
+  	border:2px solid yellow;
+    -moz-border-radius:8px;
+    -webkit-border-radius:8px;	
+    border-radius:8px;
+    color:yellow;
+    position: absolute;
+    left: 32%;
+    top:27%;
+}
+
+legend {
+
+  position: absolute;
+  left:35%;
+}
+
+
+#login{
+  position: absolute;
+  top:95%;
+  left:45%;
+}
+
+#valider{
+  position: absolute;
+  bottom:0%;
+  left:40%;
+  padding: 2.5%;
+  padding-right:3%;
+  padding-left: 3%; 
+}
+
+a{
+  position:relative;
+  top : 7%;
+}
+
+.input{
+  width: 100%;
+  position:relative;
+  top:6%;
+}
+
+.poken{
+  position: relative;
+  top:10%;
+  right:5%;
+  left:5%;
+  margin-right: 10%;
+}
+
+.pokeb{
+  position : relative;
+  top:11%;
+  left:-5%;
+  width: 5%;
+  height: 5%;
+}
+
+#b3{
+  left:90%;
+  top : -25%;
+}
+
+#sala{
+  width: 25%;
+  height: 35%;
+  position:relative;
+  left:-5%;
+  top:10%;
+}
+
+#bulb{
+  width: 25%;
+  height: 35%;
+  position:relative;
+  left:2.5%;
+  top:10%;
+}
+
+#cara{
+  width: 25%;
+  height: 35%;
+  position:relative;
+  left:15%;
+  top:10%;
+}
+
+
+
+
+
+
+#logo{
+
+  position : absolute;
+  left:30%;
+  top:-2%;
+
+}
+
+
+body {
+
+  background-image: url('Images/170153');
+  background-size: 100% 9200%;
+
+}
