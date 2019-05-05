@@ -61,7 +61,7 @@ if (isset($_COOKIE['idpokemonsauvage'])) {
  			
  		}
  		$item = getItem($nomcompte);
- 		$item['nbPokeball'] = $_COOKIE['nb_pokeball'];
+ 		$item['nbPokeBall'] = $_COOKIE['nb_PokeBall'];
  		$item['nbPotion'] = $_COOKIE['nb_potion'];
 
  		
@@ -850,7 +850,7 @@ if (isset($_COOKIE['idpokemonsauvage'])) {
  	var checkpartie = setInterval(Partie,1000);
 
  	var tauxcapture = <?php echo $pokesauvt['TauxCapture'];?>;
- 	var nb_pokeball = <?php echo $item['nbPokeball'];?>;
+ 	var nb_PokeBall = <?php echo $item['nbPokeBall'];?>;
  	var nb_potion = <?php echo $item['nbPotion'];?>;
 
 
@@ -875,14 +875,14 @@ if (isset($_COOKIE['idpokemonsauvage'])) {
  		jeu.attacka = attack;
  	}
 
- 	function setPokeball(){
- 		let p = document.getElementById("pokeball");
+ 	function setPokeBall(){
+ 		let p = document.getElementById("PokeBall");
  		jeu.choixj = 3;
- 		nb_pokeball = nb_pokeball -1;
- 		p.value = "Pokeball x"+nb_pokeball;
- 		if (nb_pokeball == 0) {
+ 		nb_PokeBall = nb_PokeBall -1;
+ 		p.value = "PokeBall x"+nb_PokeBall;
+ 		if (nb_PokeBall == 0) {
  			
- 			p.removeEventListener("click", setPokeball);
+ 			p.removeEventListener("click", setPokeBall);
 
  		}
  		
@@ -908,10 +908,10 @@ if (isset($_COOKIE['idpokemonsauvage'])) {
  		}
  		li = document.createElement('li');
  		bouton= document.createElement('input');
- 		bouton.id = "pokeball";
+ 		bouton.id = "PokeBall";
  		bouton.type = "button";
- 		bouton.value ="Pokeball x"+nb_pokeball;
- 		if (nb_pokeball != 0) {bouton.addEventListener('click',setPokeball);}
+ 		bouton.value ="PokeBall x"+nb_PokeBall;
+ 		if (nb_PokeBall != 0) {bouton.addEventListener('click',setPokeBall);}
  		
  		elem.appendChild(li);
  		li.appendChild(bouton);
@@ -927,7 +927,7 @@ if (isset($_COOKIE['idpokemonsauvage'])) {
  		let p = document.getElementById("potion");
  		nb_potion = nb_potion -1;
  		p.value = objet+ " x"+nb_potion;
- 		if (nb_pokeball == 0) {
+ 		if (nb_PokeBall == 0) {
  			
  			p.removeEventListener("click", set_Objet.bind(null,"Potion"));
 
@@ -1114,7 +1114,7 @@ if (isset($_COOKIE['idpokemonsauvage'])) {
  	function DisableAll(){
  		let cap = [document.getElementById('cap0'),document.getElementById('cap1'),document.getElementById('cap2'),document.getElementById('cap3')];
  		let equipej = document.getElementsByClassName("equipejoueur");
- 		let  poke = document.getElementById("pokeball");
+ 		let  poke = document.getElementById("PokeBall");
  		let potion = document.getElementById("potion");
  		for (var i = 0; i < 4; i=i+1) {
  			cap[i].disabled = true;
@@ -1129,7 +1129,7 @@ if (isset($_COOKIE['idpokemonsauvage'])) {
 
  	function DisableCap(){
  		let cap = [document.getElementById('cap0'),document.getElementById('cap1'),document.getElementById('cap2'),document.getElementById('cap3')];
- 		let  poke = document.getElementById("pokeball");
+ 		let  poke = document.getElementById("PokeBall");
  		let potion = document.getElementById("potion");
  		for (var i = 0; i < 4; i=i+1) {
  			cap[i].disabled = true;
@@ -1143,7 +1143,7 @@ if (isset($_COOKIE['idpokemonsauvage'])) {
  	function AbleAll(){
  		let cap = [document.getElementById('cap0'),document.getElementById('cap1'),document.getElementById('cap2'),document.getElementById('cap3')];
  		let equipej = document.getElementsByClassName("equipejoueur");
- 		let  poke = document.getElementById("pokeball");
+ 		let  poke = document.getElementById("PokeBall");
  		let potion = document.getElementById("potion");
  		for (var i = 0; i < 4; i=i+1) {
  			cap[i].disabled = false;
@@ -1647,7 +1647,7 @@ if (isset($_COOKIE['idpokemonsauvage'])) {
 			
 		}
 		set_cookie('tour',tour.x,24);
-		set_cookie('nb_pokeball',nb_pokeball,24);
+		set_cookie('nb_PokeBall',nb_PokeBall,24);
 		set_cookie('nb_potion',nb_potion,24);
 	}
 

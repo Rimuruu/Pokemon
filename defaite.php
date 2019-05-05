@@ -25,8 +25,8 @@ for ($i=0; $i < 5; $i++) {
  }
 
   $item = getItem($nomcompte);
- if (isset($_COOKIE['nb_pokeball'])) {
- 	$item['nbPokeball'] = $_COOKIE['nb_pokeball'];
+ if (isset($_COOKIE['nb_PokeBall'])) {
+ 	$item['nbPokeBall'] = $_COOKIE['nb_PokeBall'];
  }
  if (isset($_COOKIE['nb_potion'])) {
  	$item['nbPotion'] = $_COOKIE['nb_potion'];
@@ -51,8 +51,8 @@ setcookie('pokemonjoueur[GAINXP]', '', time() - 3600);
 
 unset($_COOKIE['tour']);
 setcookie('tour', '', time() - 3600);
-unset($_COOKIE['nb_pokeball']);
-setcookie('nb_pokeball', '', time() - 3600);
+unset($_COOKIE['nb_PokeBall']);
+setcookie('nb_PokeBall', '', time() - 3600);
 unset($_COOKIE['nb_potion']);
 setcookie('nb_potion', '', time() - 3600);
 
