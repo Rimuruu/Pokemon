@@ -24,11 +24,10 @@ if($res > 0){
 		$sac = 'UPDATE sac SET nbPokeball = nbPokeball+5 WHERE Dresseur="'.$nomcompte.'"';
 		$couc = mysqli_query($link,$sac);
 
-		$poke = "UPDATE Banque B,Equipe E SET PVact=PVmax WHERE B.Dresseur='".$nomcompte."' AND E.Dresseur='".$nomcompte."' 
-		AND (ID=SLOT1 OR ID=SLOT2 OR ID=SLOT3 OR ID=SLOT4 OR ID=SLOT5 OR ID=SLOT6)";
+		$poke = "UPDATE Banque SET PVact=PVmax WHERE Dresseur='".$nomcompte."'";
 		$couco = mysqli_query($link,$poke);
-		$pokemo = "UPDATE Banque B,Equipe E SET Statut=NULL WHERE B.Dresseur='".$nomcompte."' AND E.Dresseur='".$nomcompte."' 
-		AND (ID=SLOT1 OR ID=SLOT2 OR ID=SLOT3 OR ID=SLOT4 OR ID=SLOT5 OR ID=SLOT6)";
+		
+		$pokemo = "UPDATE Banque SET Statut=NULL WHERE Dresseur='".$nomcompte."'";
 		$coucoo=mysqli_query($link,$pokemo);
 	}
 }
