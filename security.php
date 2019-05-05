@@ -3,6 +3,13 @@
 	if(!@include_once('bdd.php')) {
   		include 'bdd.php';
 	}
+	function encryptmdp2($pure_string) {
+	$encryption_key = "SMASHMEILLEURJEUDUMONDEONDEVRAITDONNERASAKURAIUNPRIXNOBELPOURSONOEUVRE";
+    $encrypted_string = crypt($pure_string,$encryption_key);
+    return $encrypted_string;
+}
+	
+
 
 	if (isset($_SESSION['nomcompte'])) {
 		$nomcompte = $_SESSION['nomcompte'];
@@ -10,6 +17,7 @@
 	else if (isset($_POST['nomcompte'])) {
 		$nomcompte = $_POST['nomcompte'];
 		$mdp = $_POST['mdp'];
+		$mdp = encryptmdp2($mdp);
 		$link =create_link();
 		$querytest = "SELECT * from compte where NOM=? AND MDP=?"; 
 		$stmt2 = mysqli_prepare($link,$querytest);

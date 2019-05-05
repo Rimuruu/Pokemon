@@ -27,6 +27,14 @@ for ($i=0; $i < 5; $i++) {
  			}
  			
  }
+ $item = getItem($nomcompte);
+ if (isset($_COOKIE['nb_pokeball'])) {
+ 	$item['nbPokeball'] = $_COOKIE['nb_pokeball'];
+ }
+ if (isset($_COOKIE['nb_potion'])) {
+ 	$item['nbPotion'] = $_COOKIE['nb_potion'];
+ }
+changeItem($nomcompte,$item);
 unset($_COOKIE['idpokemonsauvage']);
 setcookie('idpokemonsauvage', '', time() - 3600);
 unset($_COOKIE['pokemonsauvage[HP]']);
@@ -45,7 +53,10 @@ setcookie('pokemonjoueur[GAINXP]', '', time() - 3600);
 
 unset($_COOKIE['tour']);
 setcookie('tour', '', time() - 3600);
-
+unset($_COOKIE['nb_pokeball']);
+setcookie('nb_pokeball', '', time() - 3600);
+unset($_COOKIE['nb_potion']);
+setcookie('nb_potion', '', time() - 3600);
 
 for ($i=0; $i < 5  ; $i=$i+1) { 
 	unset($_COOKIE['team['.$i.'][HP]']);
