@@ -10,11 +10,22 @@ include 'match.php';
 <html>
 	<head>
 		<title>Boutique</title>
+		<link rel="stylesheet" type="text/css" href="boutique.css">
 	</head>
 	<body>
-		<h1>Boutique</h1>
-		<a><?php echo "<h1>".$nomcompte."</h1>"; ?></a>
-		<a><?php Show_pokedollar($nomcompte);?></a>
+		<header>
+		<h1 id="titre">Boutique</h1>
+		<div id="compte"><a id="nom"><?php echo "<h1>".$nomcompte."</h1>"; ?></a>
+		<a id="argent"><?php Show_pokedollar($nomcompte);?></a>
+	</div>
+		<div>Types d'ojets :
+		<a href="#PokeBall">Pokeballs</a><br>
+		<a href="#Potion">Potions</a><br>
+		<a href="#Antidote">Soins statut</a><br>
+		<a href="#Rappel">Rappels</a><br>
+	</div>
+		<a href="log.php"><input type="button" name="menu" value="menu" id="menu"></a>
+	</header>
 
 		<?php 
 		$link =create_link();
@@ -24,8 +35,8 @@ include 'match.php';
 
 		while ($value=mysqli_fetch_assoc($sql)) {
 			if($value['TypeO']!='PP'){
-			echo "<fieldset><form method=\"post\" action=\"achat.php\">"; 
-			echo $value['Objet'].'<br>Type d\'objet :'.$value['TypeO'].'<br>';
+			echo "<fieldset id='".$value['Objet']."'><form method=\"post\" action=\"achat.php\">"; 
+			echo "<img src='Images/".$value['Objet']."' id='".$value['Objet']."'/>".$value['Objet'].'<br>Type d\'objet :'.$value['TypeO'].'<br>';
 
 				if($value['TypeO']=="Pokeball") {
 					echo "Permet de capturer des pokémons sauvages.";
@@ -67,6 +78,5 @@ include 'match.php';
 
 		?>
 
-		<a href="log.php"><input type="button" name="menu" value="menu"></a>
 	</body>
 </html>

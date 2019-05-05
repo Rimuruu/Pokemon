@@ -237,7 +237,7 @@ function Show_pokedollar($nomcompte){
 	mysqli_execute($stmt2);
 	$result = mysqli_stmt_get_result($stmt2);
 	$res = mysqli_fetch_assoc($result);
-	echo "<h2>".$res['Pokedollar']."  Pokédollar</h2>";
+	echo "<h2>".$res['Pokedollar']."  Pokédollars</h2>";
 	mysqli_close($link);
 
 }
