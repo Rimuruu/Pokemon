@@ -10,7 +10,7 @@ background-color:#0000FF;
      color:yellow;
     border-radius:8px;
     padding: 25px;
-    padding-bottom: 105px;
+ 
 }
 
 form{
@@ -25,7 +25,9 @@ form{
 }
 
 
-
+fieldset *{
+  margin-bottom: 10px;
+}
 
 #logo{
 
