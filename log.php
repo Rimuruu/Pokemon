@@ -44,21 +44,28 @@ if($res > 0){
 <html>
 <head>
 	<title>pokemon</title>
+	<link rel="stylesheet" type="text/css" href="log.css">
 </head>
 <body>
-	<?php 
-	echo "<h1>".$nomcompte."</h1>";
-	Show_pokedollar($nomcompte);
-	Show_team($nomcompte);
 
-	
+	<img src="Images/Pokemon" id="logo"/>
+
+	<header>
+	<h1 id="titre">Menu</h1>
+	<?php 
+	echo "<a id='compte'><h1>".$nomcompte."</h1>";
+	Show_pokedollar($nomcompte);
+	echo "</a><a href='deconnexion.php'><input type='button' name='Déconnexion' value='Déconnexion' id='deco'></a></header>";
+	Show_team($nomcompte);
 	 ?>
+
 	<br>
-	<form method="post" action="chasse.php"><input type="submit" name="chasse" value="Chasser un pokemon aléatoire"></form><br>
-	<a href="listedresseurs.php"><input type="button" name="listej" value="Combat online"></a>
-	<a href="teammanage.php"><input type="button" name="teammanage" value="Modifier l'ordre de l'equipe"></a>
-	<a href="inventaire.php"><input type="button" name="sac" value="Sac"></a>
-	<a href="boutique.php"><input type="button" name="Boutique" value="Boutique"></a>
-	<a href="deconnexion.php"><input type="button" name="Déconnexion" value="deconnexion"></a>
+	<div>
+	<a href="chasse.php"><input type="button" name="chasse" value="Chasser un pokemon aléatoire" id="input"><img src="Images/chasse.png" id="cha"/></input></a><br>
+	<a href="listedresseurs.php"><input type="button" name="listej" value="Combat online" id="inputd"><img src="Images/combat.png" id="com"/></input></a><br>
+	<a href="teammanage.php"><input type="button" name="teammanage" value="Modifier l'équipe" id="inputt"><img src="Images/équipe.png" id="equ"/></input></a><br>
+	<a href="inventaire.php"><input type="button" name="sac" value="Sac" id="inputq"><img src="Images/sac.png" id="sac"/></input></a><br>
+	<a href="boutique.php"><input type="button" name="Boutique" value="Boutique" id="inputc"><img src="Images/bou.png" id="bou"/></input></a><br>
+	</div>
 </body>
 </html>

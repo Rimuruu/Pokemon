@@ -1,0 +1,228 @@
+*{
+font-family : comic sans ms;
+margin : 0;
+}
+
+
+header {
+
+	height: 100%;
+	width: 10%;
+    margin: 0;
+    padding: 0;
+    background : #F0F8FF;
+    position: fixed;
+    left : 0;
+    top : 0;
+
+}
+
+#logo {
+	position : relative;
+	left : 30%;
+}
+
+#equipe {
+
+	list-style-type: none; 
+	background-color:#0000FF;
+  	height: 55%;
+  	width: 25%;
+  	padding:16px;
+  	border:2px solid yellow;
+    -moz-border-radius:8px;
+    -webkit-border-radius:8px;	
+    border-radius:8px;
+    color:yellow;
+    position: absolute;
+    left: 20%;
+    top:30%;
+
+}
+
+li {
+
+
+	position: relative;
+	top : 1%;
+	border:2px solid black;
+	border-radius:8px;
+	background-color: #F0E68C;
+	color : black;
+    height: 15%;
+    text-align : center;
+
+}
+
+li > img {
+
+	position: absolute;
+	top : -50%;
+	left : -10%;
+	width: 40%;
+	height: 200%;
+
+}
+
+
+#compte {
+
+	height: 100%;
+	width: 10%;
+    margin: 0;
+    padding: 0;
+    position: fixed;
+    right : 0;
+    top : 0;
+}
+
+div {
+	background-color:#0000FF;
+  	height: 55%;
+  	width: 25%;
+  	padding:16px;
+  	border:2px solid yellow;
+    -moz-border-radius:8px;
+    -webkit-border-radius:8px;	
+    border-radius:8px;
+    color:yellow;
+    position: absolute;
+    left: 50%;
+    top:30%;
+}
+
+#input {
+
+	position: relative;
+	height : 18%;
+	width: 98%;
+	text-align: center;
+	left : 1%;
+	border-radius: 10px;
+	background-color: #F0E68C;
+}
+
+#inputd {
+
+	position: relative;
+	top : -12.5%;
+	height : 18%;
+	width: 98%;
+	text-align: center;
+	left : 1%;
+	border-radius: 10px;
+	background-color: #F0E68C;
+}
+
+#inputt {
+
+	position: relative;
+	top : -29%;
+	height : 18%;
+	width: 98%;
+	text-align: center;
+	left : 1%;
+	border-radius: 10px;
+	background-color: #F0E68C;
+}
+
+#inputq {
+
+	position: relative;
+	top : -45.5%;
+	height : 18%;
+	width: 98%;
+	text-align: center;
+	left : 1%;
+	border-radius: 10px;
+	background-color: #F0E68C;
+}
+
+#inputc {
+
+	position: relative;
+	top : -62%;
+	height : 18%;
+	width: 98%;
+	text-align: center;
+	left : 1%;
+	border-radius: 10px;
+	background-color: #F0E68C;
+}
+
+
+
+#sac {
+
+	position: relative;
+	left : 2%;
+	top : -64%;
+	width: 20%;
+	height : 18%;
+}
+
+#bou {
+	position: relative;
+	left:2%;
+	top :-80%;
+	width: 20%;
+	height : 18%;
+}
+
+#cha {
+
+	position: relative;
+	left : 2%;
+	width: 20%;
+	height : 14%;
+	top : -17%;
+}
+
+#com {
+
+	position: relative;
+	left : 2%;
+	width: 20%;
+	height : 18%;
+	top : -31%;
+}
+
+#equ {
+
+	position: relative;
+	left : 2%;
+	width: 20%;
+	height : 18%;
+	top: -47.5%;
+}
+
+
+
+
+#deco {
+	position: absolute;
+	bottom : 5%;
+	left : 10%;
+	height: 20%;
+	width: 80%;
+}
+
+#titre {
+	position : relative;
+	left : 10%;
+	width: 80%;
+	height : 15%;
+}
+
+#compte {
+	position: relative;
+	left : 10%;
+	top : -1%;
+}
+
+body {
+
+  background-image: url('Images/menu.png');
+  background-size: 100% 320%;
+
+}

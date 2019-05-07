@@ -11,6 +11,7 @@ include 'match.php';
 <html>
 <head>
 	<title>Sac</title>
+	<link rel="stylesheet" type="text/css" href="sac.css">
 </head>
 <body>
 	<h1>Sac</h1>
@@ -29,7 +30,7 @@ include 'match.php';
 			
 			if($valued['nb'.$value['Objet']]>0 && $value['TypeO']!='PP'){
 
-				echo '<fieldset><li>'.$value['Objet'].'<br>Type d\'Objet: '.$value['TypeO'].'<br>';
+				echo '<fieldset id="'.$value['Objet'].'""><li><img src="Images/'.$value['Objet'].'" id="'.$value['Objet'].'"/>'.$value['Objet'].'<br>Type d\'Objet: '.$value['TypeO'].'<br>';
 
 				if($value['TypeO']=="Pokeball") {
 					echo "Permet de capturer des pokémons sauvages.";

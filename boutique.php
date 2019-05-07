@@ -24,7 +24,7 @@ include 'match.php';
 		<a href="#Antidote">Soins statut</a><br>
 		<a href="#Rappel">Rappels</a><br>
 	</div>
-		<a href="log.php"><input type="button" name="menu" value="menu" id="menu"></a>
+		<a href="log.php"><input type="button" name="Menu" value="menu" id="menu"></a>
 	</header>
 
 		<?php 

@@ -13,6 +13,7 @@ if (isset($_SESSION['nomcompte'])) {
 </head>
 <body>
 <form method="post" action="log.php">
+	<img src="Images/Pokemon" id="logo"/>
 	<fieldset>
 	<legend>Login</legend>
 	<a>Le compte n'existe pas</a><br>
@@ -20,7 +21,6 @@ if (isset($_SESSION['nomcompte'])) {
 	<a>Mot de passe</a><input type="password" name="mdp" class="input"><br>
 	<input type="submit" name="valider" id="valider"><br>
 	</fieldset>
-	<img src="Images/Pokemon" id="logo"/>
 	<a href="create.php" id="create">Créer un compte</a>
 </form>
 </body>

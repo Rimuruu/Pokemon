@@ -186,7 +186,7 @@ function getItem($nomcompte){
 
 function Show_team($nomcompte){
 	$link =create_link();
-	echo "<ul>Equipe pokemon";
+	echo "<ul id='equipe'>Equipe pokemon";
 	for ($i=1; $i <= 6 ; $i=$i+1) { 
 		$querytest = "SELECT banque.NOMP, banque.Niv, banque.PVact, banque.PVmax FROM banque JOIN equipe ON banque.ID = equipe.SLOT".$i." JOIN compte ON compte.NOM = equipe.Dresseur where compte.NOM=?"; 
 		$stmt2 = mysqli_prepare($link,$querytest);
@@ -198,10 +198,10 @@ function Show_team($nomcompte){
 			echo "<li id='slot".$i."''> Vide </li>";
 		}
 		else{
-		echo "<li id='slot".$i."''>".utf8_encode($res['NOMP'])." Niv ".$res['Niv']."   PV: ".$res['PVact']."/".$res['PVmax']."</li>";
+		echo "<li id='slot".$i."''><img src='img/".$res['NOMP']."'/>".utf8_encode($res['NOMP'])." Niv ".$res['Niv']." PV: ".$res['PVact']."/".$res['PVmax']."</li>";
 	}
 	}
-	echo "<ul>";
+	echo "</ul>";
 	mysqli_close($link);
 }
 
