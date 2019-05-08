@@ -61,8 +61,8 @@ for ($i=0; $i < 5  ; $i=$i+1) {
 	setcookie('team['.$i.'][HP]', '', time() - 3600);
 	unset($_COOKIE['team['.$i.'][ID]']);
 	setcookie('team['.$i.'][ID]', '', time() - 3600);
-	unset($_COOKIE['pokemonjoueur[GAINXP]']);
-	setcookie('pokemonjoueur[GAINXP]', '', time() - 3600);
+	unset($_COOKIE['team['.$i.'][GAINXP]']);
+	setcookie('team['.$i.'][GAINXP]', '', time() - 3600);
 }
 
 
