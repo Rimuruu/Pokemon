@@ -392,6 +392,18 @@ function encryptmdp($pure_string) {
     return $encrypted_string;
 }
 
+function Deco($nomcompte){
+	$link = create_link();
+	$query3= "UPDATE compte SET StatutCo='OFFLINE' where Nom=?";
+	$stmt3 = mysqli_prepare($link,$query3);
+	mysqli_stmt_bind_param($stmt3,"s",$nomcompte);
+	mysqli_execute($stmt3);
+	mysqli_close($link);
+
+}
+
+
+
 
 
 
