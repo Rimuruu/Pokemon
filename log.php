@@ -61,11 +61,11 @@ if($res > 0){
 
 	<br>
 	<div>
-	<a href="chasse.php"><input type="button" name="chasse" value="Chasser un pokemon aléatoire" id="input"><img src="Images/chasse.png" id="cha"/></input></a><br>
-	<a href="listedresseurs.php"><input type="button" name="listej" value="Combat online" id="inputd"><img src="Images/combat.png" id="com"/></input></a><br>
-	<a href="teammanage.php"><input type="button" name="teammanage" value="Modifier l'équipe" id="inputt"><img src="Images/équipe.png" id="equ"/></input></a><br>
-	<a href="inventaire.php"><input type="button" name="sac" value="Sac" id="inputq"><img src="Images/sac.png" id="sac"/></input></a><br>
-	<a href="boutique.php"><input type="button" name="Boutique" value="Boutique" id="inputc"><img src="Images/bou.png" id="bou"/></input></a><br>
+	<a href="chasse.php"><input type="button" name="chasse" value="Chasser un pokemon aléatoire" id="input"><img src="Images/chasse.png" id="cha"/></input></a>
+	<a href="listedresseurs.php"><input type="button" name="listej" value="Combat online" id="inputd"><img src="Images/combat.png" id="com"/></input></a>
+	<a href="teammanage.php"><input type="button" name="teammanage" value="Modifier l'équipe" id="inputt"><img src="Images/équipe.png" id="equ"/></input></a>
+	<a href="inventaire.php"><input type="button" name="sac" value="Sac" id="inputq"><img src="Images/sac.png" id="sac"/></input></a>
+	<a href="boutique.php"><input type="button" name="Boutique" value="Boutique" id="inputc"><img src="Images/bou.png" id="bou"/></input></a>
 	</div>
 </body>
 </html>
