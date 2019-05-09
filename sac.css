@@ -1,0 +1,64 @@
+*{
+font-family : comic sans ms;
+margin: 0;
+}
+
+
+header {
+
+	height: 100%;
+	width: 10%;
+    margin: 0;
+    padding: 0;
+    background : #F0F8FF;
+    position: fixed;
+    left : 0;
+    top : 0;
+
+}
+
+fieldset {
+
+	background-color:#0000FF;
+  	height: 55%;
+  	width: 30%;
+  	padding:16px;
+  	border:2px solid yellow;
+    -moz-border-radius:8px;
+    -webkit-border-radius:8px;	
+    border-radius:8px;
+    color:yellow;
+    position: relative;
+    left: 32%;
+    top:27%;
+    margin-bottom: 1.5%;
+}
+
+#deco {
+	position: absolute;
+	bottom : 5%;
+	left : 10%;
+	height: 20%;
+	width: 80%;
+}
+
+#titre {
+	position : relative;
+	left : 10%;
+	width: 80%;
+	height : 15%;
+}
+
+#compte {
+	position: relative;
+	left : 10%;
+	top : -1%;
+}
+
+
+body {
+
+  background-image: url('Images/sac.jpg');
+  background-size: 100% 100%;
+
+}
