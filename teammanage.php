@@ -33,15 +33,22 @@ $res = Get_pokemon_from_computer($nomcompte);
 <!DOCTYPE html>
 <html>
 <head>
-	<title></title>
+	<title>Modification équipe</title>
+	<link rel="stylesheet" type="text/css" href="equipe.css">
 </head>
 <body onload="create_bu(equipe,box);">
 
-	<?php
+	<header>
+	<h1 id="titre">Gestion de<br> l'équipe</h1>
+	<?php 
+	echo "<a id='compte'><h1>".$nomcompte."</h1>";
+	Show_pokedollar($nomcompte);
+	echo "</a><a href='log.php'><input type='button' name='Menu' value='Menu' id='deco'></a></header>";
+
 
 	echo "<ul id='ordinateur'>";
 	while ($enr = mysqli_fetch_assoc($res)){
-		echo "<li><input type='button' id='".$enr['ID']."' class='".$enr['ID']."' value=".utf8_encode($enr['NOMP'])."></li>";
+		echo "<li><input type='button' id='".$enr['ID']."' class='".$enr['ID']."' value='".utf8_encode($enr['NOMP'])." Niv ".utf8_encode($enr['Niv'])."''></li>";
 	}
 	echo "</ul>";
 	echo "<ul id='equipe'></ul>";
@@ -51,7 +58,7 @@ $res = Get_pokemon_from_computer($nomcompte);
 
 </body>
 <script type="text/javascript">
-	var equipe = {"nom1":"<?php echo utf8_encode($slot1['NOMP']) ?>","id1":"<?php echo $slot1['ID'] ?>","nom2":"<?php echo utf8_encode($slot2['NOMP']) ?>","id2":"<?php echo $slot2['ID'] ?>","nom3":"<?php echo utf8_encode($slot3['NOMP']) ?>","id3":"<?php echo $slot3['ID'] ?>","nom4":"<?php echo utf8_encode($slot4['NOMP']) ?>","id4":"<?php echo $slot4['ID'] ?>","nom5":"<?php echo utf8_encode($slot5['NOMP']) ?>","id5":"<?php echo $slot5['ID'] ?>","nom6":"<?php echo utf8_encode($slot6['NOMP']) ?>","id6":"<?php echo $slot6['ID'] ?>"};
+	var equipe = {"nom1":"<?php echo utf8_encode($slot1['NOMP']) ?>","id1":"<?php echo $slot1['ID'] ?>","niv1":"<?php echo ' Niv '.utf8_encode($slot1['Niv'])?>","nom2":"<?php echo utf8_encode($slot2['NOMP']) ?>","id2":"<?php echo $slot2['ID'] ?>","niv2":"<?php echo ' Niv '.utf8_encode($slot2['Niv'])?>","nom3":"<?php echo utf8_encode($slot3['NOMP']) ?>","id3":"<?php echo $slot3['ID'] ?>","niv3":"<?php echo ' Niv '.utf8_encode($slot3['Niv'])?>","nom4":"<?php echo utf8_encode($slot4['NOMP']) ?>","id4":"<?php echo $slot4['ID'] ?>","niv4":"<?php echo ' Niv '.utf8_encode($slot4['Niv'])?>","nom5":"<?php echo utf8_encode($slot5['NOMP']) ?>","id5":"<?php echo $slot5['ID'] ?>","niv5":"<?php echo ' Niv '.utf8_encode($slot5['Niv'])?>","nom6":"<?php echo utf8_encode($slot6['NOMP']) ?>","id6":"<?php echo $slot6['ID'] ?>","niv6":"<?php echo ' Niv '.utf8_encode($slot6['Niv'])?>"};
 	var select={x:0,select2:null};
 	var box = {y:<?php echo $box ?>};
 
@@ -98,13 +105,16 @@ $res = Get_pokemon_from_computer($nomcompte);
 		for (var i = 1; i <=6; i=i+1) {
 			nom = equipe['nom'+i];
 			id = equipe['id'+i];
+			niv = equipe['niv'+i];
 			elem = document.createElement('input');
 			li = document.createElement('li');
 			if (nom == "") {
 				elem.value = "Vide";
 			}
 			else{
+				if(niv == " Niv NULL")
 				elem.value = nom;
+				else elem.value = nom+niv;
 			}
 			elem.id = i;
 			
@@ -134,6 +144,7 @@ $res = Get_pokemon_from_computer($nomcompte);
 		elem.type = "button";
 		elem.name = "Sauvegarder";
 		elem.value = "Sauvegarder";
+		elem.id = "save";
 		elem.addEventListener('click',save);
 		document.body.appendChild(elem);
 		computer = document.getElementById("ordinateur");
