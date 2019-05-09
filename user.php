@@ -323,7 +323,7 @@ function Get_nth_pokemon($nomcompte,$nth){
 
 function changeItem($nomcompte,$res){
 	$link =create_link();
-	$query = "UPDATE sac SET nbPokeball=".$res['nbPokeball'].",nbSuperBall=".$res['nbSuperBall'].",nbHyperBall=".$res['nbHyperBall'].",nbPotion=".$res['nbPotion'].",nbSuperPotion=".$res['nbSuperPotion'].",nbHyperPotion=".$res['nbHyperPotion'].",nbPotionMax=".$res['nbPotionMax'].",nbAntidote=".$res['nbAntidote'].",nbAntiPara=".$res['nbAntiPara'].",nbAntiBrule=".$res['nbAntiBrule'].",nbAntiGel=".$res['nbAntiGel'].",nbReveil=".$res['nbReveil'].",nbRappel=".$res['nbRappel'].",nbRappelMax=".$res['nbRappelMax'].",nbElexir=".$res['nbElexir'].",nbMaxElexir=".$res['nbMaxElexir'].",nbHuile=".$res['nbHuile'].",nbHuileMax=".$res['nbHuileMax']." WHERE Dresseur='".$nomcompte."'";
+	$query = "UPDATE sac SET nbPokeball=".$res['nbPokeBall'].",nbSuperBall=".$res['nbSuperBall'].",nbHyperBall=".$res['nbHyperBall'].",nbPotion=".$res['nbPotion'].",nbSuperPotion=".$res['nbSuperPotion'].",nbHyperPotion=".$res['nbHyperPotion'].",nbPotionMax=".$res['nbPotionMax'].",nbAntidote=".$res['nbAntidote'].",nbAntiPara=".$res['nbAntiPara'].",nbAntiBrule=".$res['nbAntiBrule'].",nbAntiGel=".$res['nbAntiGel'].",nbReveil=".$res['nbReveil'].",nbRappel=".$res['nbRappel'].",nbRappelMax=".$res['nbRappelMax'].",nbElexir=".$res['nbElexir'].",nbMaxElexir=".$res['nbMaxElexir'].",nbHuile=".$res['nbHuile'].",nbHuileMax=".$res['nbHuileMax']." WHERE Dresseur='".$nomcompte."'";
 	mysqli_query($link,$query);
 	mysqli_close($link);
 
@@ -392,6 +392,18 @@ function encryptmdp($pure_string) {
     $encrypted_string = crypt($pure_string,$encryption_key);
     return $encrypted_string;
 }
+
+function Deco($nomcompte){
+	$link = create_link();
+	$query3= "UPDATE compte SET StatutCo='OFFLINE' where Nom=?";
+	$stmt3 = mysqli_prepare($link,$query3);
+	mysqli_stmt_bind_param($stmt3,"s",$nomcompte);
+	mysqli_execute($stmt3);
+	mysqli_close($link);
+
+}
+
+
 
 
 

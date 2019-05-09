@@ -1409,7 +1409,11 @@ if (isset($_COOKIE['idpokemonsauvage'])) {
  		ClearText();
  		
  		setTimeout(function(){Texte_catch(0,"... "+pokemonsauvage.nom+' a été attrapé');},3000);
- 		setTimeout(function(){window.location="catch.php";},10000);
+ 		setTimeout(function(){WriteXpC(0);
+
+ 			
+ 		},10000);
+ 		
  	}
 
  	function Texte_catch(a,text) {
@@ -1611,6 +1615,49 @@ if (isset($_COOKIE['idpokemonsauvage'])) {
  		}
  		else{
  			setTimeout(function(){window.location="attaque.php";
+
+ 			
+ 		},1000);
+ 		}
+
+ 	}
+
+ 	function WriteXpC(a){
+ 		ClearText();
+ 		if (a == 0) {
+ 			WriteText(pokemonjoueur.nom+" gagne "+pokemonjoueur.xpvaincu+" XP");
+ 			if (CheckLevelUp(a)) {
+ 				setTimeout(function(){ClearText();WriteText(pokemonjoueur.nom+" a monté de niveau");
+ 				setTimeout(function(){WriteXpC(a+1);},3000);
+ 				 },3000);}
+ 			
+ 			else{
+ 			setTimeout(function(){WriteXpC(a+1);},3000);
+ 		
+ 			}
+ 		}
+ 		else if(a < 5){
+ 			if (equipejoueur.Poke[a-1].nom != null && equipejoueur.Poke[a-1].gainxp == 1) {
+ 					WriteText(equipejoueur.Poke[a-1].nom+" gagne "+equipejoueur.Poke[a-1].xpvaincu+" XP");
+ 					if (CheckLevelUp(a)) {
+ 						setTimeout(function(){ClearText();WriteText(pokemonjoueur.nom+" a monté de niveau");
+ 						setTimeout(function(){WriteXpC(a+1);},3000);
+ 				 		},3000);}
+ 			
+ 					else{
+ 					setTimeout(function(){WriteXpC(a+1);},3000);
+ 		
+ 			}
+ 					
+ 			
+ 			}
+ 			else {WriteXpC(a+1);}
+
+ 			
+ 	
+ 		}
+ 		else{
+ 			setTimeout(function(){window.location="catch.php";
 
  			
  		},1000);

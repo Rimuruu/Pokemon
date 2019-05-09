@@ -8,7 +8,15 @@
     $encrypted_string = crypt($pure_string,$encryption_key);
     return $encrypted_string;
 }
-	
+	function Co($nomcompte){
+	$link = create_link();
+	$query3= "UPDATE compte SET StatutCo='ONLINE' where Nom=?";
+	$stmt3 = mysqli_prepare($link,$query3);
+	mysqli_stmt_bind_param($stmt3,"s",$nomcompte);
+	mysqli_execute($stmt3);
+	mysqli_close($link);
+
+}
 
 
 	if (isset($_SESSION['nomcompte'])) {
@@ -26,6 +34,7 @@
 		$result = mysqli_stmt_get_result($stmt2);
 		if (mysqli_num_rows($result)>0) {
 			$_SESSION['nomcompte'] = $nomcompte;
+			Co($nomcompte);
 		}
 		else{
 			mysqli_close($link);
