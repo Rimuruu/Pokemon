@@ -14,7 +14,15 @@ include 'match.php';
 	<link rel="stylesheet" type="text/css" href="sac.css">
 </head>
 <body>
-	<h1>Sac</h1>
+
+	<header>
+	<h1 id="titre">Sac</h1>
+	<?php 
+	echo "<a id='compte'><h1>".$nomcompte."</h1>";
+	Show_pokedollar($nomcompte);
+	echo "</a><a href='log.php'><input type='button' name='Déconnexion' value='Menu' id='deco'></a></header>";
+	?>
+
  		<ul>
  		<?php
 		$link =create_link();
@@ -28,7 +36,7 @@ include 'match.php';
 
 		while ($value=mysqli_fetch_assoc($sql)) {
 			
-			if($valued['nb'.$value['Objet']]>0 && $value['TypeO']!='PP'){
+			if($value['TypeO']!='PP'){
 
 				echo '<fieldset id="'.$value['Objet'].'""><li><img src="Images/'.$value['Objet'].'" id="'.$value['Objet'].'"/>'.$value['Objet'].'<br>Type d\'Objet: '.$value['TypeO'].'<br>';
 
@@ -65,6 +73,7 @@ include 'match.php';
 				}
 
 				echo "<br>Quantité : ".$valued["nb".$value['Objet']]."<br>";
+				if ($valued['nb'.$value['Objet']]>0){
 				echo '<form method="post" action="jeter.php">Quantité à jeter<input type="number" name="quantite" min="1" max="'.$valued["nb".$value['Objet']].'"><input type="submit" value="Jeter" name="'.$value['Objet'].'""></form>';
 
 			
@@ -174,7 +183,9 @@ include 'match.php';
 						echo "</form>";
 					}
 				}*/
+			}
 
+			else echo "<br>Vous ne possédez pas cet objet<br>";
 
 
 				echo "</li></fieldset>";

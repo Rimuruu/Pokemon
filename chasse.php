@@ -18,6 +18,14 @@ if (isset($_COOKIE['idpokemonsauvage'])) {
  </head>
  <body onload="start()">
  	
+ 	<header>
+	<h1 id="titre">Chasse</h1>
+	<?php 
+	echo "<a id='compte'><h1>".$nomcompte."</h1>";
+	Show_pokedollar($nomcompte);
+	echo "</a><a href='fuite.php'><input type='button' name='Fuir' value='Fuite' id='deco'></a></header>";
+	 ?>
+
  	<div id='fenetre'>
  	
  	<?php 

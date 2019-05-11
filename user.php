@@ -305,7 +305,7 @@ function Show_First_Pokemon($nomcompte){
 
 function Get_nth_pokemon($nomcompte,$nth){
 	$link =create_link();
-	$querytest = "SELECT banque.NOMP,banque.ID FROM banque JOIN equipe ON banque.ID = equipe.SLOT".$nth." JOIN compte ON compte.NOM = equipe.DRESSEUR where compte.NOM=?"; 
+	$querytest = "SELECT banque.NOMP,banque.ID,banque.Niv FROM banque JOIN equipe ON banque.ID = equipe.SLOT".$nth." JOIN compte ON compte.NOM = equipe.DRESSEUR where compte.NOM=?"; 
 	$stmt2 = mysqli_prepare($link,$querytest);
 	mysqli_stmt_bind_param($stmt2,"s",$nomcompte);
 	mysqli_execute($stmt2);
@@ -314,6 +314,7 @@ function Get_nth_pokemon($nomcompte,$nth){
 	if ($res['NOMP']==NULL) {
 		$res['NOMP']="Vide";
 		$res['ID']="NULL";
+		$res['Niv']="NULL";
 
 	}
 	mysqli_close($link);
@@ -337,7 +338,7 @@ function Get_pokemon_from_computer($nomcompte){
 	$slot5 = Get_nth_pokemon($nomcompte,5);
 	$slot6 = Get_nth_pokemon($nomcompte,6);
 	$link =create_link();
-	$querytest = "SELECT NOMP,ID FROM banque where DRESSEUR=? AND ID NOT IN (?,?,?,?,?,?)"; 
+	$querytest = "SELECT NOMP,ID,Niv FROM banque where DRESSEUR=? AND ID NOT IN (?,?,?,?,?,?)"; 
 	$stmt2 = mysqli_prepare($link,$querytest);
 	mysqli_stmt_bind_param($stmt2,"siiiiii",$nomcompte,$slot1['ID'],$slot2['ID'],$slot3['ID'],$slot4['ID'],$slot5['ID'],$slot6['ID']);
 	mysqli_execute($stmt2);
