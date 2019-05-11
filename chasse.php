@@ -1683,9 +1683,9 @@ if (isset($_COOKIE['idpokemonsauvage'])) {
 
 
  	function set_cookie(cookiename, cookievalue, hours) {
-    var date = new Date();
-    date.setTime(date.getTime() + Number(hours) * 3600 * 1000);
-    document.cookie = cookiename + "=" + cookievalue + "; path=/;expires = " + date.toGMTString();
+	    var date = new Date();
+	    date.setTime(date.getTime() + Number(hours) * 3600 * 1000);
+	    document.cookie = cookiename + "=" + cookievalue + "; path=/;expires = " + date.toGMTString();
 
 }
 

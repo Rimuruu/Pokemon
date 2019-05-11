@@ -30,7 +30,7 @@ else{
 	var nom = "<?php echo $host ?>";
 	var adv = "<?php echo $adv ?>";
 	var info = null;
-	var check = setInterval(function(){send_async()},5000);
+	var check = setInterval(function(){send_async()},500);
 	 function send_async() {
 
 	     var xhr = new XMLHttpRequest();
@@ -58,9 +58,50 @@ else{
 	 	a.innerHTML = info["ADV"];
 	 	sh.innerHTML = info["STATUTH"];
 	 	sa.innerHTML = info["STATUTA"];
+	 	if (info['nbco'] == 2 && document.getElementById('join') == null) {
+	 		Set_Join();
+	 	}
+	 	else if (info['nbco'] != 2 && document.getElementById('join') != null) {
+	 		Delete_Join();
+	 	}
 	 	console.log(info);
 	 }
 
+	 function Set_Join(){
+	 	let bouton= document.createElement('input');
+	 	let a= document.createElement('a');
+	 	bouton.id = "join";
+	 	bouton.type = "button";
+	 	bouton.value = "Rejoindre le Match";
+	 	bouton.addEventListener('click',Join);
+	 	a.id = "lien";
+	 	a.href="MatchOnline.php";
+	 	a.appendChild(bouton);
+	 	document.body.appendChild(a);
+	 }
+
+	 function Delete_Join(){
+	 	let bouton = document.getElementById('join');
+	 	let a = document.getElementById('lien');
+	 	bouton.remove();
+	 	a.remove();
+	 }
+
+	 function Join(){
+	 	set_cookie("Adversaire", "<?php echo  $_COOKIE['ADV']?>", 24);
+	 	eraseCookie("ADV");  
+
+	 }
+
+	 function set_cookie(cookiename, cookievalue, hours) {
+	    var date = new Date();
+	    date.setTime(date.getTime() + Number(hours) * 3600 * 1000);
+	    document.cookie = cookiename + "=" + cookievalue + "; path=/;expires = " + date.toGMTString();
+
+}
+	function eraseCookie(name) {   
+   	 document.cookie = name+'=; Max-Age=-99999999;';  
+}
 
 
 	</script>

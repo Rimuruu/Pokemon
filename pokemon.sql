@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: May 08, 2019 at 08:53 AM
+-- Generation Time: May 11, 2019 at 08:48 AM
 -- Server version: 10.3.12-MariaDB
 -- PHP Version: 7.2.14
 
@@ -207,6 +207,29 @@ CREATE TABLE IF NOT EXISTS `banque` (
   KEY `NumP` (`NumP`,`NomP`,`TypeU`,`TypeD`,`Courbe`,`XPVaincu`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `banque`
+--
+
+INSERT INTO `banque` (`ID`, `NumP`, `NomP`, `TypeU`, `TypeD`, `Courbe`, `XP`, `XPVaincu`, `Niv`, `IVPV`, `IVAttaque`, `IVDefense`, `IVAttSpe`, `IVDefSpe`, `IVVitesse`, `PVmax`, `Vitesse`, `Attaque`, `Defense`, `AttSpe`, `DefSPe`, `CAP1`, `CAP2`, `CAP3`, `CAP4`, `Dresseur`, `PVact`, `Statut`) VALUES
+(59193, 4, 'Salamèche', 'Feu', NULL, 'Moyen-', 0, 65, 5, 5, 6, 5, 6, 4, 5, 24, 12, 11, 10, 12, 10, 56, 43, NULL, NULL, 'kett', 24, NULL),
+(72410, 1, 'Bulbizarre', 'Plante', 'Poison', 'Moyen-', 0, 64, 5, 5, 9, 4, 4, 2, 7, 25, 10, 11, 10, 12, 12, 53, 43, NULL, NULL, 'shinji', 25, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `combat`
+--
+
+DROP TABLE IF EXISTS `combat`;
+CREATE TABLE IF NOT EXISTS `combat` (
+  `HOST` varchar(32) CHARACTER SET armscii8 COLLATE armscii8_bin NOT NULL,
+  `STATUTH` enum('ONLINE','OFFLINE') CHARACTER SET armscii8 COLLATE armscii8_bin NOT NULL DEFAULT 'ONLINE',
+  `ADV` varchar(32) CHARACTER SET armscii8 COLLATE armscii8_bin DEFAULT NULL,
+  `STATUTA` enum('ONLINE','OFFLINE') CHARACTER SET armscii8 COLLATE armscii8_bin DEFAULT NULL,
+  PRIMARY KEY (`HOST`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
 -- --------------------------------------------------------
 
 --
@@ -222,6 +245,14 @@ CREATE TABLE IF NOT EXISTS `compte` (
   `StatutCo` enum('ONLINE','OFFLINE') NOT NULL DEFAULT 'OFFLINE',
   PRIMARY KEY (`Nom`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `compte`
+--
+
+INSERT INTO `compte` (`Nom`, `MDP`, `Pokedollar`, `DateCo`, `StatutCo`) VALUES
+('shinji', 'SMmQqVGlADbF2', 1150, '2019-05-11', 'ONLINE'),
+('kett', 'SME5dWN0idrZU', 1150, '2019-05-11', 'ONLINE');
 
 -- --------------------------------------------------------
 
@@ -241,6 +272,14 @@ CREATE TABLE IF NOT EXISTS `equipe` (
   `SLOT6` int(11) DEFAULT NULL,
   PRIMARY KEY (`IDEq`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `equipe`
+--
+
+INSERT INTO `equipe` (`IDEq`, `Dresseur`, `SLOT1`, `SLOT2`, `SLOT3`, `SLOT4`, `SLOT5`, `SLOT6`) VALUES
+(21022, 'shinji', 72410, NULL, NULL, NULL, NULL, NULL),
+(92418, 'kett', 59193, NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -500,6 +539,14 @@ CREATE TABLE IF NOT EXISTS `sac` (
   `nbHuileMax` int(11) NOT NULL,
   PRIMARY KEY (`IDSac`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `sac`
+--
+
+INSERT INTO `sac` (`IDSac`, `Dresseur`, `nbPokeBall`, `nbSuperBall`, `nbHyperBall`, `nbPotion`, `nbSuperPotion`, `nbHyperPotion`, `nbPotionMax`, `nbAntidote`, `nbAntiPara`, `nbAntiBrule`, `nbAntiGel`, `nbReveil`, `nbRappel`, `nbRappelMax`, `nbElexir`, `nbMaxElexir`, `nbHuile`, `nbHuileMax`) VALUES
+(21022, 'shinji', 20, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(92418, 'kett', 20, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 
 -- --------------------------------------------------------
 
