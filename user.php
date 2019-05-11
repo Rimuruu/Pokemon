@@ -403,7 +403,161 @@ function Deco($nomcompte){
 }
 
 
+function Create_match($nomcompte,$adv){
+	$link = create_link();
+	$query= "INSERT INTO combat(HOST,STATUTH,ADV,STATUTA) VALUES(?,'ONLINE',?,'OFFLINE')";
 
+	$stmt3 = mysqli_prepare($link,$query);
+	mysqli_stmt_bind_param($stmt3,"ss",$nomcompte,$adv);
+	mysqli_execute($stmt3);
+	mysqli_close($link);
+
+
+}
+
+function Search_Match($nomcompte,$adv){
+	$link =create_link();
+	$query = "Select * FROM combat WHERE (HOST = ? AND ADV = ?) OR (HOST = ? AND ADV = ?)";
+	$stmt3 = mysqli_prepare($link,$query);
+	mysqli_stmt_bind_param($stmt3,"ssss",$nomcompte,$adv,$adv,$nomcompte);
+	mysqli_execute($stmt3);
+	$result = mysqli_stmt_get_result($stmt3);
+	mysqli_close($link);
+	if(mysqli_num_rows($result) > 0) {
+		return true;
+	}
+	else{
+
+		return false;
+	}
+	
+}
+
+
+function get_slot($nomcompte,$adv){
+	$link =create_link();
+	$query = "Select * FROM combat WHERE (HOST = ? AND ADV = ?)";
+	$stmt3 = mysqli_prepare($link,$query);
+	mysqli_stmt_bind_param($stmt3,"ss",$adv,$nomcompte);
+	mysqli_execute($stmt3);
+	$result = mysqli_stmt_get_result($stmt3);
+	mysqli_close($link);
+	if(mysqli_num_rows($result) > 0) {
+		return 'Adv';
+	}
+	else{
+
+		return 'Host';
+	}
+	
+}
+
+function Nombre_Co($nomcompte,$adv){
+	$link =create_link();
+	$query = "Select * FROM combat WHERE (HOST = ? AND ADV = ?) OR (HOST = ? AND ADV = ?)";
+	$stmt3 = mysqli_prepare($link,$query);
+	mysqli_stmt_bind_param($stmt3,"ssss",$nomcompte,$adv,$adv,$nomcompte);
+	mysqli_execute($stmt3);
+	$result = mysqli_stmt_get_result($stmt3);
+	mysqli_close($link);
+	$res = mysqli_fetch_assoc($result);
+	$nb = 0;
+	if ($res['STATUTH'] == "ONLINE") {
+		$nb = 1;
+	}
+	if ($res['STATUTA'] == "ONLINE") {
+		$nb = $nb+1;
+	}
+	return $nb;
+}
+
+function Role_Co($nomcompte,$adv){
+	$link =create_link();
+	$query = "Select * FROM combat WHERE (HOST = ? AND ADV = ?) OR (HOST = ? AND ADV = ?)";
+	$stmt3 = mysqli_prepare($link,$query);
+	mysqli_stmt_bind_param($stmt3,"ssss",$nomcompte,$adv,$adv,$nomcompte);
+	mysqli_execute($stmt3);
+	$result = mysqli_stmt_get_result($stmt3);
+	mysqli_close($link);
+	$res = mysqli_fetch_assoc($result);
+	if ($res['STATUTH'] == "ONLINE" && $res['STATUTA'] == "ONLINE") {
+		return 'Both';
+	}
+	else if ($res['STATUTH'] == "ONLINE") {
+		return 'Host';
+	}
+	else if ($res['STATUTA'] == "ONLINE") {
+		return 'Adv';
+	}
+	else{
+		return 'Nobody';
+	}
+
+}
+
+function Info_Combat($nomcompte,$adv){
+	$link =create_link();
+	$query = "Select * FROM combat WHERE (HOST = ? AND ADV = ?) OR (HOST = ? AND ADV = ?)";
+	$stmt3 = mysqli_prepare($link,$query);
+	mysqli_stmt_bind_param($stmt3,"ssss",$nomcompte,$adv,$adv,$nomcompte);
+	mysqli_execute($stmt3);
+	$result = mysqli_stmt_get_result($stmt3);
+	mysqli_close($link);
+	$res = mysqli_fetch_assoc($result);
+	$res['nbco']= Nombre_Co($nomcompte,$adv);	
+	return $res;
+}
+
+function Join_matchHost($nomcompte,$adv){
+	$link = create_link();
+	$query= "UPDATE combat SET STATUTH = 'ONLINE' WHERE HOST = ? AND ADV = ? ";
+	$stmt3 = mysqli_prepare($link,$query);
+	mysqli_stmt_bind_param($stmt3,"ss",$nomcompte,$adv);
+	mysqli_execute($stmt3);
+	mysqli_close($link);
+
+}
+
+function Join_matchAdv($nomcompte,$adv){
+	$link = create_link();
+	$query= "UPDATE combat SET STATUTA = 'ONLINE' WHERE ADV = ? AND HOST = ? ";
+	$stmt3 = mysqli_prepare($link,$query);
+	mysqli_stmt_bind_param($stmt3,"ss",$nomcompte,$adv);
+	mysqli_execute($stmt3);
+	mysqli_close($link);
+
+}
+
+function left_matchHost($nomcompte,$adv){
+	$link = create_link();
+	$query= "UPDATE combat SET STATUTH = 'OFFLINE' WHERE HOST = ? AND ADV = ? ";
+	$stmt3 = mysqli_prepare($link,$query);
+	mysqli_stmt_bind_param($stmt3,"ss",$nomcompte,$adv);
+	mysqli_execute($stmt3);
+	mysqli_close($link);
+}
+
+function left_matchAdv($nomcompte,$adv){
+	$link = create_link();
+	$query= "UPDATE combat SET STATUTA = 'OFFLINE' WHERE ADV = ? AND HOST = ? ";
+	$stmt3 = mysqli_prepare($link,$query);
+	mysqli_stmt_bind_param($stmt3,"ss",$nomcompte,$adv);
+	mysqli_execute($stmt3);
+	mysqli_close($link);
+}
+
+function Delete_Match($nomcompte,$adv){
+	$link = create_link();
+	$query= "DELETE FROM combat WHERE ADV = ? AND HOST = ? ";
+	$stmt3 = mysqli_prepare($link,$query);
+	mysqli_stmt_bind_param($stmt3,"ss",$nomcompte,$adv);
+	mysqli_execute($stmt3);
+	$query= "DELETE FROM combat WHERE HOST = ? AND ADV = ? ";
+	$stmt3 = mysqli_prepare($link,$query);
+	mysqli_stmt_bind_param($stmt3,"ss",$nomcompte,$adv);
+	mysqli_execute($stmt3);
+	mysqli_close($link);
+}
 
 
 
