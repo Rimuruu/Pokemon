@@ -80,7 +80,7 @@ for ($i=0; $i < 5  ; $i=$i+1) {
 <p id="texte"></p>
 </body>
 <script type="text/javascript">
-var text = "Vous retournez au centre pokemon";
+var text = "Vous ramassez vos pokémons K.O. et vous courrez vous mettre à l'abri. Vous devrez attendre jusqu'à demain pour que vos pokémons se reposent";
 setTimeout(function(){Texte_catch(0);},1000);
 function Texte_catch(a) {
 	p = document.getElementById("texte");
