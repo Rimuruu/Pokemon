@@ -25,6 +25,9 @@ if ($slot3['NOMP'] == 'Vide') {
 if ($slot2['NOMP'] == 'Vide') {
 	$box = $box-1;
 }
+if ($slot1['NOMP'] == 'Vide') {
+	$box = $box-1;
+}
 $res = Get_pokemon_from_computer($nomcompte);
  ?>
 
