@@ -69,18 +69,15 @@ if (isset($_COOKIE['idpokemonsauvage'])) {
  			
  		}
  		$item = getItem($nomcompte);
- 		$item['nbPokeBall'] = $_COOKIE['nb_PokeBall'];
  		$item['nbPotion'] = $_COOKIE['nb_potion'];
 
  		
  				
  		
  		}
- 		//echo $team[1]['NomP'];
- 		
+ 	
 
  	$nb_poke = 1;
- 	$sommelvl = $poke['Niv'];
  	$cappoke1=null;
  	$cappoke2=null;
  	$cappoke3=null;
@@ -90,7 +87,7 @@ if (isset($_COOKIE['idpokemonsauvage'])) {
  		if ($team[0]['NomP']!='NULL') {
  			$cappoke1 = Show_cap_by_id($team[0]['ID'] );
  			$nb_poke = 2;
- 			$sommelvl = $sommelvl + $team[0]['Niv'];
+ 			
  		}
  		
  	}
@@ -98,7 +95,7 @@ if (isset($_COOKIE['idpokemonsauvage'])) {
  		if ($team[1]['NomP']!='NULL') {
  			$cappoke2 = Show_cap_by_id($team[1]['ID'] );
  			$nb_poke = 3;
- 			$sommelvl = $sommelvl + $team[1]['Niv'];
+ 		
  		}
  		
  	}
@@ -106,7 +103,7 @@ if (isset($_COOKIE['idpokemonsauvage'])) {
  		if ($team[2]['NomP']!='NULL') {
  			$cappoke3 = Show_cap_by_id($team[2]['ID'] );
  			$nb_poke = 4;
- 			$sommelvl = $sommelvl + $team[2]['Niv'];
+ 	
  		}
 
  		
@@ -115,7 +112,7 @@ if (isset($_COOKIE['idpokemonsauvage'])) {
  		if ($team[3]['NomP']!='NULL') {
  			$cappoke4 = Show_cap_by_id($team[3]['ID'] );
  			$nb_poke = 5;
- 			$sommelvl = $sommelvl + $team[3]['Niv'];
+ 		
  		}
  		
  	}
@@ -123,44 +120,12 @@ if (isset($_COOKIE['idpokemonsauvage'])) {
  		if ($team[4]['NomP']!='NULL') {
  			$cappoke5 = Show_cap_by_id($team[4]['ID'] );
  			$nb_poke = 6;
- 			$sommelvl = $sommelvl + $team[4]['Niv'];
+ 			
  		}
  		
  	}
 
- 	
- 	$moyenlvl = $sommelvl / $nb_poke;
- 	if ($nb_poke == 1) {
- 		$moyenlvl = $sommelvl -3;
- 	}
- 	
- 	if (!isset($idpokesauvage)) {
- 		$idpokesauvage = Pokemon_alea($moyenlvl);
- 	}
- 	echo "<div id='pokes'>";
- 	$pokemonsauvage = Show_cap_by_id($idpokesauvage);
- 	$pokesauv = Get_pokemon($idpokesauvage);
- 	$pokesauvt = Get_pokedex($pokesauv['NumP']);
- 	Show_pokemon_by_id($idpokesauvage);
- 	if (isset($_COOKIE['pokemonsauvage'])) {
- 		$hpsauvage = $_COOKIE['pokemonsauvage']['HP'];
- 	}
- 	else{
- 		$hpsauvage = $pokesauv['PVact'];
- 	}
- 	echo "<h2 id='hps'>".$hpsauvage."</h2>";
- 	echo "<progress id='healths' value='".$hpsauvage."' max='".$pokesauv['PVmax']."'></progress>";
- 	echo "<img class='show' id='pokeimgs'src='img/".NomDepuisId($idpokesauvage).".png'>";
- 	echo "<img  id='pokeb'src='img/poke.png'>";
- 	echo "</div>";
- 	$_SESSION['idpokemonsauvage']=$idpokesauvage;
- 	setcookie("idpokemonsauvage",$idpokesauvage);
- 	
- 	/*if (isset($_COOKIE['item'])) {
- 		foreach($_COOKIE['item'] as $e){
-			echo $e,'<br />';
-		}
- 	}*/
+
  	 ?>
 
  </div>
@@ -393,78 +358,7 @@ if (isset($_COOKIE['idpokemonsauvage'])) {
 
  		);
 
- 	var pokemonsauvage = new Pokemon("<?php echo NomDepuisId($idpokesauvage) ?>",
- 		<?php echo $hpsauvage ?>,
- 		new Cap("<?php echo $pokemonsauvage['CAP1']['NomA'] ?>",
- 			"<?php echo $pokemonsauvage['CAP1']['TypeA'] ?>",
- 			"<?php echo $pokemonsauvage['CAP1']['ClasseA'] ?>",
- 			<?php if($pokemonsauvage['CAP1']['Puissance'] == NULL){echo '""';} else{echo $pokemonsauvage['CAP1']['Puissance'];} ?>,
- 			<?php if($pokemonsauvage['CAP1']['Precis'] == NULL){echo '""';} else{echo $pokemonsauvage['CAP1']['Precis'];} ?>,
- 			<?php if($pokemonsauvage['CAP1']['PP'] == NULL){echo '""';} else{echo $pokemonsauvage['CAP1']['PP'];} ?>,
- 			"<?php echo $pokemonsauvage['CAP1']['Effets'] ?>",
- 			"<?php echo $pokemonsauvage['CAP1']['AjoutPV'] ?>",
- 			"<?php echo $pokemonsauvage['CAP1']['RetirePV'] ?>",
- 			<?php if($pokemonsauvage['CAP1']['NbAttaque'] == NULL){echo '""';} else{echo $pokemonsauvage['CAP1']['NbAttaque'];} ?>,
- 			"<?php echo $pokemonsauvage['CAP1']['StatMBoost'] ?>",
- 			"<?php echo $pokemonsauvage['CAP1']['StatANerf'] ?>"),
- 		new Cap("<?php echo $pokemonsauvage['CAP2']['NomA'] ?>",
- 			"<?php echo $pokemonsauvage['CAP2']['TypeA'] ?>",
- 			"<?php echo $pokemonsauvage['CAP2']['ClasseA'] ?>",
- 			<?php if($pokemonsauvage['CAP2']['Puissance'] == NULL){echo '""';} else{echo $pokemonsauvage['CAP2']['Puissance'];} ?>,
- 			<?php if($pokemonsauvage['CAP2']['Precis'] == NULL){echo '""';} else{echo $pokemonsauvage['CAP2']['Precis'];} ?>,
- 			<?php if($pokemonsauvage['CAP2']['PP'] == NULL){echo '""';} else{echo $pokemonsauvage['CAP2']['PP'];}  ?>,
- 			"<?php echo $pokemonsauvage['CAP2']['Effets'] ?>",
- 			"<?php echo $pokemonsauvage['CAP2']['AjoutPV'] ?>",
- 			"<?php echo $pokemonsauvage['CAP2']['RetirePV'] ?>",
- 			<?php if($pokemonsauvage['CAP2']['NbAttaque'] == NULL){echo '""';} else{echo $pokemonsauvage['CAP2']['NbAttaque'];} ?>,
- 			"<?php echo $pokemonsauvage['CAP2']['StatMBoost'] ?>",
- 			"<?php echo $pokemonsauvage['CAP2']['StatANerf'] ?>"),
- 		new Cap("<?php echo $pokemonsauvage['CAP3']['NomA'] ?>",
- 			"<?php echo $pokemonsauvage['CAP3']['TypeA'] ?>",
- 			"<?php echo $pokemonsauvage['CAP3']['ClasseA'] ?>",
- 			<?php if($pokemonsauvage['CAP3']['Puissance'] == NULL){echo '""';} else{echo $pokemonsauvage['CAP3']['Puissance'];} ?>,
- 			<?php if($pokemonsauvage['CAP3']['Precis'] == NULL){echo '""';} else{echo $pokemonsauvage['CAP3']['Precis'];} ?>,
- 			<?php if($pokemonsauvage['CAP3']['PP'] == NULL){echo '""';} else{echo $pokemonsauvage['CAP3']['PP'];}  ?>,
- 			"<?php echo $pokemonsauvage['CAP3']['Effets'] ?>",
- 			"<?php echo $pokemonsauvage['CAP3']['AjoutPV'] ?>",
- 			"<?php echo $pokemonsauvage['CAP3']['RetirePV'] ?>",
- 			<?php if($pokemonsauvage['CAP3']['NbAttaque'] == NULL){echo '""';} else{echo $pokemonsauvage['CAP3']['NbAttaque'];} ?>,
- 			"<?php echo $pokemonsauvage['CAP3']['StatMBoost'] ?>",
- 			"<?php echo $pokemonsauvage['CAP3']['StatANerf'] ?>"),
- 		new Cap("<?php echo $pokemonsauvage['CAP4']['NomA'] ?>",
- 			"<?php echo $pokemonsauvage['CAP4']['TypeA'] ?>",
- 			"<?php echo $pokemonsauvage['CAP4']['ClasseA'] ?>",
- 			<?php if($pokemonsauvage['CAP4']['Puissance'] == NULL){echo '""';} else{echo $pokemonsauvage['CAP4']['Puissance'];} ?>,
- 			<?php if($pokemonsauvage['CAP4']['Precis'] == NULL){echo '""';} else{echo $pokemonsauvage['CAP4']['Precis'];} ?>,
- 			<?php if($pokemonsauvage['CAP4']['PP'] == NULL){echo '""';} else{echo $pokemonsauvage['CAP4']['PP'];}  ?>,
- 			"<?php echo $pokemonsauvage['CAP4']['Effets'] ?>",
- 			"<?php echo $pokemonsauvage['CAP4']['AjoutPV'] ?>",
- 			"<?php echo $pokemonsauvage['CAP4']['RetirePV'] ?>",
- 			<?php if($pokemonsauvage['CAP4']['NbAttaque'] == NULL){echo '""';} else{echo $pokemonsauvage['CAP4']['NbAttaque'];} ?>,
- 			"<?php echo $pokemonsauvage['CAP4']['StatMBoost'] ?>",
- 			"<?php echo $pokemonsauvage['CAP4']['StatANerf'] ?>"),
- 		<?php echo $idpokesauvage ?>,
- 		"<?php echo $pokesauv['TypeU'] ?>",
- 		"<?php echo $pokesauv['TypeD'] ?>",
- 		<?php echo $pokesauv['Niv'] ?>,
- 		<?php echo $pokesauv['IVPV'] ?>,
- 		<?php echo $pokesauv['IVAttaque'] ?>,
- 		<?php echo $pokesauv['IVDefense'] ?>,
- 		<?php echo $pokesauv['IVAttSpe'] ?>,
- 		<?php echo $pokesauv['IVDefSpe'] ?>,
- 		<?php echo $pokesauv['IVVitesse'] ?>,
- 		<?php echo $pokesauv['PVmax'] ?>,
- 		<?php echo $pokesauv['Vitesse'] ?>,
- 		<?php echo $pokesauv['Attaque'] ?>,
- 		<?php echo $pokesauv['Defense'] ?>,
- 		<?php echo $pokesauv['AttSpe'] ?>,
- 		<?php echo $pokesauv['DefSPe'] ?>,
- 		0,
- 		<?php echo $pokesauv['XPVaincu'] ?>,
- 		"<?php echo $pokesauv['Courbe'] ?>",
- 		<?php echo $pokesauv['XP'] ?>
- 		);
-
+ 	
  	var equipejoueur =  new Equipe(
  		new Pokemon(
  			"<?php if(isset($team[0]['NomP'])){
@@ -842,7 +736,7 @@ if (isset($_COOKIE['idpokemonsauvage'])) {
  	var healthbar = document.querySelector('#healthj');
 	 healthbar.value = pokemonjoueur.hp;
 	var healthbars = document.querySelector('#healths');
-	 healthbars.value = pokemonsauvage.hp;
+	 //healthbars.value = pokemonsauvage.hp;
  	var tour = {x:
  		<?php
  		if (isset($_COOKIE['tour'])) {
@@ -858,7 +752,7 @@ if (isset($_COOKIE['idpokemonsauvage'])) {
  	var checkpartie = setInterval(Partie,1000);
 
  	var tauxcapture = <?php echo $pokesauvt['TauxCapture'];?>;
- 	var nb_PokeBall = <?php echo $item['nbPokeBall'];?>;
+
  	var nb_potion = <?php echo $item['nbPotion'];?>;
 
 
@@ -883,18 +777,6 @@ if (isset($_COOKIE['idpokemonsauvage'])) {
  		jeu.attacka = attack;
  	}
 
- 	function setPokeBall(){
- 		let p = document.getElementById("PokeBall");
- 		jeu.choixj = 3;
- 		nb_PokeBall = nb_PokeBall -1;
- 		p.value = "PokeBall x"+nb_PokeBall;
- 		if (nb_PokeBall == 0) {
- 			
- 			p.removeEventListener("click", setPokeBall);
-
- 		}
- 		
- 	}
 
  	function Set_cap(pokemonjoueur){
  		let bouton;
@@ -1693,8 +1575,7 @@ if (isset($_COOKIE['idpokemonsauvage'])) {
 		set_cookie('pokemonjoueur[ID]',pokemonjoueur.idpoke,24);
 		set_cookie('pokemonjoueur[HP]',pokemonjoueur.hp,24);
 		set_cookie('pokemonjoueur[GAINXP]',pokemonjoueur.gainxp,24);
-		set_cookie('pokemonsauvage[ID]',pokemonsauvage.idpoke,24);
-		set_cookie('pokemonsauvage[HP]',pokemonsauvage.hp,24);
+
 		for (var i = 0; i < 5; i=i+1) {
 			set_cookie('team['+i+'][ID]',equipejoueur.Poke[i].idpoke,24);
 			set_cookie('team['+i+'][HP]',equipejoueur.Poke[i].hp,24);
