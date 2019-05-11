@@ -11,19 +11,19 @@ $slot4 = Get_nth_pokemon($nomcompte,4);
 $slot5 = Get_nth_pokemon($nomcompte,5);
 $slot6 = Get_nth_pokemon($nomcompte,6);
 if ($slot6['NOMP'] == 'Vide') {
-	$box = 4;
+	$box = $box-1;
 }
 if ($slot5['NOMP'] == 'Vide') {
-	$box = 3;
+	$box = $box-1;
 }
 if ($slot4['NOMP'] == 'Vide') {
-	$box = 2;
+	$box = $box-1;
 }
 if ($slot3['NOMP'] == 'Vide') {
-	$box = 1;
+	$box = $box-1;
 }
 if ($slot2['NOMP'] == 'Vide') {
-	$box = 0;
+	$box = $box-1;
 }
 $res = Get_pokemon_from_computer($nomcompte);
  ?>
