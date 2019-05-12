@@ -35,6 +35,7 @@ if (isset($_COOKIE['idpokemonsauvage'])) {
  	echo "<div id='pokej'>";
  	$poke = Show_First_Pokemon_Available($nomcompte);
  	$hppoke = $poke['PVact'];
+ 	echo "<h2 id='nompoke'> ".utf8_encode($poke['NomP'])." Niv ".$poke['Niv']." </h2>";
  	echo "<h2 id='hpj'>".$poke['PVact']."</h2>";
  	echo "<progress id='healthj' value='".$poke['PVact']."' max='".$poke['PVmax']."'></progress>";
  	echo "<img class='show' id='pokeimg'src='img/".NomDepuisId($poke['ID']).".png'>";
@@ -130,8 +131,11 @@ if (isset($_COOKIE['idpokemonsauvage'])) {
 
  	
  	$moyenlvl = $sommelvl / $nb_poke;
- 	if ($nb_poke == 1) {
+ 	if ($nb_poke == 1 && $sommelvl > 3) {
  		$moyenlvl = $sommelvl -3;
+ 	}
+ 	else{
+ 		$moyenlvl = 2;
  	}
  	
  	if (!isset($idpokesauvage)) {
@@ -1187,9 +1191,9 @@ if (isset($_COOKIE['idpokemonsauvage'])) {
  		
  		ClearText();
  		WriteText("Vous utilisez l'objet "+ item);
- 		if (pokemonsauvage.hp+soin >= pokemonjoueur.pvmax) {pokemonjoueur.hp = pokemonjoueur.pvmax}
+ 		if (pokemonjoueur.hp+soin >= pokemonjoueur.pvmax) {pokemonjoueur.hp = pokemonjoueur.pvmax}
  		else{
- 		pokemonsauvage.hp = pokemonsauvage.hp + soin;}
+ 		pokemonjoueur.hp = pokemonjoueur.hp + soin;}
  		setTimeout(function(){
  			Augmentation(object,soin,cible,pokemonjoueur.pvmax);
  			

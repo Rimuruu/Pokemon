@@ -273,7 +273,7 @@ function Show_First_Pokemon_Available($nomcompte){
 	$result = mysqli_stmt_get_result($stmt2);
 	$res = mysqli_fetch_assoc($result);
 	if ($res['NomP']!=NULL) {
-		echo "<h2 id='nompoke'> ".utf8_encode($res['NomP'])." Niv ".$res['Niv']." </h2>";
+		//echo "<h2 id='nompoke'> ".utf8_encode($res['NomP'])." Niv ".$res['Niv']." </h2>";
 		break;
 		}
 	}
@@ -294,7 +294,7 @@ function Show_First_Pokemon($nomcompte){
 	$result = mysqli_stmt_get_result($stmt2);
 	$res = mysqli_fetch_assoc($result);
 	if ($res['NomP']!=NULL) {
-		echo "<h2 id='nompoke'> ".utf8_encode($res['NomP'])." Niv ".$res['Niv']." </h2>";
+		//echo "<h2 id='nompoke'> ".utf8_encode($res['NomP'])." Niv ".$res['Niv']." </h2>";
 		break;
 		}
 	}
@@ -402,6 +402,117 @@ function Deco($nomcompte){
 	mysqli_close($link);
 
 }
+
+function SetChoixA($choixa,$attacka,$pokemonswapa,$objeta,$nomcompte){
+	$link = create_link();
+	$query3= "UPDATE combat SET CHOIXA=".$choixa.", ATTACKA=".$attacka.", POKEMONSWAPA=".$pokemonswapa.", OBJETA='".$objeta."' where ADV=? AND STATUTH='ONLINE' AND STATUTA='ONLINE'";
+	$stmt3 = mysqli_prepare($link,$query3);
+	mysqli_stmt_bind_param($stmt3,"s",$nomcompte);
+	mysqli_execute($stmt3);
+	mysqli_close($link);
+
+}
+
+function SetChoixH($choixa,$attacka,$pokemonswapa,$objeta,$nomcompte){
+	$link = create_link();
+	$query3= "UPDATE combat SET CHOIXH=".$choixa.", ATTACKH=".$attacka.", POKEMONSWAPH=".$pokemonswapa.", OBJETH='".$objeta."' where HOST=? AND STATUTH='ONLINE' AND STATUTA='ONLINE'";
+	$stmt3 = mysqli_prepare($link,$query3);
+	mysqli_stmt_bind_param($stmt3,"s",$nomcompte);
+	mysqli_execute($stmt3);
+	mysqli_close($link);
+
+}
+
+function SetDEGATA($degata,$nomcompte){
+	$link = create_link();
+	$query3= "UPDATE combat SET DEGATA=".$degata."  where ADV=? AND STATUTH='ONLINE' AND STATUTA='ONLINE'";
+	$stmt3 = mysqli_prepare($link,$query3);
+	mysqli_stmt_bind_param($stmt3,"s",$nomcompte);
+	mysqli_execute($stmt3);
+	mysqli_close($link);
+
+}
+
+function SetDEGATH($degata,$nomcompte){
+	$link = create_link();
+	$query3= "UPDATE combat SET DEGATH=".$degata."  where HOST=? AND STATUTH='ONLINE' AND STATUTA='ONLINE'";
+	$stmt3 = mysqli_prepare($link,$query3);
+	mysqli_stmt_bind_param($stmt3,"s",$nomcompte);
+	mysqli_execute($stmt3);
+	mysqli_close($link);
+
+}
+
+function SetNULLDEGATA($nomcompte){
+	$link = create_link();
+	$query3= "UPDATE combat SET DEGATH=NULL  where ADV=? AND STATUTH='ONLINE' AND STATUTA='ONLINE'";
+	$stmt3 = mysqli_prepare($link,$query3);
+	mysqli_stmt_bind_param($stmt3,"s",$nomcompte);
+	mysqli_execute($stmt3);
+	mysqli_close($link);
+
+}
+
+function SetNULLDEGATH($nomcompte){
+	$link = create_link();
+	$query3= "UPDATE combat SET DEGATA=NULL  where HOST=? AND STATUTH='ONLINE' AND STATUTA='ONLINE'";
+	$stmt3 = mysqli_prepare($link,$query3);
+	mysqli_stmt_bind_param($stmt3,"s",$nomcompte);
+	mysqli_execute($stmt3);
+	mysqli_close($link);
+
+}
+
+function SetNULLH($nomcompte){
+	$link = create_link();
+	$query3= "UPDATE combat SET CHOIXA=NULL, ATTACKA=NULL, POKEMONSWAPA=NULL ,OBJETA=NULL where HOST=? AND STATUTH='ONLINE' AND STATUTA='ONLINE'";
+	$stmt3 = mysqli_prepare($link,$query3);
+	mysqli_stmt_bind_param($stmt3,"s",$nomcompte);
+	mysqli_execute($stmt3);
+	mysqli_close($link);
+
+}
+
+function SetNULLA($nomcompte){
+	$link = create_link();
+	$query3= "UPDATE combat SET CHOIXH=NULL ,ATTACKH=NULL, POKEMONSWAPH=NULL, OBJETH=NULL where ADV=? AND STATUTH='ONLINE' AND STATUTA='ONLINE'";
+	$stmt3 = mysqli_prepare($link,$query3);
+	mysqli_stmt_bind_param($stmt3,"s",$nomcompte);
+	mysqli_execute($stmt3);
+	mysqli_close($link);
+
+}
+
+function GET_INFOH($nomcompte){
+	$link =create_link();
+	$query = "Select * FROM combat WHERE HOST = ? AND STATUTH='ONLINE' AND STATUTA='ONLINE'";
+	$stmt3 = mysqli_prepare($link,$query);
+	mysqli_stmt_bind_param($stmt3,"s",$nomcompte);
+	mysqli_execute($stmt3);
+	$result = mysqli_stmt_get_result($stmt3);
+	mysqli_close($link);
+	$res = mysqli_fetch_assoc($result);
+	return $res;
+	
+}
+
+
+function GET_INFOA($nomcompte){
+	$link =create_link();
+	$query = "Select * FROM combat WHERE ADV = ? AND STATUTH='ONLINE' AND STATUTA='ONLINE'";
+	$stmt3 = mysqli_prepare($link,$query);
+	mysqli_stmt_bind_param($stmt3,"s",$nomcompte);
+	mysqli_execute($stmt3);
+	$result = mysqli_stmt_get_result($stmt3);
+	mysqli_close($link);
+	$res = mysqli_fetch_assoc($result);
+	return $res;
+	
+}
+
+
+
+
 
 
 function Create_match($nomcompte,$adv){

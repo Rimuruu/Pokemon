@@ -3,8 +3,9 @@ session_start();
 include 'security.php';
 include 'user.php';
 
-if (isset($_COOKIE['idpokemonsauvage'])) {
-	$idpokesauvage=$_COOKIE['idpokemonsauvage'];
+if (isset($_COOKIE['Adversaire'])) {
+	$adv=$_COOKIE['Adversaire'];
+	$role=$_COOKIE['Role'];
 }
 
  ?>
@@ -35,6 +36,7 @@ if (isset($_COOKIE['idpokemonsauvage'])) {
  	echo "<div id='pokej'>";
  	$poke = Show_First_Pokemon_Available($nomcompte);
  	$hppoke = $poke['PVact'];
+ 	echo "<h2 id='nompoke'> ".utf8_encode($poke['NomP'])." Niv ".$poke['Niv']." </h2>";
  	echo "<h2 id='hpj'>".$poke['PVact']."</h2>";
  	echo "<progress id='healthj' value='".$poke['PVact']."' max='".$poke['PVmax']."'></progress>";
  	echo "<img class='show' id='pokeimg'src='img/".NomDepuisId($poke['ID']).".png'>";
@@ -128,16 +130,17 @@ if (isset($_COOKIE['idpokemonsauvage'])) {
  	if (!isset($_COOKIE['pokemonjoueur2'])) {
  	
  	
- 	echo "<div id='pokej'>";
+ 	echo "<div id='pokes'>";
  	$poke2 = Show_First_Pokemon_Available($adv);
  	$hppoke2 = $poke2['PVact'];
+ 	echo "<h2 id='nompoke2'> ".utf8_encode($poke2['NomP'])." Niv ".$poke2['Niv']." </h2>";
  	echo "<h2 id='hpj'>".$poke2['PVact']."</h2>";
  	echo "<progress id='healths' value='".$poke2['PVact']."' max='".$poke2['PVmax']."'></progress>";
  	echo "<img class='show' id='pokeimgs'src='img/".NomDepuisId($poke2['ID']).".png'>";
  	echo "</div>";
  	$pokejoueur2 = Show_cap_by_id($poke2['ID']);
  	$team2 = Show_other_poke($adv,$poke2['ID']);
- 	$item2 = getItem($adv);
+ 
 
  	}
  	else{
@@ -145,9 +148,9 @@ if (isset($_COOKIE['idpokemonsauvage'])) {
 
  		$hppoke2 = $_COOKIE['pokemonjoueur2']['HP'];
  		$poke2 = $_COOKIE['pokemonjoueur2']['ID'];
- 		$poke2 = Get_pokemon($poke);
+ 		$poke2 = Get_pokemon($poke2);
  		$poke2['gainxp'] = $_COOKIE['pokemonjoueur2']['GAINXP'];
- 		$pokejoueur2 = Show_cap_by_id($poke['ID']);
+ 		$pokejoueur2 = Show_cap_by_id($poke2['ID']);
  		echo "<div id='pokes'><h2 id='nompoke2'>".NomDepuisId($poke2['ID'])." Niv ".$poke2['Niv']."</h2>";
 
  		echo "<h2 id='hps'>".$_COOKIE['pokemonjoueur2']['HP']."</h2>";
@@ -164,8 +167,7 @@ if (isset($_COOKIE['idpokemonsauvage'])) {
  			}
  			
  		}
- 		$item2 = getItem($adv);
- 		$item2['nbPotion2'] = $_COOKIE['nb_potion2'];
+ 		
 
  		
  				
@@ -290,11 +292,14 @@ if (isset($_COOKIE['idpokemonsauvage'])) {
  			this.choixj = 0;
  			this.choixa = 0;
  			this.tour = 0;
- 			this.attackj = null;
+ 			this.attackj = 0;
+ 			this.nb_attackj=0;
  			this.attacka = null;
- 			this.pokemonswap = null;
+ 			this.pokemonswap = 0;
+ 			this.pokemonswap2 = null;
  			this.jeufin = false;
- 			this.objet = null;
+ 			this.objet = "";
+ 			this.objet2 = null;
  		}
  	};
 
@@ -453,7 +458,7 @@ if (isset($_COOKIE['idpokemonsauvage'])) {
 
  		);
 
-	var pokemonjoueur2 = new Pokemon("<?php echo NomDepuisId($poke['ID']); ?>",
+	var pokemonjoueur2 = new Pokemon("<?php echo NomDepuisId($poke2['ID']); ?>",
  		<?php echo $hppoke2 ?>,
  		new Cap("<?php echo $pokejoueur2['CAP1']['NomA'] ?>",
  			"<?php echo $pokejoueur2['CAP1']['TypeA'] ?>",
@@ -901,370 +906,370 @@ if (isset($_COOKIE['idpokemonsauvage'])) {
 
 var equipejoueur2 =  new Equipe(
  		new Pokemon(
- 			"<?php if(isset($team[0]['NomP'])){
- 				echo utf8_encode($team[0]['NomP']);}else{ echo 'NULL';}  ?>", 
- 				"<?php if(isset($team[0]['NomP'])){
- 					echo $team[0]['PVact'];}else{echo 'NULL';}	?>",
- 				new Cap("<?php if(isset($team[0]['NomP'])){echo $cappoke1['CAP1']['NomA'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[0]['NomP'])){echo $cappoke1['CAP1']['TypeA'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[0]['NomP'])){echo $cappoke1['CAP1']['ClasseA'];}else{ echo 'NULL';} ?>",
-		 			<?php if(isset($team[0]['NomP'])){if($cappoke1['CAP1']['Puissance'] == NULL){echo '""';} else{echo $cappoke1['CAP1']['Puissance'];}}else{ echo '"NULL"';} ?>,
-		 			<?php if(isset($team[0]['NomP'])){if($cappoke1['CAP1']['Precis'] == NULL){echo '""';} else{echo $cappoke1['CAP1']['Precis'];}}else{ echo '"NULL"';} ?>,
-		 			<?php if(isset($team[0]['NomP'])){if($cappoke1['CAP1']['PP'] == NULL){echo '""';} else{echo $cappoke1['CAP1']['PP'];}}else{ echo '"NULL"';}  ?>,
-		 			"<?php if(isset($team[0]['NomP'])){echo $cappoke1['CAP1']['Effets'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[0]['NomP'])){echo $cappoke1['CAP1']['AjoutPV'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[0]['NomP'])){echo $cappoke1['CAP1']['RetirePV'];}else{ echo 'NULL';} ?>",
-		 			<?php if(isset($team[0]['NomP'])){if($cappoke1['CAP1']['NbAttaque'] == NULL){echo '""';} else{echo $cappoke1['CAP1']['NbAttaque'];}}else{ echo '"NULL"';} ?>,
-		 			"<?php if(isset($team[0]['NomP'])){echo $cappoke1['CAP1']['StatMBoost'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[0]['NomP'])){echo $cappoke1['CAP1']['StatANerf'];}else{ echo 'NULL';} ?>"),
- 				new Cap("<?php if(isset($team[0]['NomP'])){echo $cappoke1['CAP2']['NomA'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[0]['NomP'])){echo $cappoke1['CAP2']['TypeA'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[0]['NomP'])){echo $cappoke1['CAP2']['ClasseA'];}else{ echo 'NULL';} ?>",
-		 			<?php if(isset($team[0]['NomP'])){if($cappoke1['CAP2']['Puissance'] == NULL){echo '""';} else{echo $cappoke1['CAP2']['Puissance'];}}else{ echo '"NULL"';} ?>,
-		 			<?php if(isset($team[0]['NomP'])){if($cappoke1['CAP2']['Precis'] == NULL){echo '""';} else{echo $cappoke1['CAP2']['Precis'];}}else{ echo '"NULL"';} ?>,
-		 			<?php if(isset($team[0]['NomP'])){if($cappoke1['CAP2']['PP'] == NULL){echo '""';} else{echo $cappoke1['CAP2']['PP'];}}else{ echo '"NULL"';}  ?>,
-		 			"<?php if(isset($team[0]['NomP'])){echo $cappoke1['CAP2']['Effets'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[0]['NomP'])){echo $cappoke1['CAP2']['AjoutPV'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[0]['NomP'])){echo $cappoke1['CAP2']['RetirePV'];}else{ echo 'NULL';} ?>",
-		 			<?php if(isset($team[0]['NomP'])){if($cappoke1['CAP2']['NbAttaque'] == NULL){echo '""';} else{echo $cappoke1['CAP2']['NbAttaque'];}}else{ echo '"NULL"';} ?>,
-		 			"<?php if(isset($team[0]['NomP'])){echo $cappoke1['CAP2']['StatMBoost'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[0]['NomP'])){echo $cappoke1['CAP2']['StatANerf'];}else{ echo 'NULL';} ?>"),
- 				new Cap("<?php if(isset($team[0]['NomP'])){echo $cappoke1['CAP3']['NomA'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[0]['NomP'])){echo $cappoke1['CAP3']['TypeA'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[0]['NomP'])){echo $cappoke1['CAP3']['ClasseA'];}else{ echo 'NULL';} ?>",
-		 			<?php if(isset($team[0]['NomP'])){if($cappoke1['CAP3']['Puissance'] == NULL){echo '""';} else{echo $cappoke1['CAP3']['Puissance'];}}else{ echo '"NULL"';} ?>,
-		 			<?php if(isset($team[0]['NomP'])){if($cappoke1['CAP3']['Precis'] == NULL){echo '""';} else{echo $cappoke1['CAP3']['Precis'];}}else{ echo '"NULL"';} ?>,
-		 			<?php if(isset($team[0]['NomP'])){if($cappoke1['CAP3']['PP'] == NULL){echo '""';} else{echo $cappoke1['CAP3']['PP'];}}else{ echo '"NULL"';}  ?>,
-		 			"<?php if(isset($team[0]['NomP'])){echo $cappoke1['CAP3']['Effets'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[0]['NomP'])){echo $cappoke1['CAP3']['AjoutPV'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[0]['NomP'])){echo $cappoke1['CAP3']['RetirePV'];}else{ echo 'NULL';} ?>",
-		 			<?php if(isset($team[0]['NomP'])){if($cappoke1['CAP3']['NbAttaque'] == NULL){echo '""';} else{echo $cappoke1['CAP3']['NbAttaque'];}}else{ echo '"NULL"';} ?>,
-		 			"<?php if(isset($team[0]['NomP'])){echo $cappoke1['CAP3']['StatMBoost'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[0]['NomP'])){echo $cappoke1['CAP3']['StatANerf'];}else{ echo 'NULL';} ?>"),
- 				new Cap("<?php if(isset($team[0]['NomP'])){echo $cappoke1['CAP4']['NomA'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[0]['NomP'])){echo $cappoke1['CAP4']['TypeA'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[0]['NomP'])){echo $cappoke1['CAP4']['ClasseA'];}else{ echo 'NULL';} ?>",
-		 			<?php if(isset($team[0]['NomP'])){if($cappoke1['CAP4']['Puissance'] == NULL){echo '""';} else{echo $cappoke1['CAP4']['Puissance'];}}else{ echo '"NULL"';} ?>,
-		 			<?php if(isset($team[0]['NomP'])){if($cappoke1['CAP4']['Precis'] == NULL){echo '""';} else{echo $cappoke1['CAP4']['Precis'];}}else{ echo '"NULL"';} ?>,
-		 			<?php if(isset($team[0]['NomP'])){if($cappoke1['CAP4']['PP'] == NULL){echo '""';} else{echo $cappoke1['CAP4']['PP'];}}else{ echo '"NULL"';}  ?>,
-		 			"<?php if(isset($team[0]['NomP'])){echo $cappoke1['CAP4']['Effets'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[0]['NomP'])){echo $cappoke1['CAP4']['AjoutPV'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[0]['NomP'])){echo $cappoke1['CAP4']['RetirePV'];}else{ echo 'NULL';} ?>",
-		 			<?php if(isset($team[0]['NomP'])){if($cappoke1['CAP4']['NbAttaque'] == NULL){echo '""';} else{echo $cappoke1['CAP4']['NbAttaque'];}}else{ echo '"NULL"';} ?>,
-		 			"<?php if(isset($team[0]['NomP'])){echo $cappoke1['CAP4']['StatMBoost'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[0]['NomP'])){echo $cappoke1['CAP4']['StatANerf'];}else{ echo 'NULL';} ?>"),
- 				<?php if(isset($team[0]['NomP'])){ echo $team[0]['ID'];}else{echo '"NULL"';}?>,
- 				"<?php if(isset($team[0]['NomP'])){ echo $team[0]['TypeU'];}else{echo 'NULL';}?>",
- 				"<?php if(isset($team[0]['NomP'])){ echo $team[0]['TypeD'];}else{echo 'NULL';}?>",
- 				<?php if(isset($team[0]['NomP'])){ echo $team[0]['Niv'];}else{echo '"NULL"';}?>,
- 				<?php if(isset($team[0]['NomP'])){ echo $team[0]['IVPV'];}else{echo '"NULL"';}?>,
- 				<?php if(isset($team[0]['NomP'])){ echo $team[0]['IVAttaque'];}else{echo '"NULL"';}?>,
- 				<?php if(isset($team[0]['NomP'])){ echo $team[0]['IVDefense'];}else{echo '"NULL"';}?>,
- 				<?php if(isset($team[0]['NomP'])){ echo $team[0]['IVAttSpe'];}else{echo '"NULL"';}?>,
- 				<?php if(isset($team[0]['NomP'])){ echo $team[0]['IVDefSpe'];}else{echo '"NULL"';}?>,
- 				<?php if(isset($team[0]['NomP'])){ echo $team[0]['IVVitesse'];}else{echo '"NULL"';}?>,
- 				<?php if(isset($team[0]['NomP'])){ echo $team[0]['PVmax'];}else{echo '"NULL"';}?>,
- 				<?php if(isset($team[0]['NomP'])){ echo $team[0]['Vitesse'];}else{echo '"NULL"';}?>,
- 				<?php if(isset($team[0]['NomP'])){ echo $team[0]['Attaque'];}else{echo '"NULL"';}?>,
- 				<?php if(isset($team[0]['NomP'])){ echo $team[0]['Defense'];}else{echo '"NULL"';}?>,
- 				<?php if(isset($team[0]['NomP'])){ echo $team[0]['AttSpe'];}else{echo '"NULL"';}?>,
- 				<?php if(isset($team[0]['NomP'])){ echo $team[0]['DefSPe'];}else{echo '"NULL"';}?>,
- 				<?php if (isset($team[0]['gainxp'])){ echo $team[0]['gainxp'];}else{ echo 0;} ?>,
- 				<?php if(isset($team[0]['NomP'])){ echo $team[0]['XPVaincu'];}else{echo '"NULL"';}?>,
- 				"<?php if(isset($team[0]['NomP'])){ echo $team[0]['Courbe'];}else{echo 'NULL';}?>",
- 				<?php if(isset($team[0]['NomP'])){ echo $team[0]['XP'];}else{echo '"NULL"';}?>),
+ 			"<?php if(isset($team2[0]['NomP'])){
+ 				echo utf8_encode($team2[0]['NomP']);}else{ echo 'NULL';}  ?>", 
+ 				"<?php if(isset($team2[0]['NomP'])){
+ 					echo $team2[0]['PVact'];}else{echo 'NULL';}	?>",
+ 				new Cap("<?php if(isset($team2[0]['NomP'])){echo $cappoke21['CAP1']['NomA'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[0]['NomP'])){echo $cappoke21['CAP1']['TypeA'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[0]['NomP'])){echo $cappoke21['CAP1']['ClasseA'];}else{ echo 'NULL';} ?>",
+		 			<?php if(isset($team2[0]['NomP'])){if($cappoke21['CAP1']['Puissance'] == NULL){echo '""';} else{echo $cappoke21['CAP1']['Puissance'];}}else{ echo '"NULL"';} ?>,
+		 			<?php if(isset($team2[0]['NomP'])){if($cappoke21['CAP1']['Precis'] == NULL){echo '""';} else{echo $cappoke21['CAP1']['Precis'];}}else{ echo '"NULL"';} ?>,
+		 			<?php if(isset($team2[0]['NomP'])){if($cappoke21['CAP1']['PP'] == NULL){echo '""';} else{echo $cappoke21['CAP1']['PP'];}}else{ echo '"NULL"';}  ?>,
+		 			"<?php if(isset($team2[0]['NomP'])){echo $cappoke21['CAP1']['Effets'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[0]['NomP'])){echo $cappoke21['CAP1']['AjoutPV'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[0]['NomP'])){echo $cappoke21['CAP1']['RetirePV'];}else{ echo 'NULL';} ?>",
+		 			<?php if(isset($team2[0]['NomP'])){if($cappoke21['CAP1']['NbAttaque'] == NULL){echo '""';} else{echo $cappoke21['CAP1']['NbAttaque'];}}else{ echo '"NULL"';} ?>,
+		 			"<?php if(isset($team2[0]['NomP'])){echo $cappoke21['CAP1']['StatMBoost'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[0]['NomP'])){echo $cappoke21['CAP1']['StatANerf'];}else{ echo 'NULL';} ?>"),
+ 				new Cap("<?php if(isset($team2[0]['NomP'])){echo $cappoke21['CAP2']['NomA'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[0]['NomP'])){echo $cappoke21['CAP2']['TypeA'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[0]['NomP'])){echo $cappoke21['CAP2']['ClasseA'];}else{ echo 'NULL';} ?>",
+		 			<?php if(isset($team2[0]['NomP'])){if($cappoke21['CAP2']['Puissance'] == NULL){echo '""';} else{echo $cappoke21['CAP2']['Puissance'];}}else{ echo '"NULL"';} ?>,
+		 			<?php if(isset($team2[0]['NomP'])){if($cappoke21['CAP2']['Precis'] == NULL){echo '""';} else{echo $cappoke21['CAP2']['Precis'];}}else{ echo '"NULL"';} ?>,
+		 			<?php if(isset($team2[0]['NomP'])){if($cappoke21['CAP2']['PP'] == NULL){echo '""';} else{echo $cappoke21['CAP2']['PP'];}}else{ echo '"NULL"';}  ?>,
+		 			"<?php if(isset($team2[0]['NomP'])){echo $cappoke21['CAP2']['Effets'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[0]['NomP'])){echo $cappoke21['CAP2']['AjoutPV'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[0]['NomP'])){echo $cappoke21['CAP2']['RetirePV'];}else{ echo 'NULL';} ?>",
+		 			<?php if(isset($team2[0]['NomP'])){if($cappoke21['CAP2']['NbAttaque'] == NULL){echo '""';} else{echo $cappoke21['CAP2']['NbAttaque'];}}else{ echo '"NULL"';} ?>,
+		 			"<?php if(isset($team2[0]['NomP'])){echo $cappoke21['CAP2']['StatMBoost'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[0]['NomP'])){echo $cappoke21['CAP2']['StatANerf'];}else{ echo 'NULL';} ?>"),
+ 				new Cap("<?php if(isset($team2[0]['NomP'])){echo $cappoke21['CAP3']['NomA'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[0]['NomP'])){echo $cappoke21['CAP3']['TypeA'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[0]['NomP'])){echo $cappoke21['CAP3']['ClasseA'];}else{ echo 'NULL';} ?>",
+		 			<?php if(isset($team2[0]['NomP'])){if($cappoke21['CAP3']['Puissance'] == NULL){echo '""';} else{echo $cappoke21['CAP3']['Puissance'];}}else{ echo '"NULL"';} ?>,
+		 			<?php if(isset($team2[0]['NomP'])){if($cappoke21['CAP3']['Precis'] == NULL){echo '""';} else{echo $cappoke21['CAP3']['Precis'];}}else{ echo '"NULL"';} ?>,
+		 			<?php if(isset($team2[0]['NomP'])){if($cappoke21['CAP3']['PP'] == NULL){echo '""';} else{echo $cappoke21['CAP3']['PP'];}}else{ echo '"NULL"';}  ?>,
+		 			"<?php if(isset($team2[0]['NomP'])){echo $cappoke21['CAP3']['Effets'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[0]['NomP'])){echo $cappoke21['CAP3']['AjoutPV'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[0]['NomP'])){echo $cappoke21['CAP3']['RetirePV'];}else{ echo 'NULL';} ?>",
+		 			<?php if(isset($team2[0]['NomP'])){if($cappoke21['CAP3']['NbAttaque'] == NULL){echo '""';} else{echo $cappoke21['CAP3']['NbAttaque'];}}else{ echo '"NULL"';} ?>,
+		 			"<?php if(isset($team2[0]['NomP'])){echo $cappoke21['CAP3']['StatMBoost'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[0]['NomP'])){echo $cappoke21['CAP3']['StatANerf'];}else{ echo 'NULL';} ?>"),
+ 				new Cap("<?php if(isset($team2[0]['NomP'])){echo $cappoke21['CAP4']['NomA'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[0]['NomP'])){echo $cappoke21['CAP4']['TypeA'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[0]['NomP'])){echo $cappoke21['CAP4']['ClasseA'];}else{ echo 'NULL';} ?>",
+		 			<?php if(isset($team2[0]['NomP'])){if($cappoke21['CAP4']['Puissance'] == NULL){echo '""';} else{echo $cappoke21['CAP4']['Puissance'];}}else{ echo '"NULL"';} ?>,
+		 			<?php if(isset($team2[0]['NomP'])){if($cappoke21['CAP4']['Precis'] == NULL){echo '""';} else{echo $cappoke21['CAP4']['Precis'];}}else{ echo '"NULL"';} ?>,
+		 			<?php if(isset($team2[0]['NomP'])){if($cappoke21['CAP4']['PP'] == NULL){echo '""';} else{echo $cappoke21['CAP4']['PP'];}}else{ echo '"NULL"';}  ?>,
+		 			"<?php if(isset($team2[0]['NomP'])){echo $cappoke21['CAP4']['Effets'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[0]['NomP'])){echo $cappoke21['CAP4']['AjoutPV'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[0]['NomP'])){echo $cappoke21['CAP4']['RetirePV'];}else{ echo 'NULL';} ?>",
+		 			<?php if(isset($team2[0]['NomP'])){if($cappoke21['CAP4']['NbAttaque'] == NULL){echo '""';} else{echo $cappoke21['CAP4']['NbAttaque'];}}else{ echo '"NULL"';} ?>,
+		 			"<?php if(isset($team2[0]['NomP'])){echo $cappoke21['CAP4']['StatMBoost'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[0]['NomP'])){echo $cappoke21['CAP4']['StatANerf'];}else{ echo 'NULL';} ?>"),
+ 				<?php if(isset($team2[0]['NomP'])){ echo $team2[0]['ID'];}else{echo '"NULL"';}?>,
+ 				"<?php if(isset($team2[0]['NomP'])){ echo $team2[0]['TypeU'];}else{echo 'NULL';}?>",
+ 				"<?php if(isset($team2[0]['NomP'])){ echo $team2[0]['TypeD'];}else{echo 'NULL';}?>",
+ 				<?php if(isset($team2[0]['NomP'])){ echo $team2[0]['Niv'];}else{echo '"NULL"';}?>,
+ 				<?php if(isset($team2[0]['NomP'])){ echo $team2[0]['IVPV'];}else{echo '"NULL"';}?>,
+ 				<?php if(isset($team2[0]['NomP'])){ echo $team2[0]['IVAttaque'];}else{echo '"NULL"';}?>,
+ 				<?php if(isset($team2[0]['NomP'])){ echo $team2[0]['IVDefense'];}else{echo '"NULL"';}?>,
+ 				<?php if(isset($team2[0]['NomP'])){ echo $team2[0]['IVAttSpe'];}else{echo '"NULL"';}?>,
+ 				<?php if(isset($team2[0]['NomP'])){ echo $team2[0]['IVDefSpe'];}else{echo '"NULL"';}?>,
+ 				<?php if(isset($team2[0]['NomP'])){ echo $team2[0]['IVVitesse'];}else{echo '"NULL"';}?>,
+ 				<?php if(isset($team2[0]['NomP'])){ echo $team2[0]['PVmax'];}else{echo '"NULL"';}?>,
+ 				<?php if(isset($team2[0]['NomP'])){ echo $team2[0]['Vitesse'];}else{echo '"NULL"';}?>,
+ 				<?php if(isset($team2[0]['NomP'])){ echo $team2[0]['Attaque'];}else{echo '"NULL"';}?>,
+ 				<?php if(isset($team2[0]['NomP'])){ echo $team2[0]['Defense'];}else{echo '"NULL"';}?>,
+ 				<?php if(isset($team2[0]['NomP'])){ echo $team2[0]['AttSpe'];}else{echo '"NULL"';}?>,
+ 				<?php if(isset($team2[0]['NomP'])){ echo $team2[0]['DefSPe'];}else{echo '"NULL"';}?>,
+ 				<?php if (isset($team2[0]['gainxp'])){ echo $team2[0]['gainxp'];}else{ echo 0;} ?>,
+ 				<?php if(isset($team2[0]['NomP'])){ echo $team2[0]['XPVaincu'];}else{echo '"NULL"';}?>,
+ 				"<?php if(isset($team2[0]['NomP'])){ echo $team2[0]['Courbe'];}else{echo 'NULL';}?>",
+ 				<?php if(isset($team2[0]['NomP'])){ echo $team2[0]['XP'];}else{echo '"NULL"';}?>),
  		new Pokemon(
- 			"<?php if(isset($team[1]['NomP'])){
- 				echo utf8_encode($team[1]['NomP']);}else{ echo 'NULL';}  ?>", 
- 				"<?php if(isset($team[1]['NomP'])){
- 					echo $team[1]['PVact'];}else{echo 'NULL';}	?>",
- 				new Cap("<?php if(isset($team[1]['NomP'])){echo $cappoke2['CAP1']['NomA'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[1]['NomP'])){echo $cappoke2['CAP1']['TypeA'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[1]['NomP'])){echo $cappoke2['CAP1']['ClasseA'];}else{ echo 'NULL';} ?>",
-		 			<?php if(isset($team[1]['NomP'])){if($cappoke2['CAP1']['Puissance'] == NULL){echo '""';} else{echo $cappoke2['CAP1']['Puissance'];}}else{ echo '"NULL"';} ?>,
-		 			<?php if(isset($team[1]['NomP'])){if($cappoke2['CAP1']['Precis'] == NULL){echo '""';} else{echo $cappoke2['CAP1']['Precis'];}}else{ echo '"NULL"';} ?>,
-		 			<?php if(isset($team[1]['NomP'])){if($cappoke2['CAP1']['PP'] == NULL){echo '""';} else{echo $cappoke2['CAP1']['PP'];}}else{ echo '"NULL"';}  ?>,
-		 			"<?php if(isset($team[1]['NomP'])){echo $cappoke2['CAP1']['Effets'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[1]['NomP'])){echo $cappoke2['CAP1']['AjoutPV'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[1]['NomP'])){echo $cappoke2['CAP1']['RetirePV'];}else{ echo 'NULL';} ?>",
-		 			<?php if(isset($team[1]['NomP'])){if($cappoke2['CAP1']['NbAttaque'] == NULL){echo '""';} else{echo $cappoke2['CAP1']['NbAttaque'];}}else{ echo '"NULL"';} ?>,
-		 			"<?php if(isset($team[1]['NomP'])){echo $cappoke2['CAP1']['StatMBoost'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[1]['NomP'])){echo $cappoke2['CAP1']['StatANerf'];}else{ echo 'NULL';} ?>"),
- 				new Cap("<?php if(isset($team[1]['NomP'])){echo $cappoke2['CAP2']['NomA'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[1]['NomP'])){echo $cappoke2['CAP2']['TypeA'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[1]['NomP'])){echo $cappoke2['CAP2']['ClasseA'];}else{ echo 'NULL';} ?>",
-		 			<?php if(isset($team[1]['NomP'])){if($cappoke2['CAP2']['Puissance'] == NULL){echo '""';} else{echo $cappoke2['CAP2']['Puissance'];}}else{ echo '"NULL"';} ?>,
-		 			<?php if(isset($team[1]['NomP'])){if($cappoke2['CAP2']['Precis'] == NULL){echo '""';} else{echo $cappoke2['CAP2']['Precis'];}}else{ echo '"NULL"';} ?>,
-		 			<?php if(isset($team[1]['NomP'])){if($cappoke2['CAP2']['PP'] == NULL){echo '""';} else{echo $cappoke2['CAP2']['PP'];}}else{ echo '"NULL"';}  ?>,
-		 			"<?php if(isset($team[1]['NomP'])){echo $cappoke2['CAP2']['Effets'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[1]['NomP'])){echo $cappoke2['CAP2']['AjoutPV'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[1]['NomP'])){echo $cappoke2['CAP2']['RetirePV'];}else{ echo 'NULL';} ?>",
-		 			<?php if(isset($team[1]['NomP'])){if($cappoke2['CAP2']['NbAttaque'] == NULL){echo '""';} else{echo $cappoke2['CAP2']['NbAttaque'];}}else{ echo '"NULL"';} ?>,
-		 			"<?php if(isset($team[1]['NomP'])){echo $cappoke2['CAP2']['StatMBoost'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[1]['NomP'])){echo $cappoke2['CAP2']['StatANerf'];}else{ echo 'NULL';} ?>"),
- 				new Cap("<?php if(isset($team[1]['NomP'])){echo $cappoke2['CAP3']['NomA'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[1]['NomP'])){echo $cappoke2['CAP3']['TypeA'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[1]['NomP'])){echo $cappoke2['CAP3']['ClasseA'];}else{ echo 'NULL';} ?>",
-		 			<?php if(isset($team[1]['NomP'])){if($cappoke2['CAP3']['Puissance'] == NULL){echo '""';} else{echo $cappoke2['CAP3']['Puissance'];}}else{ echo '"NULL"';} ?>,
-		 			<?php if(isset($team[1]['NomP'])){if($cappoke2['CAP3']['Precis'] == NULL){echo '""';} else{echo $cappoke2['CAP3']['Precis'];}}else{ echo '"NULL"';} ?>,
-		 			<?php if(isset($team[1]['NomP'])){if($cappoke2['CAP3']['PP'] == NULL){echo '""';} else{echo $cappoke2['CAP3']['PP'];}}else{ echo '"NULL"';}  ?>,
-		 			"<?php if(isset($team[1]['NomP'])){echo $cappoke2['CAP3']['Effets'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[1]['NomP'])){echo $cappoke2['CAP3']['AjoutPV'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[1]['NomP'])){echo $cappoke2['CAP3']['RetirePV'];}else{ echo 'NULL';} ?>",
-		 			<?php if(isset($team[1]['NomP'])){if($cappoke2['CAP3']['NbAttaque'] == NULL){echo '""';} else{echo $cappoke2['CAP3']['NbAttaque'];}}else{ echo '"NULL"';} ?>,
-		 			"<?php if(isset($team[1]['NomP'])){echo $cappoke2['CAP3']['StatMBoost'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[1]['NomP'])){echo $cappoke2['CAP3']['StatANerf'];}else{ echo 'NULL';} ?>"),
- 				new Cap("<?php if(isset($team[1]['NomP'])){echo $cappoke2['CAP4']['NomA'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[1]['NomP'])){echo $cappoke2['CAP4']['TypeA'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[1]['NomP'])){echo $cappoke2['CAP4']['ClasseA'];}else{ echo 'NULL';} ?>",
-		 			<?php if(isset($team[1]['NomP'])){if($cappoke2['CAP4']['Puissance'] == NULL){echo '""';} else{echo $cappoke2['CAP4']['Puissance'];}}else{ echo '"NULL"';} ?>,
-		 			<?php if(isset($team[1]['NomP'])){if($cappoke2['CAP4']['Precis'] == NULL){echo '""';} else{echo $cappoke2['CAP4']['Precis'];}}else{ echo '"NULL"';} ?>,
-		 			<?php if(isset($team[1]['NomP'])){if($cappoke2['CAP4']['PP'] == NULL){echo '""';} else{echo $cappoke2['CAP4']['PP'];}}else{ echo '"NULL"';}  ?>,
-		 			"<?php if(isset($team[1]['NomP'])){echo $cappoke2['CAP4']['Effets'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[1]['NomP'])){echo $cappoke2['CAP4']['AjoutPV'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[1]['NomP'])){echo $cappoke2['CAP4']['RetirePV'];}else{ echo 'NULL';} ?>",
-		 			<?php if(isset($team[1]['NomP'])){if($cappoke2['CAP4']['NbAttaque'] == NULL){echo '""';} else{echo $cappoke2['CAP4']['NbAttaque'];}}else{ echo '"NULL"';} ?>,
-		 			"<?php if(isset($team[1]['NomP'])){echo $cappoke2['CAP4']['StatMBoost'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[1]['NomP'])){echo $cappoke2['CAP4']['StatANerf'];}else{ echo 'NULL';} ?>"),
- 				<?php if(isset($team[1]['NomP'])){ echo $team[1]['ID'];}else{echo '"NULL"';}?>,
- 				"<?php if(isset($team[1]['NomP'])){ echo $team[1]['TypeU'];}else{echo 'NULL';}?>",
- 				"<?php if(isset($team[1]['NomP'])){ echo $team[1]['TypeD'];}else{echo 'NULL';}?>",
- 				<?php if(isset($team[1]['NomP'])){ echo $team[1]['Niv'];}else{echo '"NULL"';}?>,
- 				<?php if(isset($team[1]['NomP'])){ echo $team[1]['IVPV'];}else{echo '"NULL"';}?>,
- 				<?php if(isset($team[1]['NomP'])){ echo $team[1]['IVAttaque'];}else{echo '"NULL"';}?>,
- 				<?php if(isset($team[1]['NomP'])){ echo $team[1]['IVDefense'];}else{echo '"NULL"';}?>,
- 				<?php if(isset($team[1]['NomP'])){ echo $team[1]['IVAttSpe'];}else{echo '"NULL"';}?>,
- 				<?php if(isset($team[1]['NomP'])){ echo $team[1]['IVDefSpe'];}else{echo '"NULL"';}?>,
- 				<?php if(isset($team[1]['NomP'])){ echo $team[1]['IVVitesse'];}else{echo '"NULL"';}?>,
- 				<?php if(isset($team[1]['NomP'])){ echo $team[1]['PVmax'];}else{echo '"NULL"';}?>,
- 				<?php if(isset($team[1]['NomP'])){ echo $team[1]['Vitesse'];}else{echo '"NULL"';}?>,
- 				<?php if(isset($team[1]['NomP'])){ echo $team[1]['Attaque'];}else{echo '"NULL"';}?>,
- 				<?php if(isset($team[1]['NomP'])){ echo $team[1]['Defense'];}else{echo '"NULL"';}?>,
- 				<?php if(isset($team[1]['NomP'])){ echo $team[1]['AttSpe'];}else{echo '"NULL"';}?>,
- 				<?php if(isset($team[1]['NomP'])){ echo $team[1]['DefSPe'];}else{echo '"NULL"';}?>,
- 				<?php if (isset($team[1]['gainxp'])){ echo $team[1]['gainxp'];}else{ echo 0;} ?>,
- 				<?php if(isset($team[1]['NomP'])){ echo $team[1]['XPVaincu'];}else{echo '"NULL"';}?>,
- 				"<?php if(isset($team[1]['NomP'])){ echo $team[1]['Courbe'];}else{echo 'NULL';}?>",
- 				<?php if(isset($team[1]['NomP'])){ echo $team[1]['XP'];}else{echo '"NULL"';}?>   ),
+ 			"<?php if(isset($team2[1]['NomP'])){
+ 				echo utf8_encode($team2[1]['NomP']);}else{ echo 'NULL';}  ?>", 
+ 				"<?php if(isset($team2[1]['NomP'])){
+ 					echo $team2[1]['PVact'];}else{echo 'NULL';}	?>",
+ 				new Cap("<?php if(isset($team2[1]['NomP'])){echo $cappoke22['CAP1']['NomA'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[1]['NomP'])){echo $cappoke22['CAP1']['TypeA'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[1]['NomP'])){echo $cappoke22['CAP1']['ClasseA'];}else{ echo 'NULL';} ?>",
+		 			<?php if(isset($team2[1]['NomP'])){if($cappoke22['CAP1']['Puissance'] == NULL){echo '""';} else{echo $cappoke22['CAP1']['Puissance'];}}else{ echo '"NULL"';} ?>,
+		 			<?php if(isset($team2[1]['NomP'])){if($cappoke22['CAP1']['Precis'] == NULL){echo '""';} else{echo $cappoke22['CAP1']['Precis'];}}else{ echo '"NULL"';} ?>,
+		 			<?php if(isset($team2[1]['NomP'])){if($cappoke22['CAP1']['PP'] == NULL){echo '""';} else{echo $cappoke22['CAP1']['PP'];}}else{ echo '"NULL"';}  ?>,
+		 			"<?php if(isset($team2[1]['NomP'])){echo $cappoke22['CAP1']['Effets'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[1]['NomP'])){echo $cappoke22['CAP1']['AjoutPV'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[1]['NomP'])){echo $cappoke22['CAP1']['RetirePV'];}else{ echo 'NULL';} ?>",
+		 			<?php if(isset($team2[1]['NomP'])){if($cappoke22['CAP1']['NbAttaque'] == NULL){echo '""';} else{echo $cappoke22['CAP1']['NbAttaque'];}}else{ echo '"NULL"';} ?>,
+		 			"<?php if(isset($team2[1]['NomP'])){echo $cappoke22['CAP1']['StatMBoost'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[1]['NomP'])){echo $cappoke22['CAP1']['StatANerf'];}else{ echo 'NULL';} ?>"),
+ 				new Cap("<?php if(isset($team2[1]['NomP'])){echo $cappoke22['CAP2']['NomA'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[1]['NomP'])){echo $cappoke22['CAP2']['TypeA'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[1]['NomP'])){echo $cappoke22['CAP2']['ClasseA'];}else{ echo 'NULL';} ?>",
+		 			<?php if(isset($team2[1]['NomP'])){if($cappoke22['CAP2']['Puissance'] == NULL){echo '""';} else{echo $cappoke22['CAP2']['Puissance'];}}else{ echo '"NULL"';} ?>,
+		 			<?php if(isset($team2[1]['NomP'])){if($cappoke22['CAP2']['Precis'] == NULL){echo '""';} else{echo $cappoke22['CAP2']['Precis'];}}else{ echo '"NULL"';} ?>,
+		 			<?php if(isset($team2[1]['NomP'])){if($cappoke22['CAP2']['PP'] == NULL){echo '""';} else{echo $cappoke22['CAP2']['PP'];}}else{ echo '"NULL"';}  ?>,
+		 			"<?php if(isset($team2[1]['NomP'])){echo $cappoke22['CAP2']['Effets'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[1]['NomP'])){echo $cappoke22['CAP2']['AjoutPV'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[1]['NomP'])){echo $cappoke22['CAP2']['RetirePV'];}else{ echo 'NULL';} ?>",
+		 			<?php if(isset($team2[1]['NomP'])){if($cappoke22['CAP2']['NbAttaque'] == NULL){echo '""';} else{echo $cappoke22['CAP2']['NbAttaque'];}}else{ echo '"NULL"';} ?>,
+		 			"<?php if(isset($team2[1]['NomP'])){echo $cappoke22['CAP2']['StatMBoost'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[1]['NomP'])){echo $cappoke22['CAP2']['StatANerf'];}else{ echo 'NULL';} ?>"),
+ 				new Cap("<?php if(isset($team2[1]['NomP'])){echo $cappoke22['CAP3']['NomA'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[1]['NomP'])){echo $cappoke22['CAP3']['TypeA'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[1]['NomP'])){echo $cappoke22['CAP3']['ClasseA'];}else{ echo 'NULL';} ?>",
+		 			<?php if(isset($team2[1]['NomP'])){if($cappoke22['CAP3']['Puissance'] == NULL){echo '""';} else{echo $cappoke22['CAP3']['Puissance'];}}else{ echo '"NULL"';} ?>,
+		 			<?php if(isset($team2[1]['NomP'])){if($cappoke22['CAP3']['Precis'] == NULL){echo '""';} else{echo $cappoke22['CAP3']['Precis'];}}else{ echo '"NULL"';} ?>,
+		 			<?php if(isset($team2[1]['NomP'])){if($cappoke22['CAP3']['PP'] == NULL){echo '""';} else{echo $cappoke22['CAP3']['PP'];}}else{ echo '"NULL"';}  ?>,
+		 			"<?php if(isset($team2[1]['NomP'])){echo $cappoke22['CAP3']['Effets'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[1]['NomP'])){echo $cappoke22['CAP3']['AjoutPV'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[1]['NomP'])){echo $cappoke22['CAP3']['RetirePV'];}else{ echo 'NULL';} ?>",
+		 			<?php if(isset($team2[1]['NomP'])){if($cappoke22['CAP3']['NbAttaque'] == NULL){echo '""';} else{echo $cappoke22['CAP3']['NbAttaque'];}}else{ echo '"NULL"';} ?>,
+		 			"<?php if(isset($team2[1]['NomP'])){echo $cappoke22['CAP3']['StatMBoost'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[1]['NomP'])){echo $cappoke22['CAP3']['StatANerf'];}else{ echo 'NULL';} ?>"),
+ 				new Cap("<?php if(isset($team2[1]['NomP'])){echo $cappoke22['CAP4']['NomA'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[1]['NomP'])){echo $cappoke22['CAP4']['TypeA'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[1]['NomP'])){echo $cappoke22['CAP4']['ClasseA'];}else{ echo 'NULL';} ?>",
+		 			<?php if(isset($team2[1]['NomP'])){if($cappoke22['CAP4']['Puissance'] == NULL){echo '""';} else{echo $cappoke22['CAP4']['Puissance'];}}else{ echo '"NULL"';} ?>,
+		 			<?php if(isset($team2[1]['NomP'])){if($cappoke22['CAP4']['Precis'] == NULL){echo '""';} else{echo $cappoke22['CAP4']['Precis'];}}else{ echo '"NULL"';} ?>,
+		 			<?php if(isset($team2[1]['NomP'])){if($cappoke22['CAP4']['PP'] == NULL){echo '""';} else{echo $cappoke22['CAP4']['PP'];}}else{ echo '"NULL"';}  ?>,
+		 			"<?php if(isset($team2[1]['NomP'])){echo $cappoke22['CAP4']['Effets'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[1]['NomP'])){echo $cappoke22['CAP4']['AjoutPV'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[1]['NomP'])){echo $cappoke22['CAP4']['RetirePV'];}else{ echo 'NULL';} ?>",
+		 			<?php if(isset($team2[1]['NomP'])){if($cappoke22['CAP4']['NbAttaque'] == NULL){echo '""';} else{echo $cappoke22['CAP4']['NbAttaque'];}}else{ echo '"NULL"';} ?>,
+		 			"<?php if(isset($team2[1]['NomP'])){echo $cappoke22['CAP4']['StatMBoost'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[1]['NomP'])){echo $cappoke22['CAP4']['StatANerf'];}else{ echo 'NULL';} ?>"),
+ 				<?php if(isset($team2[1]['NomP'])){ echo $team2[1]['ID'];}else{echo '"NULL"';}?>,
+ 				"<?php if(isset($team2[1]['NomP'])){ echo $team2[1]['TypeU'];}else{echo 'NULL';}?>",
+ 				"<?php if(isset($team2[1]['NomP'])){ echo $team2[1]['TypeD'];}else{echo 'NULL';}?>",
+ 				<?php if(isset($team2[1]['NomP'])){ echo $team2[1]['Niv'];}else{echo '"NULL"';}?>,
+ 				<?php if(isset($team2[1]['NomP'])){ echo $team2[1]['IVPV'];}else{echo '"NULL"';}?>,
+ 				<?php if(isset($team2[1]['NomP'])){ echo $team2[1]['IVAttaque'];}else{echo '"NULL"';}?>,
+ 				<?php if(isset($team2[1]['NomP'])){ echo $team2[1]['IVDefense'];}else{echo '"NULL"';}?>,
+ 				<?php if(isset($team2[1]['NomP'])){ echo $team2[1]['IVAttSpe'];}else{echo '"NULL"';}?>,
+ 				<?php if(isset($team2[1]['NomP'])){ echo $team2[1]['IVDefSpe'];}else{echo '"NULL"';}?>,
+ 				<?php if(isset($team2[1]['NomP'])){ echo $team2[1]['IVVitesse'];}else{echo '"NULL"';}?>,
+ 				<?php if(isset($team2[1]['NomP'])){ echo $team2[1]['PVmax'];}else{echo '"NULL"';}?>,
+ 				<?php if(isset($team2[1]['NomP'])){ echo $team2[1]['Vitesse'];}else{echo '"NULL"';}?>,
+ 				<?php if(isset($team2[1]['NomP'])){ echo $team2[1]['Attaque'];}else{echo '"NULL"';}?>,
+ 				<?php if(isset($team2[1]['NomP'])){ echo $team2[1]['Defense'];}else{echo '"NULL"';}?>,
+ 				<?php if(isset($team2[1]['NomP'])){ echo $team2[1]['AttSpe'];}else{echo '"NULL"';}?>,
+ 				<?php if(isset($team2[1]['NomP'])){ echo $team2[1]['DefSPe'];}else{echo '"NULL"';}?>,
+ 				<?php if (isset($team2[1]['gainxp'])){ echo $team2[1]['gainxp'];}else{ echo 0;} ?>,
+ 				<?php if(isset($team2[1]['NomP'])){ echo $team2[1]['XPVaincu'];}else{echo '"NULL"';}?>,
+ 				"<?php if(isset($team2[1]['NomP'])){ echo $team2[1]['Courbe'];}else{echo 'NULL';}?>",
+ 				<?php if(isset($team2[1]['NomP'])){ echo $team2[1]['XP'];}else{echo '"NULL"';}?>   ),
  		new Pokemon(
- 			"<?php if(isset($team[2]['NomP'])){
- 				echo utf8_encode($team[2]['NomP']);}else{ echo 'NULL';}  ?>", 
- 				"<?php if(isset($team[2]['NomP'])){
- 					echo $team[2]['PVact'];}else{echo 'NULL';}	?>",
- 				new Cap("<?php if(isset($team[2]['NomP'])){echo $cappoke3['CAP1']['NomA'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[2]['NomP'])){echo $cappoke3['CAP1']['TypeA'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[2]['NomP'])){echo $cappoke3['CAP1']['ClasseA'];}else{ echo 'NULL';} ?>",
-		 			<?php if(isset($team[2]['NomP'])){if($cappoke3['CAP1']['Puissance'] == NULL){echo '""';} else{echo $cappoke3['CAP1']['Puissance'];}}else{ echo '"NULL"';} ?>,
-		 			<?php if(isset($team[2]['NomP'])){if($cappoke3['CAP1']['Precis'] == NULL){echo '""';} else{echo $cappoke3['CAP1']['Precis'];}}else{ echo '"NULL"';} ?>,
-		 			<?php if(isset($team[2]['NomP'])){if($cappoke3['CAP1']['PP'] == NULL){echo '""';} else{echo $cappoke3['CAP1']['PP'];}}else{ echo '"NULL"';}  ?>,
-		 			"<?php if(isset($team[2]['NomP'])){echo $cappoke3['CAP1']['Effets'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[2]['NomP'])){echo $cappoke3['CAP1']['AjoutPV'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[2]['NomP'])){echo $cappoke3['CAP1']['RetirePV'];}else{ echo 'NULL';} ?>",
-		 			<?php if(isset($team[2]['NomP'])){if($cappoke3['CAP1']['NbAttaque'] == NULL){echo '""';} else{echo $cappoke3['CAP1']['NbAttaque'];}}else{ echo '"NULL"';} ?>,
-		 			"<?php if(isset($team[2]['NomP'])){echo $cappoke3['CAP1']['StatMBoost'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[2]['NomP'])){echo $cappoke3['CAP1']['StatANerf'];}else{ echo 'NULL';} ?>"),
- 				new Cap("<?php if(isset($team[2]['NomP'])){echo $cappoke3['CAP2']['NomA'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[2]['NomP'])){echo $cappoke3['CAP2']['TypeA'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[2]['NomP'])){echo $cappoke3['CAP2']['ClasseA'];}else{ echo 'NULL';} ?>",
-		 			<?php if(isset($team[2]['NomP'])){if($cappoke3['CAP2']['Puissance'] == NULL){echo '""';} else{echo $cappoke3['CAP2']['Puissance'];}}else{ echo '"NULL"';} ?>,
-		 			<?php if(isset($team[2]['NomP'])){if($cappoke3['CAP2']['Precis'] == NULL){echo '""';} else{echo $cappoke3['CAP2']['Precis'];}}else{ echo '"NULL"';} ?>,
-		 			<?php if(isset($team[2]['NomP'])){if($cappoke3['CAP2']['PP'] == NULL){echo '""';} else{echo $cappoke3['CAP2']['PP'];}}else{ echo '"NULL"';}  ?>,
-		 			"<?php if(isset($team[2]['NomP'])){echo $cappoke3['CAP2']['Effets'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[2]['NomP'])){echo $cappoke3['CAP2']['AjoutPV'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[2]['NomP'])){echo $cappoke3['CAP2']['RetirePV'];}else{ echo 'NULL';} ?>",
-		 			<?php if(isset($team[2]['NomP'])){if($cappoke3['CAP2']['NbAttaque'] == NULL){echo '""';} else{echo $cappoke3['CAP2']['NbAttaque'];}}else{ echo '"NULL"';} ?>,
-		 			"<?php if(isset($team[2]['NomP'])){echo $cappoke3['CAP2']['StatMBoost'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[2]['NomP'])){echo $cappoke3['CAP2']['StatANerf'];}else{ echo 'NULL';} ?>"),
- 				new Cap("<?php if(isset($team[2]['NomP'])){echo $cappoke3['CAP3']['NomA'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[2]['NomP'])){echo $cappoke3['CAP3']['TypeA'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[2]['NomP'])){echo $cappoke3['CAP3']['ClasseA'];}else{ echo 'NULL';} ?>",
-		 			<?php if(isset($team[2]['NomP'])){if($cappoke3['CAP3']['Puissance'] == NULL){echo '""';} else{echo $cappoke3['CAP3']['Puissance'];}}else{ echo '"NULL"';} ?>,
-		 			<?php if(isset($team[2]['NomP'])){if($cappoke3['CAP3']['Precis'] == NULL){echo '""';} else{echo $cappoke3['CAP3']['Precis'];}}else{ echo '"NULL"';} ?>,
-		 			<?php if(isset($team[2]['NomP'])){if($cappoke3['CAP3']['PP'] == NULL){echo '""';} else{echo $cappoke3['CAP3']['PP'];}}else{ echo '"NULL"';}  ?>,
-		 			"<?php if(isset($team[2]['NomP'])){echo $cappoke3['CAP3']['Effets'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[2]['NomP'])){echo $cappoke3['CAP3']['AjoutPV'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[2]['NomP'])){echo $cappoke3['CAP3']['RetirePV'];}else{ echo 'NULL';} ?>",
-		 			<?php if(isset($team[2]['NomP'])){if($cappoke3['CAP3']['NbAttaque'] == NULL){echo '""';} else{echo $cappoke3['CAP3']['NbAttaque'];}}else{ echo '"NULL"';} ?>,
-		 			"<?php if(isset($team[2]['NomP'])){echo $cappoke3['CAP3']['StatMBoost'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[2]['NomP'])){echo $cappoke3['CAP3']['StatANerf'];}else{ echo 'NULL';} ?>"),
- 				new Cap("<?php if(isset($team[2]['NomP'])){echo $cappoke3['CAP4']['NomA'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[2]['NomP'])){echo $cappoke3['CAP4']['TypeA'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[2]['NomP'])){echo $cappoke3['CAP4']['ClasseA'];}else{ echo 'NULL';} ?>",
-		 			<?php if(isset($team[2]['NomP'])){if($cappoke3['CAP4']['Puissance'] == NULL){echo '""';} else{echo $cappoke3['CAP4']['Puissance'];}}else{ echo '"NULL"';} ?>,
-		 			<?php if(isset($team[2]['NomP'])){if($cappoke3['CAP4']['Precis'] == NULL){echo '""';} else{echo $cappoke3['CAP4']['Precis'];}}else{ echo '"NULL"';} ?>,
-		 			<?php if(isset($team[2]['NomP'])){if($cappoke3['CAP4']['PP'] == NULL){echo '""';} else{echo $cappoke3['CAP4']['PP'];}}else{ echo '"NULL"';}  ?>,
-		 			"<?php if(isset($team[2]['NomP'])){echo $cappoke3['CAP4']['Effets'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[2]['NomP'])){echo $cappoke3['CAP4']['AjoutPV'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[2]['NomP'])){echo $cappoke3['CAP4']['RetirePV'];}else{ echo 'NULL';} ?>",
-		 			<?php if(isset($team[2]['NomP'])){if($cappoke3['CAP4']['NbAttaque'] == NULL){echo '""';} else{echo $cappoke3['CAP4']['NbAttaque'];}}else{ echo '"NULL"';} ?>,
-		 			"<?php if(isset($team[2]['NomP'])){echo $cappoke3['CAP4']['StatMBoost'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[2]['NomP'])){echo $cappoke3['CAP4']['StatANerf'];}else{ echo 'NULL';} ?>"),
- 				<?php if(isset($team[2]['NomP'])){ echo $team[2]['ID'];}else{echo '"NULL"';}?>,
- 				"<?php if(isset($team[2]['NomP'])){ echo $team[2]['TypeU'];}else{echo 'NULL';}?>",
- 				"<?php if(isset($team[2]['NomP'])){ echo $team[2]['TypeD'];}else{echo 'NULL';}?>",
- 				<?php if(isset($team[2]['NomP'])){ echo $team[2]['Niv'];}else{echo '"NULL"';}?>,
- 				<?php if(isset($team[2]['NomP'])){ echo $team[2]['IVPV'];}else{echo '"NULL"';}?>,
- 				<?php if(isset($team[2]['NomP'])){ echo $team[2]['IVAttaque'];}else{echo '"NULL"';}?>,
- 				<?php if(isset($team[2]['NomP'])){ echo $team[2]['IVDefense'];}else{echo '"NULL"';}?>,
- 				<?php if(isset($team[2]['NomP'])){ echo $team[2]['IVAttSpe'];}else{echo '"NULL"';}?>,
- 				<?php if(isset($team[2]['NomP'])){ echo $team[2]['IVDefSpe'];}else{echo '"NULL"';}?>,
- 				<?php if(isset($team[2]['NomP'])){ echo $team[2]['IVVitesse'];}else{echo '"NULL"';}?>,
- 				<?php if(isset($team[2]['NomP'])){ echo $team[2]['PVmax'];}else{echo '"NULL"';}?>,
- 				<?php if(isset($team[2]['NomP'])){ echo $team[2]['Vitesse'];}else{echo '"NULL"';}?>,
- 				<?php if(isset($team[2]['NomP'])){ echo $team[2]['Attaque'];}else{echo '"NULL"';}?>,
- 				<?php if(isset($team[2]['NomP'])){ echo $team[2]['Defense'];}else{echo '"NULL"';}?>,
- 				<?php if(isset($team[2]['NomP'])){ echo $team[2]['AttSpe'];}else{echo '"NULL"';}?>,
- 				<?php if(isset($team[2]['NomP'])){ echo $team[2]['DefSPe'];}else{echo '"NULL"';}?>,
- 				<?php if (isset($team[2]['gainxp'])){ echo $team[2]['gainxp'];}else{ echo 0;} ?>,
- 				<?php if(isset($team[2]['NomP'])){ echo $team[2]['XPVaincu'];}else{echo '"NULL"';}?>,
- 				"<?php if(isset($team[2]['NomP'])){ echo $team[2]['Courbe'];}else{echo 'NULL';}?>",
- 				<?php if(isset($team[2]['NomP'])){ echo $team[2]['XP'];}else{echo '"NULL"';}?>),
+ 			"<?php if(isset($team2[2]['NomP'])){
+ 				echo utf8_encode($team2[2]['NomP']);}else{ echo 'NULL';}  ?>", 
+ 				"<?php if(isset($team2[2]['NomP'])){
+ 					echo $team2[2]['PVact'];}else{echo 'NULL';}	?>",
+ 				new Cap("<?php if(isset($team2[2]['NomP'])){echo $cappoke23['CAP1']['NomA'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[2]['NomP'])){echo $cappoke23['CAP1']['TypeA'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[2]['NomP'])){echo $cappoke23['CAP1']['ClasseA'];}else{ echo 'NULL';} ?>",
+		 			<?php if(isset($team2[2]['NomP'])){if($cappoke23['CAP1']['Puissance'] == NULL){echo '""';} else{echo $cappoke23['CAP1']['Puissance'];}}else{ echo '"NULL"';} ?>,
+		 			<?php if(isset($team2[2]['NomP'])){if($cappoke23['CAP1']['Precis'] == NULL){echo '""';} else{echo $cappoke23['CAP1']['Precis'];}}else{ echo '"NULL"';} ?>,
+		 			<?php if(isset($team2[2]['NomP'])){if($cappoke23['CAP1']['PP'] == NULL){echo '""';} else{echo $cappoke23['CAP1']['PP'];}}else{ echo '"NULL"';}  ?>,
+		 			"<?php if(isset($team2[2]['NomP'])){echo $cappoke23['CAP1']['Effets'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[2]['NomP'])){echo $cappoke23['CAP1']['AjoutPV'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[2]['NomP'])){echo $cappoke23['CAP1']['RetirePV'];}else{ echo 'NULL';} ?>",
+		 			<?php if(isset($team2[2]['NomP'])){if($cappoke23['CAP1']['NbAttaque'] == NULL){echo '""';} else{echo $cappoke23['CAP1']['NbAttaque'];}}else{ echo '"NULL"';} ?>,
+		 			"<?php if(isset($team2[2]['NomP'])){echo $cappoke23['CAP1']['StatMBoost'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[2]['NomP'])){echo $cappoke23['CAP1']['StatANerf'];}else{ echo 'NULL';} ?>"),
+ 				new Cap("<?php if(isset($team2[2]['NomP'])){echo $cappoke23['CAP2']['NomA'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[2]['NomP'])){echo $cappoke23['CAP2']['TypeA'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[2]['NomP'])){echo $cappoke23['CAP2']['ClasseA'];}else{ echo 'NULL';} ?>",
+		 			<?php if(isset($team2[2]['NomP'])){if($cappoke23['CAP2']['Puissance'] == NULL){echo '""';} else{echo $cappoke23['CAP2']['Puissance'];}}else{ echo '"NULL"';} ?>,
+		 			<?php if(isset($team2[2]['NomP'])){if($cappoke23['CAP2']['Precis'] == NULL){echo '""';} else{echo $cappoke23['CAP2']['Precis'];}}else{ echo '"NULL"';} ?>,
+		 			<?php if(isset($team2[2]['NomP'])){if($cappoke23['CAP2']['PP'] == NULL){echo '""';} else{echo $cappoke23['CAP2']['PP'];}}else{ echo '"NULL"';}  ?>,
+		 			"<?php if(isset($team2[2]['NomP'])){echo $cappoke23['CAP2']['Effets'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[2]['NomP'])){echo $cappoke23['CAP2']['AjoutPV'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[2]['NomP'])){echo $cappoke23['CAP2']['RetirePV'];}else{ echo 'NULL';} ?>",
+		 			<?php if(isset($team2[2]['NomP'])){if($cappoke23['CAP2']['NbAttaque'] == NULL){echo '""';} else{echo $cappoke23['CAP2']['NbAttaque'];}}else{ echo '"NULL"';} ?>,
+		 			"<?php if(isset($team2[2]['NomP'])){echo $cappoke23['CAP2']['StatMBoost'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[2]['NomP'])){echo $cappoke23['CAP2']['StatANerf'];}else{ echo 'NULL';} ?>"),
+ 				new Cap("<?php if(isset($team2[2]['NomP'])){echo $cappoke23['CAP3']['NomA'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[2]['NomP'])){echo $cappoke23['CAP3']['TypeA'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[2]['NomP'])){echo $cappoke23['CAP3']['ClasseA'];}else{ echo 'NULL';} ?>",
+		 			<?php if(isset($team2[2]['NomP'])){if($cappoke23['CAP3']['Puissance'] == NULL){echo '""';} else{echo $cappoke23['CAP3']['Puissance'];}}else{ echo '"NULL"';} ?>,
+		 			<?php if(isset($team2[2]['NomP'])){if($cappoke23['CAP3']['Precis'] == NULL){echo '""';} else{echo $cappoke23['CAP3']['Precis'];}}else{ echo '"NULL"';} ?>,
+		 			<?php if(isset($team2[2]['NomP'])){if($cappoke23['CAP3']['PP'] == NULL){echo '""';} else{echo $cappoke23['CAP3']['PP'];}}else{ echo '"NULL"';}  ?>,
+		 			"<?php if(isset($team2[2]['NomP'])){echo $cappoke23['CAP3']['Effets'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[2]['NomP'])){echo $cappoke23['CAP3']['AjoutPV'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[2]['NomP'])){echo $cappoke23['CAP3']['RetirePV'];}else{ echo 'NULL';} ?>",
+		 			<?php if(isset($team2[2]['NomP'])){if($cappoke23['CAP3']['NbAttaque'] == NULL){echo '""';} else{echo $cappoke23['CAP3']['NbAttaque'];}}else{ echo '"NULL"';} ?>,
+		 			"<?php if(isset($team2[2]['NomP'])){echo $cappoke23['CAP3']['StatMBoost'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[2]['NomP'])){echo $cappoke23['CAP3']['StatANerf'];}else{ echo 'NULL';} ?>"),
+ 				new Cap("<?php if(isset($team2[2]['NomP'])){echo $cappoke23['CAP4']['NomA'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[2]['NomP'])){echo $cappoke23['CAP4']['TypeA'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[2]['NomP'])){echo $cappoke23['CAP4']['ClasseA'];}else{ echo 'NULL';} ?>",
+		 			<?php if(isset($team2[2]['NomP'])){if($cappoke23['CAP4']['Puissance'] == NULL){echo '""';} else{echo $cappoke23['CAP4']['Puissance'];}}else{ echo '"NULL"';} ?>,
+		 			<?php if(isset($team2[2]['NomP'])){if($cappoke23['CAP4']['Precis'] == NULL){echo '""';} else{echo $cappoke23['CAP4']['Precis'];}}else{ echo '"NULL"';} ?>,
+		 			<?php if(isset($team2[2]['NomP'])){if($cappoke23['CAP4']['PP'] == NULL){echo '""';} else{echo $cappoke23['CAP4']['PP'];}}else{ echo '"NULL"';}  ?>,
+		 			"<?php if(isset($team2[2]['NomP'])){echo $cappoke23['CAP4']['Effets'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[2]['NomP'])){echo $cappoke23['CAP4']['AjoutPV'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[2]['NomP'])){echo $cappoke23['CAP4']['RetirePV'];}else{ echo 'NULL';} ?>",
+		 			<?php if(isset($team2[2]['NomP'])){if($cappoke23['CAP4']['NbAttaque'] == NULL){echo '""';} else{echo $cappoke23['CAP4']['NbAttaque'];}}else{ echo '"NULL"';} ?>,
+		 			"<?php if(isset($team2[2]['NomP'])){echo $cappoke23['CAP4']['StatMBoost'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[2]['NomP'])){echo $cappoke23['CAP4']['StatANerf'];}else{ echo 'NULL';} ?>"),
+ 				<?php if(isset($team2[2]['NomP'])){ echo $team2[2]['ID'];}else{echo '"NULL"';}?>,
+ 				"<?php if(isset($team2[2]['NomP'])){ echo $team2[2]['TypeU'];}else{echo 'NULL';}?>",
+ 				"<?php if(isset($team2[2]['NomP'])){ echo $team2[2]['TypeD'];}else{echo 'NULL';}?>",
+ 				<?php if(isset($team2[2]['NomP'])){ echo $team2[2]['Niv'];}else{echo '"NULL"';}?>,
+ 				<?php if(isset($team2[2]['NomP'])){ echo $team2[2]['IVPV'];}else{echo '"NULL"';}?>,
+ 				<?php if(isset($team2[2]['NomP'])){ echo $team2[2]['IVAttaque'];}else{echo '"NULL"';}?>,
+ 				<?php if(isset($team2[2]['NomP'])){ echo $team2[2]['IVDefense'];}else{echo '"NULL"';}?>,
+ 				<?php if(isset($team2[2]['NomP'])){ echo $team2[2]['IVAttSpe'];}else{echo '"NULL"';}?>,
+ 				<?php if(isset($team2[2]['NomP'])){ echo $team2[2]['IVDefSpe'];}else{echo '"NULL"';}?>,
+ 				<?php if(isset($team2[2]['NomP'])){ echo $team2[2]['IVVitesse'];}else{echo '"NULL"';}?>,
+ 				<?php if(isset($team2[2]['NomP'])){ echo $team2[2]['PVmax'];}else{echo '"NULL"';}?>,
+ 				<?php if(isset($team2[2]['NomP'])){ echo $team2[2]['Vitesse'];}else{echo '"NULL"';}?>,
+ 				<?php if(isset($team2[2]['NomP'])){ echo $team2[2]['Attaque'];}else{echo '"NULL"';}?>,
+ 				<?php if(isset($team2[2]['NomP'])){ echo $team2[2]['Defense'];}else{echo '"NULL"';}?>,
+ 				<?php if(isset($team2[2]['NomP'])){ echo $team2[2]['AttSpe'];}else{echo '"NULL"';}?>,
+ 				<?php if(isset($team2[2]['NomP'])){ echo $team2[2]['DefSPe'];}else{echo '"NULL"';}?>,
+ 				<?php if (isset($team2[2]['gainxp'])){ echo $team2[2]['gainxp'];}else{ echo 0;} ?>,
+ 				<?php if(isset($team2[2]['NomP'])){ echo $team2[2]['XPVaincu'];}else{echo '"NULL"';}?>,
+ 				"<?php if(isset($team2[2]['NomP'])){ echo $team2[2]['Courbe'];}else{echo 'NULL';}?>",
+ 				<?php if(isset($team2[2]['NomP'])){ echo $team2[2]['XP'];}else{echo '"NULL"';}?>),
  		new Pokemon(
- 			"<?php if(isset($team[3]['NomP'])){
- 				echo utf8_encode($team[3]['NomP']);}else{ echo 'NULL';}  ?>", 
- 				"<?php if(isset($team[3]['NomP'])){
- 					echo$team[3]['PVact'];}else{echo 'NULL';}	?>",
- 				new Cap("<?php if(isset($team[3]['NomP'])){echo $cappoke4['CAP1']['NomA'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[3]['NomP'])){echo $cappoke4['CAP1']['TypeA'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[3]['NomP'])){echo $cappoke4['CAP1']['ClasseA'];}else{ echo 'NULL';} ?>",
-		 			<?php if(isset($team[3]['NomP'])){if($cappoke4['CAP1']['Puissance'] == NULL){echo '""';} else{echo $cappoke4['CAP1']['Puissance'];}}else{ echo '"NULL"';} ?>,
-		 			<?php if(isset($team[3]['NomP'])){if($cappoke4['CAP1']['Precis'] == NULL){echo '""';} else{echo $cappoke4['CAP1']['Precis'];}}else{ echo '"NULL"';} ?>,
-		 			<?php if(isset($team[3]['NomP'])){if($cappoke4['CAP1']['PP'] == NULL){echo '""';} else{echo $cappoke4['CAP1']['PP'];}}else{ echo '"NULL"';}  ?>,
-		 			"<?php if(isset($team[3]['NomP'])){echo $cappoke4['CAP1']['Effets'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[3]['NomP'])){echo $cappoke4['CAP1']['AjoutPV'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[3]['NomP'])){echo $cappoke4['CAP1']['RetirePV'];}else{ echo 'NULL';} ?>",
-		 			<?php if(isset($team[3]['NomP'])){if($cappoke4['CAP1']['NbAttaque'] == NULL){echo '""';} else{echo $cappoke4['CAP1']['NbAttaque'];}}else{ echo '"NULL"';} ?>,
-		 			"<?php if(isset($team[3]['NomP'])){echo $cappoke4['CAP1']['StatMBoost'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[3]['NomP'])){echo $cappoke4['CAP1']['StatANerf'];}else{ echo 'NULL';} ?>"),
- 				new Cap("<?php if(isset($team[3]['NomP'])){echo $cappoke4['CAP2']['NomA'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[3]['NomP'])){echo $cappoke4['CAP2']['TypeA'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[3]['NomP'])){echo $cappoke4['CAP2']['ClasseA'];}else{ echo 'NULL';} ?>",
-		 			<?php if(isset($team[3]['NomP'])){if($cappoke4['CAP2']['Puissance'] == NULL){echo '""';} else{echo $cappoke4['CAP2']['Puissance'];}}else{ echo '"NULL"';} ?>,
-		 			<?php if(isset($team[3]['NomP'])){if($cappoke4['CAP2']['Precis'] == NULL){echo '""';} else{echo $cappoke4['CAP2']['Precis'];}}else{ echo '"NULL"';} ?>,
-		 			<?php if(isset($team[3]['NomP'])){if($cappoke4['CAP2']['PP'] == NULL){echo '""';} else{echo $cappoke4['CAP2']['PP'];}}else{ echo '"NULL"';}  ?>,
-		 			"<?php if(isset($team[3]['NomP'])){echo $cappoke4['CAP2']['Effets'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[3]['NomP'])){echo $cappoke4['CAP2']['AjoutPV'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[3]['NomP'])){echo $cappoke4['CAP2']['RetirePV'];}else{ echo 'NULL';} ?>",
-		 			<?php if(isset($team[3]['NomP'])){if($cappoke4['CAP2']['NbAttaque'] == NULL){echo '""';} else{echo $cappoke4['CAP2']['NbAttaque'];}}else{ echo '"NULL"';} ?>,
-		 			"<?php if(isset($team[3]['NomP'])){echo $cappoke4['CAP2']['StatMBoost'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[3]['NomP'])){echo $cappoke4['CAP2']['StatANerf'];}else{ echo 'NULL';} ?>"),
- 				new Cap("<?php if(isset($team[3]['NomP'])){echo $cappoke4['CAP3']['NomA'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[3]['NomP'])){echo $cappoke4['CAP3']['TypeA'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[3]['NomP'])){echo $cappoke4['CAP3']['ClasseA'];}else{ echo 'NULL';} ?>",
-		 			<?php if(isset($team[3]['NomP'])){if($cappoke4['CAP3']['Puissance'] == NULL){echo '""';} else{echo $cappoke4['CAP3']['Puissance'];}}else{ echo '"NULL"';} ?>,
-		 			<?php if(isset($team[3]['NomP'])){if($cappoke4['CAP3']['Precis'] == NULL){echo '""';} else{echo $cappoke4['CAP3']['Precis'];}}else{ echo '"NULL"';} ?>,
-		 			<?php if(isset($team[3]['NomP'])){if($cappoke4['CAP3']['PP'] == NULL){echo '""';} else{echo $cappoke4['CAP3']['PP'];}}else{ echo '"NULL"';}  ?>,
-		 			"<?php if(isset($team[3]['NomP'])){echo $cappoke4['CAP3']['Effets'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[3]['NomP'])){echo $cappoke4['CAP3']['AjoutPV'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[3]['NomP'])){echo $cappoke4['CAP3']['RetirePV'];}else{ echo 'NULL';} ?>",
-		 			<?php if(isset($team[3]['NomP'])){if($cappoke4['CAP3']['NbAttaque'] == NULL){echo '""';} else{echo $cappoke4['CAP3']['NbAttaque'];}}else{ echo '"NULL"';} ?>,
-		 			"<?php if(isset($team[3]['NomP'])){echo $cappoke4['CAP3']['StatMBoost'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[3]['NomP'])){echo $cappoke4['CAP3']['StatANerf'];}else{ echo 'NULL';} ?>"),
- 				new Cap("<?php if(isset($team[3]['NomP'])){echo $cappoke4['CAP4']['NomA'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[3]['NomP'])){echo $cappoke4['CAP4']['TypeA'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[3]['NomP'])){echo $cappoke4['CAP4']['ClasseA'];}else{ echo 'NULL';} ?>",
-		 			<?php if(isset($team[3]['NomP'])){if($cappoke4['CAP4']['Puissance'] == NULL){echo '""';} else{echo $cappoke4['CAP4']['Puissance'];}}else{ echo '"NULL"';} ?>,
-		 			<?php if(isset($team[3]['NomP'])){if($cappoke4['CAP4']['Precis'] == NULL){echo '""';} else{echo $cappoke4['CAP4']['Precis'];}}else{ echo '"NULL"';} ?>,
-		 			<?php if(isset($team[3]['NomP'])){if($cappoke4['CAP4']['PP'] == NULL){echo '""';} else{echo $cappoke4['CAP4']['PP'];}}else{ echo '"NULL"';}  ?>,
-		 			"<?php if(isset($team[3]['NomP'])){echo $cappoke4['CAP4']['Effets'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[3]['NomP'])){echo $cappoke4['CAP4']['AjoutPV'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[3]['NomP'])){echo $cappoke4['CAP4']['RetirePV'];}else{ echo 'NULL';} ?>",
-		 			<?php if(isset($team[3]['NomP'])){if($cappoke4['CAP4']['NbAttaque'] == NULL){echo '""';} else{echo $cappoke4['CAP4']['NbAttaque'];}}else{ echo '"NULL"';} ?>,
-		 			"<?php if(isset($team[3]['NomP'])){echo $cappoke4['CAP4']['StatMBoost'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[3]['NomP'])){echo $cappoke4['CAP4']['StatANerf'];}else{ echo 'NULL';} ?>"),
- 				<?php if(isset($team[3]['NomP'])){ echo $team[3]['ID'];}else{echo '"NULL"';}?>,
- 				"<?php if(isset($team[3]['NomP'])){ echo $team[3]['TypeU'];}else{echo 'NULL';}?>",
- 				"<?php if(isset($team[3]['NomP'])){ echo $team[3]['TypeD'];}else{echo 'NULL';}?>",
- 				<?php if(isset($team[3]['NomP'])){ echo $team[3]['Niv'];}else{echo '"NULL"';}?>,
- 				<?php if(isset($team[3]['NomP'])){ echo $team[3]['IVPV'];}else{echo '"NULL"';}?>,
- 				<?php if(isset($team[3]['NomP'])){ echo $team[3]['IVAttaque'];}else{echo '"NULL"';}?>,
- 				<?php if(isset($team[3]['NomP'])){ echo $team[3]['IVDefense'];}else{echo '"NULL"';}?>,
- 				<?php if(isset($team[3]['NomP'])){ echo $team[3]['IVAttSpe'];}else{echo '"NULL"';}?>,
- 				<?php if(isset($team[3]['NomP'])){ echo $team[3]['IVDefSpe'];}else{echo '"NULL"';}?>,
- 				<?php if(isset($team[3]['NomP'])){ echo $team[3]['IVVitesse'];}else{echo '"NULL"';}?>,
- 				<?php if(isset($team[3]['NomP'])){ echo $team[3]['PVmax'];}else{echo '"NULL"';}?>,
- 				<?php if(isset($team[3]['NomP'])){ echo $team[3]['Vitesse'];}else{echo '"NULL"';}?>,
- 				<?php if(isset($team[3]['NomP'])){ echo $team[3]['Attaque'];}else{echo '"NULL"';}?>,
- 				<?php if(isset($team[3]['NomP'])){ echo $team[3]['Defense'];}else{echo '"NULL"';}?>,
- 				<?php if(isset($team[3]['NomP'])){ echo $team[3]['AttSpe'];}else{echo '"NULL"';}?>,
- 				<?php if(isset($team[3]['NomP'])){ echo $team[3]['DefSPe'];}else{echo '"NULL"';}?>,
- 				<?php if (isset($team[3]['gainxp'])){ echo $team[3]['gainxp'];}else{ echo 0;} ?>,
- 				<?php if(isset($team[3]['NomP'])){ echo $team[3]['XPVaincu'];}else{echo '"NULL"';}?>,
- 				"<?php if(isset($team[3]['NomP'])){ echo $team[3]['Courbe'];}else{echo 'NULL';}?>",
- 				<?php if(isset($team[3]['NomP'])){ echo $team[3]['XP'];}else{echo '"NULL"';}?>),
+ 			"<?php if(isset($team2[3]['NomP'])){
+ 				echo utf8_encode($team2[3]['NomP']);}else{ echo 'NULL';}  ?>", 
+ 				"<?php if(isset($team2[3]['NomP'])){
+ 					echo$team2[3]['PVact'];}else{echo 'NULL';}	?>",
+ 				new Cap("<?php if(isset($team2[3]['NomP'])){echo $cappoke24['CAP1']['NomA'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[3]['NomP'])){echo $cappoke24['CAP1']['TypeA'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[3]['NomP'])){echo $cappoke24['CAP1']['ClasseA'];}else{ echo 'NULL';} ?>",
+		 			<?php if(isset($team2[3]['NomP'])){if($cappoke24['CAP1']['Puissance'] == NULL){echo '""';} else{echo $cappoke24['CAP1']['Puissance'];}}else{ echo '"NULL"';} ?>,
+		 			<?php if(isset($team2[3]['NomP'])){if($cappoke24['CAP1']['Precis'] == NULL){echo '""';} else{echo $cappoke24['CAP1']['Precis'];}}else{ echo '"NULL"';} ?>,
+		 			<?php if(isset($team2[3]['NomP'])){if($cappoke24['CAP1']['PP'] == NULL){echo '""';} else{echo $cappoke24['CAP1']['PP'];}}else{ echo '"NULL"';}  ?>,
+		 			"<?php if(isset($team2[3]['NomP'])){echo $cappoke24['CAP1']['Effets'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[3]['NomP'])){echo $cappoke24['CAP1']['AjoutPV'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[3]['NomP'])){echo $cappoke24['CAP1']['RetirePV'];}else{ echo 'NULL';} ?>",
+		 			<?php if(isset($team2[3]['NomP'])){if($cappoke24['CAP1']['NbAttaque'] == NULL){echo '""';} else{echo $cappoke24['CAP1']['NbAttaque'];}}else{ echo '"NULL"';} ?>,
+		 			"<?php if(isset($team2[3]['NomP'])){echo $cappoke24['CAP1']['StatMBoost'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[3]['NomP'])){echo $cappoke24['CAP1']['StatANerf'];}else{ echo 'NULL';} ?>"),
+ 				new Cap("<?php if(isset($team2[3]['NomP'])){echo $cappoke24['CAP2']['NomA'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[3]['NomP'])){echo $cappoke24['CAP2']['TypeA'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[3]['NomP'])){echo $cappoke24['CAP2']['ClasseA'];}else{ echo 'NULL';} ?>",
+		 			<?php if(isset($team2[3]['NomP'])){if($cappoke24['CAP2']['Puissance'] == NULL){echo '""';} else{echo $cappoke24['CAP2']['Puissance'];}}else{ echo '"NULL"';} ?>,
+		 			<?php if(isset($team2[3]['NomP'])){if($cappoke24['CAP2']['Precis'] == NULL){echo '""';} else{echo $cappoke24['CAP2']['Precis'];}}else{ echo '"NULL"';} ?>,
+		 			<?php if(isset($team2[3]['NomP'])){if($cappoke24['CAP2']['PP'] == NULL){echo '""';} else{echo $cappoke24['CAP2']['PP'];}}else{ echo '"NULL"';}  ?>,
+		 			"<?php if(isset($team2[3]['NomP'])){echo $cappoke24['CAP2']['Effets'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[3]['NomP'])){echo $cappoke24['CAP2']['AjoutPV'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[3]['NomP'])){echo $cappoke24['CAP2']['RetirePV'];}else{ echo 'NULL';} ?>",
+		 			<?php if(isset($team2[3]['NomP'])){if($cappoke24['CAP2']['NbAttaque'] == NULL){echo '""';} else{echo $cappoke24['CAP2']['NbAttaque'];}}else{ echo '"NULL"';} ?>,
+		 			"<?php if(isset($team2[3]['NomP'])){echo $cappoke24['CAP2']['StatMBoost'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[3]['NomP'])){echo $cappoke24['CAP2']['StatANerf'];}else{ echo 'NULL';} ?>"),
+ 				new Cap("<?php if(isset($team2[3]['NomP'])){echo $cappoke24['CAP3']['NomA'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[3]['NomP'])){echo $cappoke24['CAP3']['TypeA'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[3]['NomP'])){echo $cappoke24['CAP3']['ClasseA'];}else{ echo 'NULL';} ?>",
+		 			<?php if(isset($team2[3]['NomP'])){if($cappoke24['CAP3']['Puissance'] == NULL){echo '""';} else{echo $cappoke24['CAP3']['Puissance'];}}else{ echo '"NULL"';} ?>,
+		 			<?php if(isset($team2[3]['NomP'])){if($cappoke24['CAP3']['Precis'] == NULL){echo '""';} else{echo $cappoke24['CAP3']['Precis'];}}else{ echo '"NULL"';} ?>,
+		 			<?php if(isset($team2[3]['NomP'])){if($cappoke24['CAP3']['PP'] == NULL){echo '""';} else{echo $cappoke24['CAP3']['PP'];}}else{ echo '"NULL"';}  ?>,
+		 			"<?php if(isset($team2[3]['NomP'])){echo $cappoke24['CAP3']['Effets'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[3]['NomP'])){echo $cappoke24['CAP3']['AjoutPV'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[3]['NomP'])){echo $cappoke24['CAP3']['RetirePV'];}else{ echo 'NULL';} ?>",
+		 			<?php if(isset($team2[3]['NomP'])){if($cappoke24['CAP3']['NbAttaque'] == NULL){echo '""';} else{echo $cappoke24['CAP3']['NbAttaque'];}}else{ echo '"NULL"';} ?>,
+		 			"<?php if(isset($team2[3]['NomP'])){echo $cappoke24['CAP3']['StatMBoost'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[3]['NomP'])){echo $cappoke24['CAP3']['StatANerf'];}else{ echo 'NULL';} ?>"),
+ 				new Cap("<?php if(isset($team2[3]['NomP'])){echo $cappoke24['CAP4']['NomA'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[3]['NomP'])){echo $cappoke24['CAP4']['TypeA'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[3]['NomP'])){echo $cappoke24['CAP4']['ClasseA'];}else{ echo 'NULL';} ?>",
+		 			<?php if(isset($team2[3]['NomP'])){if($cappoke24['CAP4']['Puissance'] == NULL){echo '""';} else{echo $cappoke24['CAP4']['Puissance'];}}else{ echo '"NULL"';} ?>,
+		 			<?php if(isset($team2[3]['NomP'])){if($cappoke24['CAP4']['Precis'] == NULL){echo '""';} else{echo $cappoke24['CAP4']['Precis'];}}else{ echo '"NULL"';} ?>,
+		 			<?php if(isset($team2[3]['NomP'])){if($cappoke24['CAP4']['PP'] == NULL){echo '""';} else{echo $cappoke24['CAP4']['PP'];}}else{ echo '"NULL"';}  ?>,
+		 			"<?php if(isset($team2[3]['NomP'])){echo $cappoke24['CAP4']['Effets'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[3]['NomP'])){echo $cappoke24['CAP4']['AjoutPV'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[3]['NomP'])){echo $cappoke24['CAP4']['RetirePV'];}else{ echo 'NULL';} ?>",
+		 			<?php if(isset($team2[3]['NomP'])){if($cappoke24['CAP4']['NbAttaque'] == NULL){echo '""';} else{echo $cappoke24['CAP4']['NbAttaque'];}}else{ echo '"NULL"';} ?>,
+		 			"<?php if(isset($team2[3]['NomP'])){echo $cappoke24['CAP4']['StatMBoost'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[3]['NomP'])){echo $cappoke24['CAP4']['StatANerf'];}else{ echo 'NULL';} ?>"),
+ 				<?php if(isset($team2[3]['NomP'])){ echo $team2[3]['ID'];}else{echo '"NULL"';}?>,
+ 				"<?php if(isset($team2[3]['NomP'])){ echo $team2[3]['TypeU'];}else{echo 'NULL';}?>",
+ 				"<?php if(isset($team2[3]['NomP'])){ echo $team2[3]['TypeD'];}else{echo 'NULL';}?>",
+ 				<?php if(isset($team2[3]['NomP'])){ echo $team2[3]['Niv'];}else{echo '"NULL"';}?>,
+ 				<?php if(isset($team2[3]['NomP'])){ echo $team2[3]['IVPV'];}else{echo '"NULL"';}?>,
+ 				<?php if(isset($team2[3]['NomP'])){ echo $team2[3]['IVAttaque'];}else{echo '"NULL"';}?>,
+ 				<?php if(isset($team2[3]['NomP'])){ echo $team2[3]['IVDefense'];}else{echo '"NULL"';}?>,
+ 				<?php if(isset($team2[3]['NomP'])){ echo $team2[3]['IVAttSpe'];}else{echo '"NULL"';}?>,
+ 				<?php if(isset($team2[3]['NomP'])){ echo $team2[3]['IVDefSpe'];}else{echo '"NULL"';}?>,
+ 				<?php if(isset($team2[3]['NomP'])){ echo $team2[3]['IVVitesse'];}else{echo '"NULL"';}?>,
+ 				<?php if(isset($team2[3]['NomP'])){ echo $team2[3]['PVmax'];}else{echo '"NULL"';}?>,
+ 				<?php if(isset($team2[3]['NomP'])){ echo $team2[3]['Vitesse'];}else{echo '"NULL"';}?>,
+ 				<?php if(isset($team2[3]['NomP'])){ echo $team2[3]['Attaque'];}else{echo '"NULL"';}?>,
+ 				<?php if(isset($team2[3]['NomP'])){ echo $team2[3]['Defense'];}else{echo '"NULL"';}?>,
+ 				<?php if(isset($team2[3]['NomP'])){ echo $team2[3]['AttSpe'];}else{echo '"NULL"';}?>,
+ 				<?php if(isset($team2[3]['NomP'])){ echo $team2[3]['DefSPe'];}else{echo '"NULL"';}?>,
+ 				<?php if (isset($team2[3]['gainxp'])){ echo $team2[3]['gainxp'];}else{ echo 0;} ?>,
+ 				<?php if(isset($team2[3]['NomP'])){ echo $team2[3]['XPVaincu'];}else{echo '"NULL"';}?>,
+ 				"<?php if(isset($team2[3]['NomP'])){ echo $team2[3]['Courbe'];}else{echo 'NULL';}?>",
+ 				<?php if(isset($team2[3]['NomP'])){ echo $team2[3]['XP'];}else{echo '"NULL"';}?>),
  		new Pokemon(
- 			"<?php if(isset($team[4]['NomP'])){
- 				echo utf8_encode($team[4]['NomP']);}else{ echo 'NULL';}  ?>", 
- 				"<?php if(isset($team[4]['NomP'])){
- 					echo $team[4]['PVact'];}else{echo 'NULL';}	?>",
- 				new Cap("<?php if(isset($team[4]['NomP'])){echo $cappoke5['CAP1']['NomA'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[4]['NomP'])){echo $cappoke5['CAP1']['TypeA'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[4]['NomP'])){echo $cappoke5['CAP1']['ClasseA'];}else{ echo 'NULL';} ?>",
-		 			<?php if(isset($team[4]['NomP'])){if($cappoke5['CAP1']['Puissance'] == NULL){echo '""';} else{echo $cappoke5['CAP1']['Puissance'];}}else{ echo '"NULL"';} ?>,
-		 			<?php if(isset($team[4]['NomP'])){if($cappoke5['CAP1']['Precis'] == NULL){echo '""';} else{echo $cappoke5['CAP1']['Precis'];}}else{ echo '"NULL"';} ?>,
-		 			<?php if(isset($team[4]['NomP'])){if($cappoke5['CAP1']['PP'] == NULL){echo '""';} else{echo $cappoke5['CAP1']['PP'];}}else{ echo '"NULL"';}  ?>,
-		 			"<?php if(isset($team[4]['NomP'])){echo $cappoke5['CAP1']['Effets'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[4]['NomP'])){echo $cappoke5['CAP1']['AjoutPV'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[4]['NomP'])){echo $cappoke5['CAP1']['RetirePV'];}else{ echo 'NULL';} ?>",
-		 			<?php if(isset($team[4]['NomP'])){if($cappoke5['CAP1']['NbAttaque'] == NULL){echo '""';} else{echo $cappoke5['CAP1']['NbAttaque'];}}else{ echo '"NULL"';} ?>,
-		 			"<?php if(isset($team[4]['NomP'])){echo $cappoke5['CAP1']['StatMBoost'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[4]['NomP'])){echo $cappoke5['CAP1']['StatANerf'];}else{ echo 'NULL';} ?>"),
- 				new Cap("<?php if(isset($team[4]['NomP'])){echo $cappoke5['CAP2']['NomA'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[4]['NomP'])){echo $cappoke5['CAP2']['TypeA'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[4]['NomP'])){echo $cappoke5['CAP2']['ClasseA'];}else{ echo 'NULL';} ?>",
-		 			<?php if(isset($team[4]['NomP'])){if($cappoke5['CAP2']['Puissance'] == NULL){echo '""';} else{echo $cappoke5['CAP2']['Puissance'];}}else{ echo '"NULL"';} ?>,
-		 			<?php if(isset($team[4]['NomP'])){if($cappoke5['CAP2']['Precis'] == NULL){echo '""';} else{echo $cappoke5['CAP2']['Precis'];}}else{ echo '"NULL"';} ?>,
-		 			<?php if(isset($team[4]['NomP'])){if($cappoke5['CAP2']['PP'] == NULL){echo '""';} else{echo $cappoke5['CAP2']['PP'];}}else{ echo '"NULL"';}  ?>,
-		 			"<?php if(isset($team[4]['NomP'])){echo $cappoke5['CAP2']['Effets'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[4]['NomP'])){echo $cappoke5['CAP2']['AjoutPV'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[4]['NomP'])){echo $cappoke5['CAP2']['RetirePV'];}else{ echo 'NULL';} ?>",
-		 			<?php if(isset($team[4]['NomP'])){if($cappoke5['CAP2']['NbAttaque'] == NULL){echo '""';} else{echo $cappoke5['CAP2']['NbAttaque'];}}else{ echo '"NULL"';} ?>,
-		 			"<?php if(isset($team[4]['NomP'])){echo $cappoke5['CAP2']['StatMBoost'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[4]['NomP'])){echo $cappoke5['CAP2']['StatANerf'];}else{ echo 'NULL';} ?>"),
- 				new Cap("<?php if(isset($team[4]['NomP'])){echo $cappoke5['CAP3']['NomA'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[4]['NomP'])){echo $cappoke5['CAP3']['TypeA'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[4]['NomP'])){echo $cappoke5['CAP3']['ClasseA'];}else{ echo 'NULL';} ?>",
-		 			<?php if(isset($team[4]['NomP'])){if($cappoke5['CAP3']['Puissance'] == NULL){echo '""';} else{echo $cappoke5['CAP3']['Puissance'];}}else{ echo '"NULL"';} ?>,
-		 			<?php if(isset($team[4]['NomP'])){if($cappoke5['CAP3']['Precis'] == NULL){echo '""';} else{echo $cappoke5['CAP3']['Precis'];}}else{ echo '"NULL"';} ?>,
-		 			<?php if(isset($team[4]['NomP'])){if($cappoke5['CAP3']['PP'] == NULL){echo '""';} else{echo $cappoke5['CAP3']['PP'];}}else{ echo '"NULL"';}  ?>,
-		 			"<?php if(isset($team[4]['NomP'])){echo $cappoke5['CAP3']['Effets'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[4]['NomP'])){echo $cappoke5['CAP3']['AjoutPV'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[4]['NomP'])){echo $cappoke5['CAP3']['RetirePV'];}else{ echo 'NULL';} ?>",
-		 			<?php if(isset($team[4]['NomP'])){if($cappoke5['CAP3']['NbAttaque'] == NULL){echo '""';} else{echo $cappoke5['CAP3']['NbAttaque'];}}else{ echo '"NULL"';} ?>,
-		 			"<?php if(isset($team[4]['NomP'])){echo $cappoke5['CAP3']['StatMBoost'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[4]['NomP'])){echo $cappoke5['CAP3']['StatANerf'];}else{ echo 'NULL';} ?>"),
- 				new Cap("<?php if(isset($team[4]['NomP'])){echo $cappoke5['CAP4']['NomA'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[4]['NomP'])){echo $cappoke5['CAP4']['TypeA'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[4]['NomP'])){echo $cappoke5['CAP4']['ClasseA'];}else{ echo 'NULL';} ?>",
-		 			<?php if(isset($team[4]['NomP'])){if($cappoke5['CAP4']['Puissance'] == NULL){echo '""';} else{echo $cappoke5['CAP4']['Puissance'];}}else{ echo '"NULL"';} ?>,
-		 			<?php if(isset($team[4]['NomP'])){if($cappoke5['CAP4']['Precis'] == NULL){echo '""';} else{echo $cappoke5['CAP4']['Precis'];}}else{ echo '"NULL"';} ?>,
-		 			<?php if(isset($team[4]['NomP'])){if($cappoke5['CAP4']['PP'] == NULL){echo '""';} else{echo $cappoke5['CAP4']['PP'];}}else{ echo '"NULL"';}  ?>,
-		 			"<?php if(isset($team[4]['NomP'])){echo $cappoke5['CAP4']['Effets'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[4]['NomP'])){echo $cappoke5['CAP4']['AjoutPV'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[4]['NomP'])){echo $cappoke5['CAP4']['RetirePV'];}else{ echo 'NULL';} ?>",
-		 			<?php if(isset($team[4]['NomP'])){if($cappoke5['CAP4']['NbAttaque'] == NULL){echo '""';} else{echo $cappoke5['CAP4']['NbAttaque'];}}else{ echo '"NULL"';} ?>,
-		 			"<?php if(isset($team[4]['NomP'])){echo $cappoke5['CAP4']['StatMBoost'];}else{ echo 'NULL';} ?>",
-		 			"<?php if(isset($team[4]['NomP'])){echo $cappoke5['CAP4']['StatANerf'];}else{ echo 'NULL';} ?>"),
- 				<?php if(isset($team[4]['NomP'])){ echo $team[4]['ID'];}else{echo '"NULL"';}?>,
- 				"<?php if(isset($team[4]['NomP'])){ echo $team[4]['TypeU'];}else{echo 'NULL';}?>",
- 				"<?php if(isset($team[4]['NomP'])){ echo $team[4]['TypeD'];}else{echo 'NULL';}?>",
- 				<?php if(isset($team[4]['NomP'])){ echo $team[4]['Niv'];}else{echo '"NULL"';}?>,
- 				<?php if(isset($team[4]['NomP'])){ echo $team[4]['IVPV'];}else{echo '"NULL"';}?>,
- 				<?php if(isset($team[4]['NomP'])){ echo $team[4]['IVAttaque'];}else{echo '"NULL"';}?>,
- 				<?php if(isset($team[4]['NomP'])){ echo $team[4]['IVDefense'];}else{echo '"NULL"';}?>,
- 				<?php if(isset($team[4]['NomP'])){ echo $team[4]['IVAttSpe'];}else{echo '"NULL"';}?>,
- 				<?php if(isset($team[4]['NomP'])){ echo $team[4]['IVDefSpe'];}else{echo '"NULL"';}?>,
- 				<?php if(isset($team[4]['NomP'])){ echo $team[4]['IVVitesse'];}else{echo '"NULL"';}?>,
- 				<?php if(isset($team[4]['NomP'])){ echo $team[4]['PVmax'];}else{echo '"NULL"';}?>,
- 				<?php if(isset($team[4]['NomP'])){ echo $team[4]['Vitesse'];}else{echo '"NULL"';}?>,
- 				<?php if(isset($team[4]['NomP'])){ echo $team[4]['Attaque'];}else{echo '"NULL"';}?>,
- 				<?php if(isset($team[4]['NomP'])){ echo $team[4]['Defense'];}else{echo '"NULL"';}?>,
- 				<?php if(isset($team[4]['NomP'])){ echo $team[4]['AttSpe'];}else{echo '"NULL"';}?>,
- 				<?php if(isset($team[4]['NomP'])){ echo $team[4]['DefSPe'];}else{echo '"NULL"';}?>,
- 				<?php if (isset($team[4]['gainxp'])){ echo $team[4]['gainxp'];}else{ echo 0;} ?>,
- 				<?php if(isset($team[4]['NomP'])){ echo $team[4]['XPVaincu'];}else{echo '"NULL"';}?>,
- 				"<?php if(isset($team[4]['NomP'])){ echo $team[4]['Courbe'];}else{echo 'NULL';}?>",
- 				<?php if(isset($team[4]['NomP'])){ echo $team[4]['XP'];}else{echo '"NULL"';}?>)
+ 			"<?php if(isset($team2[4]['NomP'])){
+ 				echo utf8_encode($team2[4]['NomP']);}else{ echo 'NULL';}  ?>", 
+ 				"<?php if(isset($team2[4]['NomP'])){
+ 					echo $team2[4]['PVact'];}else{echo 'NULL';}	?>",
+ 				new Cap("<?php if(isset($team2[4]['NomP'])){echo $cappoke25['CAP1']['NomA'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[4]['NomP'])){echo $cappoke25['CAP1']['TypeA'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[4]['NomP'])){echo $cappoke25['CAP1']['ClasseA'];}else{ echo 'NULL';} ?>",
+		 			<?php if(isset($team2[4]['NomP'])){if($cappoke25['CAP1']['Puissance'] == NULL){echo '""';} else{echo $cappoke25['CAP1']['Puissance'];}}else{ echo '"NULL"';} ?>,
+		 			<?php if(isset($team2[4]['NomP'])){if($cappoke25['CAP1']['Precis'] == NULL){echo '""';} else{echo $cappoke25['CAP1']['Precis'];}}else{ echo '"NULL"';} ?>,
+		 			<?php if(isset($team2[4]['NomP'])){if($cappoke25['CAP1']['PP'] == NULL){echo '""';} else{echo $cappoke25['CAP1']['PP'];}}else{ echo '"NULL"';}  ?>,
+		 			"<?php if(isset($team2[4]['NomP'])){echo $cappoke25['CAP1']['Effets'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[4]['NomP'])){echo $cappoke25['CAP1']['AjoutPV'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[4]['NomP'])){echo $cappoke25['CAP1']['RetirePV'];}else{ echo 'NULL';} ?>",
+		 			<?php if(isset($team2[4]['NomP'])){if($cappoke25['CAP1']['NbAttaque'] == NULL){echo '""';} else{echo $cappoke25['CAP1']['NbAttaque'];}}else{ echo '"NULL"';} ?>,
+		 			"<?php if(isset($team2[4]['NomP'])){echo $cappoke25['CAP1']['StatMBoost'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[4]['NomP'])){echo $cappoke25['CAP1']['StatANerf'];}else{ echo 'NULL';} ?>"),
+ 				new Cap("<?php if(isset($team2[4]['NomP'])){echo $cappoke25['CAP2']['NomA'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[4]['NomP'])){echo $cappoke25['CAP2']['TypeA'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[4]['NomP'])){echo $cappoke25['CAP2']['ClasseA'];}else{ echo 'NULL';} ?>",
+		 			<?php if(isset($team2[4]['NomP'])){if($cappoke25['CAP2']['Puissance'] == NULL){echo '""';} else{echo $cappoke25['CAP2']['Puissance'];}}else{ echo '"NULL"';} ?>,
+		 			<?php if(isset($team2[4]['NomP'])){if($cappoke25['CAP2']['Precis'] == NULL){echo '""';} else{echo $cappoke25['CAP2']['Precis'];}}else{ echo '"NULL"';} ?>,
+		 			<?php if(isset($team2[4]['NomP'])){if($cappoke25['CAP2']['PP'] == NULL){echo '""';} else{echo $cappoke25['CAP2']['PP'];}}else{ echo '"NULL"';}  ?>,
+		 			"<?php if(isset($team2[4]['NomP'])){echo $cappoke25['CAP2']['Effets'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[4]['NomP'])){echo $cappoke25['CAP2']['AjoutPV'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[4]['NomP'])){echo $cappoke25['CAP2']['RetirePV'];}else{ echo 'NULL';} ?>",
+		 			<?php if(isset($team2[4]['NomP'])){if($cappoke25['CAP2']['NbAttaque'] == NULL){echo '""';} else{echo $cappoke25['CAP2']['NbAttaque'];}}else{ echo '"NULL"';} ?>,
+		 			"<?php if(isset($team2[4]['NomP'])){echo $cappoke25['CAP2']['StatMBoost'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[4]['NomP'])){echo $cappoke25['CAP2']['StatANerf'];}else{ echo 'NULL';} ?>"),
+ 				new Cap("<?php if(isset($team2[4]['NomP'])){echo $cappoke25['CAP3']['NomA'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[4]['NomP'])){echo $cappoke25['CAP3']['TypeA'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[4]['NomP'])){echo $cappoke25['CAP3']['ClasseA'];}else{ echo 'NULL';} ?>",
+		 			<?php if(isset($team2[4]['NomP'])){if($cappoke25['CAP3']['Puissance'] == NULL){echo '""';} else{echo $cappoke25['CAP3']['Puissance'];}}else{ echo '"NULL"';} ?>,
+		 			<?php if(isset($team2[4]['NomP'])){if($cappoke25['CAP3']['Precis'] == NULL){echo '""';} else{echo $cappoke25['CAP3']['Precis'];}}else{ echo '"NULL"';} ?>,
+		 			<?php if(isset($team2[4]['NomP'])){if($cappoke25['CAP3']['PP'] == NULL){echo '""';} else{echo $cappoke25['CAP3']['PP'];}}else{ echo '"NULL"';}  ?>,
+		 			"<?php if(isset($team2[4]['NomP'])){echo $cappoke25['CAP3']['Effets'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[4]['NomP'])){echo $cappoke25['CAP3']['AjoutPV'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[4]['NomP'])){echo $cappoke25['CAP3']['RetirePV'];}else{ echo 'NULL';} ?>",
+		 			<?php if(isset($team2[4]['NomP'])){if($cappoke25['CAP3']['NbAttaque'] == NULL){echo '""';} else{echo $cappoke25['CAP3']['NbAttaque'];}}else{ echo '"NULL"';} ?>,
+		 			"<?php if(isset($team2[4]['NomP'])){echo $cappoke25['CAP3']['StatMBoost'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[4]['NomP'])){echo $cappoke25['CAP3']['StatANerf'];}else{ echo 'NULL';} ?>"),
+ 				new Cap("<?php if(isset($team2[4]['NomP'])){echo $cappoke25['CAP4']['NomA'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[4]['NomP'])){echo $cappoke25['CAP4']['TypeA'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[4]['NomP'])){echo $cappoke25['CAP4']['ClasseA'];}else{ echo 'NULL';} ?>",
+		 			<?php if(isset($team2[4]['NomP'])){if($cappoke25['CAP4']['Puissance'] == NULL){echo '""';} else{echo $cappoke25['CAP4']['Puissance'];}}else{ echo '"NULL"';} ?>,
+		 			<?php if(isset($team2[4]['NomP'])){if($cappoke25['CAP4']['Precis'] == NULL){echo '""';} else{echo $cappoke25['CAP4']['Precis'];}}else{ echo '"NULL"';} ?>,
+		 			<?php if(isset($team2[4]['NomP'])){if($cappoke25['CAP4']['PP'] == NULL){echo '""';} else{echo $cappoke25['CAP4']['PP'];}}else{ echo '"NULL"';}  ?>,
+		 			"<?php if(isset($team2[4]['NomP'])){echo $cappoke25['CAP4']['Effets'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[4]['NomP'])){echo $cappoke25['CAP4']['AjoutPV'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[4]['NomP'])){echo $cappoke25['CAP4']['RetirePV'];}else{ echo 'NULL';} ?>",
+		 			<?php if(isset($team2[4]['NomP'])){if($cappoke25['CAP4']['NbAttaque'] == NULL){echo '""';} else{echo $cappoke25['CAP4']['NbAttaque'];}}else{ echo '"NULL"';} ?>,
+		 			"<?php if(isset($team2[4]['NomP'])){echo $cappoke25['CAP4']['StatMBoost'];}else{ echo 'NULL';} ?>",
+		 			"<?php if(isset($team2[4]['NomP'])){echo $cappoke25['CAP4']['StatANerf'];}else{ echo 'NULL';} ?>"),
+ 				<?php if(isset($team2[4]['NomP'])){ echo $team2[4]['ID'];}else{echo '"NULL"';}?>,
+ 				"<?php if(isset($team2[4]['NomP'])){ echo $team2[4]['TypeU'];}else{echo 'NULL';}?>",
+ 				"<?php if(isset($team2[4]['NomP'])){ echo $team2[4]['TypeD'];}else{echo 'NULL';}?>",
+ 				<?php if(isset($team2[4]['NomP'])){ echo $team2[4]['Niv'];}else{echo '"NULL"';}?>,
+ 				<?php if(isset($team2[4]['NomP'])){ echo $team2[4]['IVPV'];}else{echo '"NULL"';}?>,
+ 				<?php if(isset($team2[4]['NomP'])){ echo $team2[4]['IVAttaque'];}else{echo '"NULL"';}?>,
+ 				<?php if(isset($team2[4]['NomP'])){ echo $team2[4]['IVDefense'];}else{echo '"NULL"';}?>,
+ 				<?php if(isset($team2[4]['NomP'])){ echo $team2[4]['IVAttSpe'];}else{echo '"NULL"';}?>,
+ 				<?php if(isset($team2[4]['NomP'])){ echo $team2[4]['IVDefSpe'];}else{echo '"NULL"';}?>,
+ 				<?php if(isset($team2[4]['NomP'])){ echo $team2[4]['IVVitesse'];}else{echo '"NULL"';}?>,
+ 				<?php if(isset($team2[4]['NomP'])){ echo $team2[4]['PVmax'];}else{echo '"NULL"';}?>,
+ 				<?php if(isset($team2[4]['NomP'])){ echo $team2[4]['Vitesse'];}else{echo '"NULL"';}?>,
+ 				<?php if(isset($team2[4]['NomP'])){ echo $team2[4]['Attaque'];}else{echo '"NULL"';}?>,
+ 				<?php if(isset($team2[4]['NomP'])){ echo $team2[4]['Defense'];}else{echo '"NULL"';}?>,
+ 				<?php if(isset($team2[4]['NomP'])){ echo $team2[4]['AttSpe'];}else{echo '"NULL"';}?>,
+ 				<?php if(isset($team2[4]['NomP'])){ echo $team2[4]['DefSPe'];}else{echo '"NULL"';}?>,
+ 				<?php if (isset($team2[4]['gainxp'])){ echo $team2[4]['gainxp'];}else{ echo 0;} ?>,
+ 				<?php if(isset($team2[4]['NomP'])){ echo $team2[4]['XPVaincu'];}else{echo '"NULL"';}?>,
+ 				"<?php if(isset($team2[4]['NomP'])){ echo $team2[4]['Courbe'];}else{echo 'NULL';}?>",
+ 				<?php if(isset($team2[4]['NomP'])){ echo $team2[4]['XP'];}else{echo '"NULL"';}?>)
  		
 
 
@@ -1276,6 +1281,7 @@ var equipejoueur2 =  new Equipe(
  	var healthbar = document.querySelector('#healthj');
 	 healthbar.value = pokemonjoueur.hp;
 	var healthbars = document.querySelector('#healths');
+	healthbars.value = pokemonjoueur2.hp;
 	 //healthbars.value = pokemonsauvage.hp;
  	var tour = {x:
  		<?php
@@ -1292,29 +1298,146 @@ var equipejoueur2 =  new Equipe(
  	var checkpartie = setInterval(Partie,1000);
 
  
-
+ 		var nb_PokeBall = <?php echo $item['nbPokeBall'];?>;
  	var nb_potion = <?php echo $item['nbPotion'];?>;
-
-
+ 	var degata = null;
+ 	var info=null;
+ 	var role = "<?php echo $role;?>";
+ 	var joueur1 = "<?php echo $nomcompte;?>";
+ 	var joueur2 = "<?php echo $adv;?>";
  	function start(){
  		Set_cap(pokemonjoueur);
  		checkhpj(pokemonjoueur);
- 		checkhp(pokemonsauvage);
+ 	
  		
  	}
+ 	
 
+ 	function set_info(){
+ 		if (role == "Adv") {
+ 			if (info['CHOIXH'] != null) {
+ 				jeu.choixa = info['CHOIXH'];
+ 				jeu.pokemonswapa = info['POKEMONSWAPH'];
+ 				jeu.attacka = pokemonjoueur2.cap[info['ATTACKH']];
+ 				jeu.objeta = info['OBJETH'];
+ 			}
+ 			else{
+ 				return false;
+ 			}
+ 		}
+ 		else if (role == "Host") {
+ 			if (info['CHOIXA'] != null) {
+ 				jeu.choixa = info['CHOIXA'];
+ 				jeu.pokemonswapa = info['POKEMONSWAPA'];
+ 				jeu.attacka = pokemonjoueur2.cap[info['ATTACKA']];
+ 				jeu.objeta = info['OBJETA'];
+ 			}
+ 			else{
+ 				return false;
+ 			}
+ 		}
+ 		info = null;
+ 		return true;
+ 	}
+
+ 	function send_async() {
+
+	     var xhr = new XMLHttpRequest();
+	
+
+	     xhr.open('POST', 'servermatch.php', true);
+	  	console.log('Send async');
+		 
+
+	     xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	     if (role == "Adv") {
+	     	xhr.send("CHOIXA="+jeu.choixj+"&ATTACKA="+jeu.nb_attackj+"&POKEMONSWAPA="+jeu.pokemonswap+"&OBJETA="+jeu.objet+"&joueur="+joueur1);
+	     }
+	     else if (role == "Host") {
+	     	console.log('Send async HOST');
+	     	console.log("CHOIXH="+jeu.choixj+"&ATTACKH="+jeu.nb_attackj+"&POKEMONSWAPH="+jeu.pokemonswap+"&OBJETH='"+jeu.objet+"'&joueur="+joueur1);
+	     	xhr.send("CHOIXH="+jeu.choixj+"&ATTACKH="+jeu.nb_attackj+"&POKEMONSWAPH="+jeu.pokemonswap+"&OBJETH='"+jeu.objet+"'&joueur="+joueur1);
+	     }
+	     
+	 }
+
+	 	function wait_info() {
+
+	     var xhr = new XMLHttpRequest();
+	
+
+	     xhr.open('POST', 'servermatch.php', true);
+	     xhr.addEventListener('readystatechange', function() {
+		 if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+		    info = JSON.parse(xhr.responseText);
+		    return  set_info();
+
+		     
+		 }
+	     });
+
+	     xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	     if (role == "Adv") {
+	     	xhr.send("infoa="+1+"&joueur="+joueur1);
+	     }
+	     else if (role == "Host") {
+	     	xhr.send("infoh="+1+"&joueur="+joueur1);
+	     }
+	     
+	 }
+
+	 function wait_degat() {
+
+	     var xhr = new XMLHttpRequest();
+	
+
+	     xhr.open('POST', 'servermatch.php', false);
+	     xhr.addEventListener('readystatechange', function() {
+		 if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+		     return JSON.parse(xhr.responseText);
+		    
+		     
+		 }
+	     });
+
+	     xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	     if (role == "Adv") {
+	     	xhr.send("degata="+1+"&joueur="+joueur1);
+	     }
+	     else if (role == "Host") {
+	     	xhr.send("degath="+1+"&joueur="+joueur1);
+	     }
+	    
+	     
+	 }
+
+	 function send_degat(degat) {
+
+	     var xhr = new XMLHttpRequest();
+	
+
+	     xhr.open('POST', 'servermatch.php', true);
+	   
+
+	     xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	     if (role == "Adv") {
+	     	xhr.send("degataa="+degat+"&joueur="+joueur1);
+	     }
+	     else if (role == "Host") {
+	     	xhr.send("degathh="+degat+"&joueur="+joueur1);
+	     }
+	 }
+	     
 
 
  	/*function Catch(){
  		window.location="catch.php";
  	}*/
- 	function setAttaquej(attack){
+ 	function setAttaquej(attack,nb){
  		jeu.choixj = 1;
  		jeu.attackj = attack;
- 	}
- 	function setAttaqueA(attack){
- 		jeu.choixa = 1;
- 		jeu.attacka = attack;
+ 		jeu.nb_attackj = nb;
+ 		send_async();
  	}
 
 
@@ -1331,7 +1454,7 @@ var equipejoueur2 =  new Equipe(
  			bouton.type = "button";
  			bouton.value = pokemonjoueur.cap[i].noma;
  			if(bouton.value != ""){
- 				bouton.addEventListener('click',setAttaquej.bind(null,pokemonjoueur.cap[i]));
+ 				bouton.addEventListener('click',setAttaquej.bind(null,pokemonjoueur.cap[i],i));
  			}
  			elem.appendChild(li);
  			li.appendChild(bouton);
@@ -1385,7 +1508,14 @@ var equipejoueur2 =  new Equipe(
  	function setSwap(a){
  		jeu.choixj = 2;
  		jeu.pokemonswap = a;
+ 		send_async();
  	}
+
+ 	function setSwap2(a){
+ 		jeu.choixa = 2;
+ 		jeu.pokemonswap2 = a;
+ 	}
+
  	function set_Equipe(){
  		let bouton;
  		let li;
@@ -1426,7 +1556,7 @@ var equipejoueur2 =  new Equipe(
  					DisableAll();
  					ClearText();
  					WriteText("Plus de Pokemon en état de combattre");
- 					setTimeout(function(){window.location = "defaite.php";},4000);
+ 					
  					i=6;
 
  				}
@@ -1434,7 +1564,7 @@ var equipejoueur2 =  new Equipe(
  					DisableAll();
  					ClearText();
  					WriteText("Plus de Pokemon en état de combattre");
- 					setTimeout(function(){window.location = "defaite.php";},4000);
+ 					
  					i=6;
  				}
  			}
@@ -1445,9 +1575,42 @@ var equipejoueur2 =  new Equipe(
  		
  	}
 
- 	function checktour(){
- 		if (tour.x==1) {checkhp(pokemonsauvage);AttaqueA(hpj,10,pokemonjoueur,pokemonsauvage.cap[0].noma)}
+ 	function checkhpj2(pokemonjoueur){
+	 
+ 		if (pokemonjoueur.hp == 0) {
+ 			for (var i = 0; i < 5; i=i+1) {
+ 				if (equipejoueur2.Poke[i].hp != 0 && equipejoueur2.Poke[i].nom != 'NULL') {
+
+ 					ClearText();
+ 					WriteText(pokemonjoueur2.nom+" est KO. L'Adversaire choisis un autre pokemon");
+
+ 					DisableCap();
+ 					i=6;
+ 				}
+ 				if (i==4 && equipejoueur2.Poke[i].hp == 0) {
+ 					DisableAll();
+ 					ClearText();
+ 					WriteText("L'Adversaire n'a plus de Pokemon en état de combattre");
+ 					
+ 					i=6;
+
+ 				}
+ 				else if (i==4 && equipejoueur2.Poke[i].nom == 'NULL') {
+ 					DisableAll();
+ 					ClearText();
+ 					WriteText("L'Adversaire n'a plus de Pokemon en état de combattre");
+ 					
+ 					i=6;
+ 				}
+ 			}
+
+
+
+ 		}
+ 		
  	}
+
+ 	
 
  	function Animation(text,char){
  		let p = document.getElementById("textbox");
@@ -1471,7 +1634,7 @@ var equipejoueur2 =  new Equipe(
  		object.textContent = object.textContent -1;
  	
  		if (cible.idpoke == pokemonjoueur.idpoke) {healthbar.value = healthbar.value-1;}
- 		else if (cible.idpoke == pokemonsauvage.idpoke) {healthbars.value = healthbars.value-1;}
+ 		else if (cible.idpoke == pokemonjoueur2.idpoke) {healthbars.value = healthbars.value-1;}
  		
  		if (a > 1) {
 
@@ -1482,11 +1645,11 @@ var equipejoueur2 =  new Equipe(
 
  	function Augmentation(object,a,cible,max){
  		if (object.textContent + 1 != max) {
- 			console.log('+1');
+ 		
  		object.textContent = parseInt(object.textContent, 10) +1;
  	
  		if (cible.idpoke == pokemonjoueur.idpoke) {healthbar.value = healthbar.value+1;}
- 		else if (cible.idpoke == pokemonsauvage.idpoke) {healthbars.value = healthbars.value+1;}
+ 		else if (cible.idpoke == pokemonjoueur2.idpoke) {healthbars.value = healthbars.value+1;}
  		
  		if (a > 1 && max != object.textContent) {
 
@@ -1542,7 +1705,7 @@ var equipejoueur2 =  new Equipe(
  		for (var i = 0; i < equipej.length; i=i+1) {
  			equipej[i].disabled = true;
  		}
- 		poke.disabled = true;
+ 		//poke.disabled = true;
  		potion.disabled =true;
 
  	}
@@ -1554,7 +1717,7 @@ var equipejoueur2 =  new Equipe(
  		for (var i = 0; i < 4; i=i+1) {
  			cap[i].disabled = true;
  		}
- 		poke.disabled = true;
+ 		//poke.disabled = true;
  		potion.disabled =true;
  		
 
@@ -1571,19 +1734,20 @@ var equipejoueur2 =  new Equipe(
  		for (var i = 0; i < equipej.length; i=i+1) {
  			equipej[i].disabled = false;
  		}
- 		poke.disabled = false;
+ 		//poke.disabled = false;
  		potion.disabled =false;
 
  	}
+
  	function AttaqueJ(object,damage,cible,attack){
  		
  		if (tour.x == 0) {
  		
  		ClearText();
  		WriteText(pokemonjoueur.nom+" utilise "+attack);
- 		if (pokemonsauvage.hp-damage <= 0) {pokemonsauvage.hp = 0}
+ 		if (pokemonjoueur2.hp-damage <= 0) {pokemonjoueur2.hp = 0}
  		else{
- 		pokemonsauvage.hp = pokemonsauvage.hp - damage;}
+ 		pokemonjoueur2.hp = pokemonjoueur2.hp - damage;}
  		setTimeout(function(){
  			AnimationAttackJ();
  			Reduction(object,damage,cible);
@@ -1599,11 +1763,29 @@ var equipejoueur2 =  new Equipe(
  		
  		ClearText();
  		WriteText("Vous utilisez l'objet "+ item);
- 		if (pokemonsauvage.hp+soin >= pokemonjoueur.pvmax) {pokemonjoueur.hp = pokemonjoueur.pvmax}
+ 		if (pokemonjoueur.hp+soin >= pokemonjoueur.pvmax) {pokemonjoueur.hp = pokemonjoueur.pvmax}
  		else{
- 		pokemonsauvage.hp = pokemonsauvage.hp + soin;}
+ 		pokemonjoueur.hp = pokemonjoueur.hp + soin;}
  		setTimeout(function(){
  			Augmentation(object,soin,cible,pokemonjoueur.pvmax);
+ 			
+ 		},2000);
+ 	
+ 		
+ 	}
+ }
+
+ 	function SoinA(object,soin,cible,item){
+ 		
+ 		if (tour.x == 0) {
+ 		
+ 		ClearText();
+ 		WriteText("Vous utilisez l'objet "+ item);
+ 		if (pokemonjoueur2.hp+soin >= pokemonjoueur2.pvmax) {pokemonjoueur2.hp = pokemonjoueur2.pvmax}
+ 		else{
+ 		pokemonjoueur2.hp = pokemonjoueur2.hp + soin;}
+ 		setTimeout(function(){
+ 			Augmentation(object,soin,cible,pokemonjoueur2.pvmax);
  			
  		},2000);
  	
@@ -1650,11 +1832,14 @@ var equipejoueur2 =  new Equipe(
  	function resetJeu(){
  		jeu.choixj = 0;
  		jeu.choixa = 0;
- 		jeu.attackj = null;
+ 		jeu.attackj = 0;
+ 		jeu.nb_attackj = 0;
  		jeu.attacka = null;
- 		jeu.pokemonswap = null;
+ 		jeu.pokemonswap = 0;
+ 		jeu.pokemonswap2 = null;
  		jeu.jeufin = false;
- 		jeu.objet = null;
+ 		jeu.objet = "";
+ 		jeu.objet2 = null;
  		AbleAll();
 
 
@@ -1664,39 +1849,20 @@ var equipejoueur2 =  new Equipe(
   		return Math.floor(Math.random() * Math.floor(max));
 }
 
- 	function CalculCapture(){
- 		let a=(1-(2/3)*(pokemonsauvage.hp/pokemonsauvage.pvmax))*tauxcapture*1*1;
- 		let b = 0;
- 		let rand = 0;
- 		console.log(a);
- 		if (a>=255) {return true;}
- 		else{
- 			b = 65535*Math.sqrt(Math.sqrt(a/255));
- 			for (var i = 0; i < 3; i=i+1) {
- 				rand = getRandomInt(65535);
- 				console.log(rand+' et '+b);
- 				if (rand > b ) {
- 					return false;
- 				}
- 			}
- 			return true;
- 			
- 		}
-
- 	}
+ 	
 
  	function Partie(){
  		console.log('partie');
  		var degatj=0;
- 		var degata=0;
+ 	
  		var pb;
  		if(!jeu.jeufin){
- 			degata=0;
+ 			degata=null;
  			degatj=0;
  			
  			if (jeu.choixa == 0) {
 
- 				setAttaqueA(pokemonsauvage.cap[0]);
+ 				wait_info();
  			}
  				
  			
@@ -1706,21 +1872,25 @@ var equipejoueur2 =  new Equipe(
  				jeu.choixa = 0;
  				pokemonjoueur.gainxp = 1;
  				if (jeu.attackj.classea == "Physique" || jeu.attackj.classea == "Speciale") {
- 					degatj = CalculDegat(jeu.attackj,pokemonjoueur,pokemonsauvage);
- 					//degatj = 20;
+ 					degatj = CalculDegat(jeu.attackj,pokemonjoueur,pokemonjoueur2);
+ 					send_degat(degatj);
  			
  				}
- 			
  				if (jeu.attacka.classea == "Physique" || jeu.attacka.classea == "Speciale") {
- 					degata = CalculDegat(jeu.attacka,pokemonsauvage,pokemonjoueur);
  				
+ 					degata = wait_degat();
+ 					console.log("degat:"+degata);
+ 					
+ 			
  				}
  			
- 				if (pokemonjoueur.vitesse >= pokemonsauvage.vitesse) {
+ 			
+ 			
+ 				if (pokemonjoueur.vitesse >= pokemonjoueur2.vitesse) {
  					setTimeout(function(){
- 						AttaqueJ(hps,degatj,pokemonsauvage,jeu.attackj.noma);
+ 						AttaqueJ(hps,degatj,pokemonjoueur2,jeu.attackj.noma);
  						
- 						setTimeout(function(){if (pokemonsauvage.hp  > 0) {AttaqueA(hpj,degata,pokemonjoueur,jeu.attacka.noma);};setTimeout(function(){resetJeu();ClearText();checkhpj(pokemonjoueur);checkhp(pokemonsauvage);},4000);},2000);
+ 						setTimeout(function(){if (pokemonjoueur2.hp  > 0) {AttaqueA(hpj,degata,pokemonjoueur,jeu.attacka.noma);};setTimeout(function(){resetJeu();ClearText();checkhpj(pokemonjoueur);checkhpj2(pokemonjoueur2);},4000);},2000);
  						
  						
  						
@@ -1730,7 +1900,7 @@ var equipejoueur2 =  new Equipe(
  				else {
  					setTimeout(function(){
  						AttaqueA(hpj,degata,pokemonjoueur,jeu.attacka.noma);
- 						setTimeout(function(){if (pokemonjoueur.hp  > 0) {AttaqueJ(hps,degatj,pokemonsauvage,jeu.attackj.noma)};
+ 						setTimeout(function(){if (pokemonjoueur.hp  > 0) {AttaqueJ(hps,degatj,pokemonjoueur2,jeu.attackj.noma)};
  						setTimeout(function(){resetJeu();ClearText();checkhpj(pokemonjoueur);checkhp(pokemonsauvage);},4000);
  						},2000);
  					},2000);
@@ -1741,132 +1911,64 @@ var equipejoueur2 =  new Equipe(
  			}
  			else if (jeu.choixa == 1 && jeu.choixj == 2) {
  				DisableAll();
+ 				if (jeu.attacka.classea == "Physique" || jeu.attacka.classea == "Speciale") {
+ 					while(degata == null){
+ 					degata = wait_degat();
+ 					}
+ 			
+ 				}
  				jeu.choixj = 0;
  				jeu.choixa = 0;
- 				if (jeu.attacka.classea == "Physique" || jeu.attacka.classea == "Speciale") {
- 					degata = CalculDegat(jeu.attacka,pokemonsauvage,pokemonsauvage);
- 				
- 				}
+ 			
  				setTimeout(function(){
  						Swap(jeu.pokemonswap);
  						setTimeout(function(){if (pokemonjoueur.hp  > 0) {AttaqueA(hpj,degata,pokemonjoueur,jeu.attacka.noma);}
- 						setTimeout(function(){resetJeu();ClearText();checkhpj(pokemonjoueur);checkhp(pokemonsauvage);},4000);
+ 						setTimeout(function(){resetJeu();ClearText();checkhpj(pokemonjoueur);checkhpj2(pokemonjoueur2);},4000);
  						},2000);
  					},2000);
 
  			}
- 			else if (jeu.choixa == 1 && jeu.choixj == 3) {
+ 			else if (jeu.choixa == 2 && jeu.choixj == 1) {
  				DisableAll();
  				jeu.choixj = 0;
  				jeu.choixa = 0;
- 				if (jeu.attacka.classea == "Physique" || jeu.attacka.classea == "Speciale") {
- 					degata = CalculDegat(jeu.attacka,pokemonsauvage,pokemonsauvage);
- 				
- 				}
- 				pb = CalculCapture();
- 				AnimationCatch();
- 				if (pb == true) {
- 					Catch();
- 				}
- 				else{
- 					ClearText();
- 					
- 					setTimeout(function(){Texte_catch(0,"... "+pokemonsauvage.nom+' c\'est libéré');
- 						setTimeout(function(){let poke = document.getElementById('pokeimgs');
-					poke.src = "img/"+pokemonsauvage.nom+".png"},5000)
- 				},3000);
- 					setTimeout(function(){AttaqueA(hpj,degata,pokemonjoueur,jeu.attacka.noma)
- 						setTimeout(function(){resetJeu();ClearText();checkhpj(pokemonjoueur);checkhp(pokemonsauvage);},4000);
- 						;},9000);
- 				}
-
- 			}
-
- 			else if (jeu.choixa == 1 && jeu.choixj == 4) {
- 				DisableAll();
- 				jeu.choixj = 0;
- 				jeu.choixa = 0;
- 				if (jeu.objet == 'Potion') {
- 					degatj = 20;
- 				
+ 				if (jeu.attackj.classea == "Physique" || jeu.attackj.classea == "Speciale") {
+ 					degatj = CalculDegat(jeu.attackj,pokemonjoueur,pokemonjoueur2);
+ 					send_degat(degatj);
+ 					//degatj = 20;
  			
  				}
- 			
- 				if (jeu.attacka.classea == "Physique" || jeu.attacka.classea == "Speciale") {
- 					degata = CalculDegat(jeu.attacka,pokemonsauvage,pokemonjoueur);
- 				
- 				}
- 			
- 					setTimeout(function(){
- 						SoinJ(hpj,degatj,pokemonjoueur,jeu.objet);
- 						
- 						setTimeout(function(){if (pokemonsauvage.hp  > 0) {AttaqueA(hpj,degata,pokemonjoueur,jeu.attacka.noma);};setTimeout(function(){resetJeu();ClearText();checkhpj(pokemonjoueur);checkhp(pokemonsauvage);},4000);},2000);
- 						
- 						
- 						
+ 				setTimeout(function(){
+ 						Swap2(jeu.pokemonswap2);
+ 						setTimeout(function(){if (pokemonjoueur2.hp  > 0) {AttaqueJ(hps,degatj,pokemonjoueur2,jeu.attackj.noma);}
+ 						setTimeout(function(){resetJeu();ClearText();checkhpj(pokemonjoueur);checkhpj2(pokemonjoueur2);},4000);
+ 						},2000);
  					},2000);
- 					
- 				
- 			
- 				
 
  			}
+ 			else if (jeu.choixa == 2 && jeu.choixj == 2) {
+ 				DisableAll();
+ 				jeu.choixj = 0;
+ 				jeu.choixa = 0;
+ 				setTimeout(function(){
+ 						Swap(jeu.pokemonswap);
+ 						
+ 						setTimeout(function(){Swap2(jeu.pokemonswap2);
+ 						setTimeout(function(){resetJeu();ClearText();checkhpj(pokemonjoueur);checkhpj2(pokemonjoueur2);},4000);
+ 						},2000);
+ 					},2000);
 
- 			savegame();
+ 			}
+ 			
+ 			info = null;
+ 			//savegame();
 
  		}
  	}
 
- 	function Catch(){
- 		ClearText();
- 		
- 		setTimeout(function(){Texte_catch(0,"... "+pokemonsauvage.nom+' a été attrapé');},3000);
- 		setTimeout(function(){WriteXpC(0);
+ 
 
- 			
- 		},10000);
- 		
- 	}
-
- 	function Texte_catch(a,text) {
-	p = document.getElementById("textbox");
-	p.innerHTML=p.innerHTML+text.charAt(a);
-	if (a<text.length) {
-	if (a>2) {setTimeout(function(){Texte_catch(a+1,text);},50)}
-	else{setTimeout(function(){Texte_catch(a+1,text);},1000);}
-	}
-	}
-	
-	function AnimationCatch(){
-		let img = document.getElementById('pokeb');
-		img.style.left = "360%";
-
-		img.style.opacity = 1;
-	 	setTimeout(function(){AC(img,360,250);},50);
-
-	}
-
-	function AC(img,time,time2){
-		img.style.left = time+"%";
-		if (time >= 180) {
-			img.style.top = time2+"%";
-			time2 =time2-5;
-		}
-		else if (time < 180) {
-			img.style.top = time2+"%";
-			time2 =time2+5;
-		}
-		if (time) {}
-		if (time > 20) {
-			setTimeout(function(){AC(img,time-5,time2);},25);
-		}
-		else{
-			let poke = document.getElementById('pokeimgs');
-			poke.src = "img/poke.png";
-			img.style.opacity = 0;
-
-		}
-	}
+ 
 
 
 
@@ -1876,6 +1978,14 @@ var equipejoueur2 =  new Equipe(
  		equipejoueur.Poke[a] = Poke;
  		
  	}
+
+ 	function SwapPoke2(a){
+ 		let Poke = pokemonjoueur2;
+ 		pokemonjoueur2 = equipejoueur2.Poke[a];
+ 		equipejoueur2.Poke[a] = Poke;
+ 		
+ 	}
+
  	function SwapText(a){
  		let cap = [document.getElementById('cap0'),document.getElementById('cap1'),document.getElementById('cap2'),document.getElementById('cap3')];
 	 		let input = document.getElementById('poke'+a);
@@ -1905,6 +2015,23 @@ var equipejoueur2 =  new Equipe(
 
  	}
 
+ 	function SwapText2(a){
+ 		
+	
+	 		let name = document.getElementById('nompoke2');
+	 		let img = document.getElementById('pokeimg');
+	 		
+	 		img.src = "img/"+pokemonjoueur2.nom+".png";
+
+	 		name.innerHTML = pokemonjoueur2.nom+" Niv "+pokemonjoueur2.niv;
+	 
+	 		hps.innerHTML = pokemonjoueur2.hp;
+	 		healthbars.value = pokemonjoueur2.hp;
+	 		healthbars.max = pokemonjoueur2.pvmax;
+	 		
+
+ 	}
+
  	function Swap(a){
  		
 
@@ -1913,6 +2040,55 @@ var equipejoueur2 =  new Equipe(
  			WriteText("Changement de Pokemon");
 	 		setTimeout(function(){SwapPoke(a);},1000);
 	 		setTimeout(function(){SwapText(a)},1000);
+	 		
+	 
+	 		}
+	 		else {
+
+	 			WriteText("Ce pokemon est KO");
+
+	 			
+
+	 		}
+	 		
+ 		
+ 		
+ 		
+ 	}
+
+
+ 	function Swap(a){
+ 		
+
+ 			ClearText();
+ 			if (equipejoueur.Poke[a].hp != 0) {
+ 			WriteText("Changement de Pokemon");
+	 		setTimeout(function(){SwapPoke(a);},1000);
+	 		setTimeout(function(){SwapText(a)},1000);
+	 		
+	 
+	 		}
+	 		else {
+
+	 			WriteText("Ce pokemon est KO");
+
+	 			
+
+	 		}
+	 		
+ 		
+ 		
+ 		
+ 	}
+
+ 	function Swap2(a){
+ 		
+
+ 			ClearText();
+ 			if (equipejoueur2.Poke[a].hp != 0) {
+ 			WriteText("Changement de Pokemon");
+	 		setTimeout(function(){SwapPoke2(a);},1000);
+	 		setTimeout(function(){SwapText2(a)},1000);
 	 		
 	 
 	 		}
@@ -1947,7 +2123,7 @@ var equipejoueur2 =  new Equipe(
 
  	function AttaqueA(object,damage,cible,attack){
  		ClearText();
- 		WriteText(pokemonsauvage.nom+" sauvage utilise "+attack);
+ 		WriteText(pokemonjoueur2.nom+" sauvage utilise "+attack);
  		if (pokemonjoueur.hp-damage <= 0) {pokemonjoueur.hp = 0}
  		else{
  		pokemonjoueur.hp = pokemonjoueur.hp - damage;}
@@ -2080,7 +2256,7 @@ var equipejoueur2 =  new Equipe(
  	function KO(){
  		clearTimeout(checktour);
  		ClearText();
- 		WriteText(pokemonsauvage.nom+" a été battu...");
+ 		WriteText(pokemonjoueur2.nom+" a été battu...");
  		setTimeout(function(){WriteXp(0);
 
  			
@@ -2105,11 +2281,21 @@ var equipejoueur2 =  new Equipe(
 		set_cookie('pokemonjoueur[ID]',pokemonjoueur.idpoke,24);
 		set_cookie('pokemonjoueur[HP]',pokemonjoueur.hp,24);
 		set_cookie('pokemonjoueur[GAINXP]',pokemonjoueur.gainxp,24);
+		set_cookie('pokemonjoueur2[ID]',pokemonjoueur2.idpoke,24);
+		set_cookie('pokemonjoueur2[HP]',pokemonjoueur2.hp,24);
+		set_cookie('pokemonjoueur2[GAINXP]',pokemonjoueur2.gainxp,24);
 
 		for (var i = 0; i < 5; i=i+1) {
 			set_cookie('team['+i+'][ID]',equipejoueur.Poke[i].idpoke,24);
 			set_cookie('team['+i+'][HP]',equipejoueur.Poke[i].hp,24);
 			set_cookie('team['+i+'][GAINXP]',equipejoueur.Poke[i].gainxp,24);
+			
+		}
+
+		for (var i = 0; i < 5; i=i+1) {
+			set_cookie('team2['+i+'][ID]',equipejoueur2.Poke[i].idpoke,24);
+			set_cookie('team2['+i+'][HP]',equipejoueur2.Poke[i].hp,24);
+			set_cookie('team2['+i+'][GAINXP]',equipejoueur2.Poke[i].gainxp,24);
 			
 		}
 		set_cookie('tour',tour.x,24);

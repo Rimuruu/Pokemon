@@ -89,6 +89,7 @@ else{
 
 	 function Join(){
 	 	set_cookie("Adversaire", "<?php echo  $_COOKIE['ADV']?>", 24);
+	 	set_cookie("Role", "<?php echo  $role ?>", 24);
 	 	eraseCookie("ADV");  
 
 	 }
