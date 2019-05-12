@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: May 11, 2019 at 08:48 AM
+-- Generation Time: May 12, 2019 at 06:11 PM
 -- Server version: 10.3.12-MariaDB
 -- PHP Version: 7.2.14
 
@@ -212,7 +212,15 @@ CREATE TABLE IF NOT EXISTS `banque` (
 --
 
 INSERT INTO `banque` (`ID`, `NumP`, `NomP`, `TypeU`, `TypeD`, `Courbe`, `XP`, `XPVaincu`, `Niv`, `IVPV`, `IVAttaque`, `IVDefense`, `IVAttSpe`, `IVDefSpe`, `IVVitesse`, `PVmax`, `Vitesse`, `Attaque`, `Defense`, `AttSpe`, `DefSPe`, `CAP1`, `CAP2`, `CAP3`, `CAP4`, `Dresseur`, `PVact`, `Statut`) VALUES
-(59193, 4, 'Salamèche', 'Feu', NULL, 'Moyen-', 0, 65, 5, 5, 6, 5, 6, 4, 5, 24, 12, 11, 10, 12, 10, 56, 43, NULL, NULL, 'kett', 24, NULL),
+(20336, 127, 'Scarabrute', 'Insecte', NULL, 'Lent', 1, 200, 2, 8, 4, 5, 5, 6, 3, 20, 9, 10, 9, 7, 8, 28, 30, NULL, NULL, NULL, 20, NULL),
+(87322, 13, 'Aspicot', 'Insecte', 'Poison', 'Moyen+', 1, 52, 2, 7, 8, 5, 5, 4, 2, 19, 7, 7, 6, 6, 6, 87, 86, NULL, NULL, NULL, 19, NULL),
+(58872, 127, 'Scarabrute', 'Insecte', NULL, 'Lent', 1, 200, -1, 7, 3, 6, 4, 6, 5, 13, 3, 2, 3, 4, 3, 29, 30, NULL, NULL, NULL, 13, NULL),
+(64834, 19, 'Rattata', 'Normal', NULL, 'Moyen+', 1, 57, -1, 6, 6, 4, 4, 9, 2, 13, 3, 4, 4, 4, 4, 68, 59, NULL, NULL, NULL, 13, NULL),
+(62539, 23, 'Abo', 'Poison', NULL, 'Moyen+', 1, 62, 2, 9, 3, 8, 4, 2, 5, 19, 7, 8, 7, 7, 7, 88, 89, NULL, NULL, 'kett', 19, NULL),
+(25726, 43, 'Mystherbe', 'Plante', 'Poison', 'Moyen-', 1, 78, 2, 6, 3, 9, 2, 7, 4, 19, 6, 7, 7, 8, 8, 83, 90, NULL, NULL, NULL, 19, NULL),
+(74517, 46, 'Paras', 'Insecte', 'Poison', 'Moyen+', 1, 70, 2, 6, 7, 7, 4, 2, 5, 19, 6, 8, 7, 7, 7, 28, 88, NULL, NULL, NULL, 19, NULL),
+(18306, 58, 'Caninos', 'Feu', NULL, 'Lent', 1, 91, 4, 6, 5, 7, 3, 5, 5, 23, 10, 10, 9, 10, 9, 21, 22, NULL, NULL, NULL, 23, NULL),
+(59193, 4, 'Salamèche', 'Feu', NULL, 'Moyen-', 65, 65, 5, 5, 6, 5, 6, 4, 5, 24, 12, 11, 10, 12, 10, 56, 43, NULL, NULL, 'kett', 24, NULL),
 (72410, 1, 'Bulbizarre', 'Plante', 'Poison', 'Moyen-', 0, 64, 5, 5, 9, 4, 4, 2, 7, 25, 10, 11, 10, 12, 12, 53, 43, NULL, NULL, 'shinji', 25, NULL);
 
 -- --------------------------------------------------------
@@ -227,6 +235,16 @@ CREATE TABLE IF NOT EXISTS `combat` (
   `STATUTH` enum('ONLINE','OFFLINE') CHARACTER SET armscii8 COLLATE armscii8_bin NOT NULL DEFAULT 'ONLINE',
   `ADV` varchar(32) CHARACTER SET armscii8 COLLATE armscii8_bin DEFAULT NULL,
   `STATUTA` enum('ONLINE','OFFLINE') CHARACTER SET armscii8 COLLATE armscii8_bin DEFAULT NULL,
+  `CHOIXH` int(11) DEFAULT NULL,
+  `ATTACKH` int(11) DEFAULT NULL,
+  `POKEMONSWAPH` int(11) DEFAULT NULL,
+  `OBJETH` varchar(32) DEFAULT NULL,
+  `DEGATH` int(11) DEFAULT NULL,
+  `CHOIXA` int(11) DEFAULT NULL,
+  `ATTACKA` int(11) DEFAULT NULL,
+  `POKEMONSWAPA` int(11) DEFAULT NULL,
+  `OBJETA` varchar(32) DEFAULT NULL,
+  `DEGATA` int(11) DEFAULT NULL,
   PRIMARY KEY (`HOST`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
@@ -251,8 +269,8 @@ CREATE TABLE IF NOT EXISTS `compte` (
 --
 
 INSERT INTO `compte` (`Nom`, `MDP`, `Pokedollar`, `DateCo`, `StatutCo`) VALUES
-('shinji', 'SMmQqVGlADbF2', 1150, '2019-05-11', 'ONLINE'),
-('kett', 'SME5dWN0idrZU', 1150, '2019-05-11', 'ONLINE');
+('shinji', 'SMmQqVGlADbF2', 1200, '2019-05-12', 'ONLINE'),
+('kett', 'SME5dWN0idrZU', 1200, '2019-05-12', 'ONLINE');
 
 -- --------------------------------------------------------
 
@@ -279,7 +297,7 @@ CREATE TABLE IF NOT EXISTS `equipe` (
 
 INSERT INTO `equipe` (`IDEq`, `Dresseur`, `SLOT1`, `SLOT2`, `SLOT3`, `SLOT4`, `SLOT5`, `SLOT6`) VALUES
 (21022, 'shinji', 72410, NULL, NULL, NULL, NULL, NULL),
-(92418, 'kett', 59193, NULL, NULL, NULL, NULL, NULL);
+(92418, 'kett', 62539, 0, 0, 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -545,8 +563,8 @@ CREATE TABLE IF NOT EXISTS `sac` (
 --
 
 INSERT INTO `sac` (`IDSac`, `Dresseur`, `nbPokeBall`, `nbSuperBall`, `nbHyperBall`, `nbPotion`, `nbSuperPotion`, `nbHyperPotion`, `nbPotionMax`, `nbAntidote`, `nbAntiPara`, `nbAntiBrule`, `nbAntiGel`, `nbReveil`, `nbRappel`, `nbRappelMax`, `nbElexir`, `nbMaxElexir`, `nbHuile`, `nbHuileMax`) VALUES
-(21022, 'shinji', 20, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
-(92418, 'kett', 20, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+(21022, 'shinji', 25, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(92418, 'kett', 19, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 
 -- --------------------------------------------------------
 
