@@ -62,8 +62,7 @@ function CheckEvolution($idpoke){
 				$query = "UPDATE banque SET NumP=".$stat['NumP'].", NomP='".$stat['NomP']."', Courbe='".$stat['Courbe']."',TypeU='".$stat['TypeU']."'   WHERE ID=".$idpoke;
 			}
 			else{
-				$link =create_link();
-				$stat = Get_pokedex($stat['Evolution']);
+		
 			$query = "UPDATE banque SET NumP=".$stat['NumP'].", NomP='".$stat['NomP']."', Courbe='".$stat['Courbe']."',TypeU='".$stat['TypeU']."', TypeD='".$stat['TypeD']."'   WHERE ID=".$idpoke;}
 			//echo $query;
 			mysqli_query($link,$query);
@@ -76,6 +75,53 @@ function CheckEvolution($idpoke){
 
 }
 
+function AddAttaque($idpoke){
+	$link = create_link();
+	$res= Get_pokemon($idpoke);
+	$stat = Get_pokedex($poke['NumP']);
+	if ($res['TypeD'] == NULL) {
+		$querytest2 = "SELECT * from attaque where TypeA=? AND (ClasseA = 'Physique' OR ClasseA = 'Speciale') AND IDAtt <>".$res['CAP1']." AND IDAtt <>".$res['CAP2'];
+		if ($res['CAP3'] != NULL) {
+			$querytest2 = "SELECT * from attaque where TypeA=? AND (ClasseA = 'Physique' OR ClasseA = 'Speciale') AND IDAtt <>".$res['CAP1']." AND IDAtt <>".$res['CAP2']." AND IDAtt <>".$res['CAP3'];
+		}
+		//echo $querytest2;
+		$stmt3 = mysqli_prepare($link,$querytest2);
+		mysqli_stmt_bind_param($stmt3,"s",$res['TypeU']);
+
+	}
+	else{
+		$querytest2 = "SELECT * from attaque where (TypeA=? OR TypeA=?) AND (ClasseA = 'Physique' OR ClasseA = 'Speciale' ) AND IDAtt <>".$res['CAP1']." AND IDAtt <>".$res['CAP2'];
+		if ($res['CAP3'] != NULL) {
+			$querytest2 = "SELECT * from attaque where (TypeA=? OR TypeA=?) AND (ClasseA = 'Physique' OR ClasseA = 'Speciale' ) AND IDAtt <>".$res['CAP1']." AND IDAtt <>".$res['CAP2']." AND IDAtt <>".$res['CAP3'];
+		}
+		//echo $querytest2;
+		$stmt3 = mysqli_prepare($link,$querytest2);
+		mysqli_stmt_bind_param($stmt3,"ss",$res['TypeU'],$res['TypeD']);
+	}
+	
+
+	echo mysqli_error($link);
+	mysqli_execute($stmt3);
+	$result = mysqli_stmt_get_result($stmt3);
+	$nb_attaque= mysqli_num_rows($result);
+	$rand_att = rand(1,$nb_attaque);
+	 mysqli_data_seek($result, $rand_att);
+	$resatt = mysqli_fetch_assoc($result);
+	
+	 $resa = $resatt['IDAtt'];
+	 if ($res['Niv'] == 15) {
+	 	$query = "UPDATE banque SET CAP3=".$resa." WHERE ID =".$res['ID'];
+	 	mysqli_query($link,$query);
+	 	
+	 }
+	 else if ($res['Niv'] == 30) {
+	 	$query = "UPDATE banque SET CAP4=".$resa." WHERE ID =".$res['ID'];
+	 	mysqli_query($link,$query);
+	 	
+	 }
+	 mysqli_close($link);
+	
+}
 
 function setPVact($idpoke,$hp){
 	$link = create_link();
@@ -117,6 +163,9 @@ function CheckLevelUp($idpoke){
 		$query = "UPDATE banque SET  PVact=".$poke['PVact'].",PVmax=".$poke['PVmax'].",Attaque=".$poke['Attaque'].",Defense=".$poke['Defense'].",Vitesse=".$poke['Vitesse'].",AttSpe=".$poke['AttSpe'].",DefSPe=".$poke['DefSPe']." WHERE ID =".$idpoke;
 
 		mysqli_query($link,$query);
+		if ($poke['Niv']+1 == 15 || $poke['Niv']+1 == 30) {
+			AddAttaque($idpoke);
+		}
 	}
 	$poke = Get_pokemon($idpoke);
 	if ($poke['Courbe'] == "Moyen-") {
